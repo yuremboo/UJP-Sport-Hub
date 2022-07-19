@@ -8,7 +8,7 @@
         <version>2.7.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>softserve.edu</groupId>
     <artifactId>SportHubUJP</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>SportHubUJP</name>

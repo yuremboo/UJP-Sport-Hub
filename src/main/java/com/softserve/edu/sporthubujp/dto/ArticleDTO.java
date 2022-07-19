@@ -1,4 +1,4 @@
-package com.example.sporthubujp.dto;
+package com.softserve.edu.sporthubujp.dto;
 
 import lombok.*;
 
