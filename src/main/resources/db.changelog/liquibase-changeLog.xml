@@ -42,7 +42,7 @@
         <addUniqueConstraint columnNames="name" constraintName="uk_a510no6sjwqcx153yd5sm4jrr" tableName="teams"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-3">
-        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
+        <createSequence cacheSize="1" cycle="false" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-4">
         <createTable tableName="article">
@@ -159,24 +159,24 @@
         </createTable>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-9">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="article" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="article" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-10">
-        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="article" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="article"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-11">
-        <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-12">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-13">
-        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-14">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users"/>
     </changeSet>
     <changeSet author="HUAWEI (generated)" id="1658433980501-15">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories"/>
     </changeSet>
 </databaseChangeLog>
