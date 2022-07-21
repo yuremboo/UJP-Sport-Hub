@@ -89,7 +89,7 @@
                 <version>4.13.0</version>
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
-                    <changeLogFile>src/main/resources/db/changelog/liquibase-changeLog.xml</changeLogFile>
+                    <changeLogFile>src/main/resources/db.changelog/liquibase-changeLog.xml</changeLogFile>
                 </configuration>
             </plugin>
         </plugins>
