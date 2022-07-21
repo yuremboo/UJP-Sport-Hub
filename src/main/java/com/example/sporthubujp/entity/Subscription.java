@@ -1,12 +1,12 @@
-package entity;
+package com.example.sporthubujp.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -17,11 +17,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="SUBSCRIPTIONS")
-public class Subscriptions {
+public class Subscription {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
 
     @Column(name = "user_id", length = 16, nullable = false, unique = false)
     private String userId;
@@ -29,19 +29,22 @@ public class Subscriptions {
     private String teamId;
     @Column(name = "category_id", length = 16)
     private String categoryId;
+    @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
     private Timestamp createDateTime;
+    @LastModifiedDate
     @Column(name="update_date_time",  nullable=false, unique=false)
     private Timestamp updateDateTime;
 
-    @OneToMany( mappedBy = "subscriptions")
-            private Set<User> users;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false,foreignKey = @ForeignKey(name="fk_subscriptions_user"), insertable=false, updatable=false)
+    private User user;
 
-    @OneToMany( mappedBy = "team_subscriptions")
-    private Set<Teams> teams;
+    @ManyToOne
+    @JoinColumn(name = "team_id",foreignKey = @ForeignKey(name="fk_subscriptions_team"), insertable=false, updatable=false)
+    private Team team;
 
-    @OneToMany( mappedBy = "categories_subscriptions")
-    private Set<Categories> categories;
-
-
+    @ManyToOne
+    @JoinColumn(name = "category_id",foreignKey = @ForeignKey(name="fk_subscriptions_category"), insertable=false, updatable=false)
+    private Category category;
 }

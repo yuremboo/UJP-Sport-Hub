@@ -1,12 +1,12 @@
-package entity;
+package com.example.sporthubujp.entity;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Objects;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -17,11 +17,11 @@ import java.util.UUID;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="TEAMS")
-public class Teams {
+public class Team {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private String id;
     @Column(name = "name", length = 255, nullable = false, unique = true)
     private String name;
     @Column(name = "location", length = 255, nullable = false, unique = false)
@@ -34,18 +34,17 @@ public class Teams {
     private Byte logo;
     @Column(name = "description", length = 255, nullable = false, unique = false)
     private String description;
+    @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
     private Timestamp createDateTime;
+    @LastModifiedDate
     @Column(name="update_date_time",  nullable=false, unique=false)
     private Timestamp updateDateTime;
 
-    @OneToMany( mappedBy = "categories")
-    private Set<Categories> categories;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
+    private List<Subscription> subscriptions;
 
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name="TEAM_ID")
-    private Subscriptions team_subscriptions;
-
-
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), insertable=false, updatable=false)
+    private Category category;
 }

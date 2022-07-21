@@ -1,11 +1,12 @@
-package entity;
+package com.example.sporthubujp.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import java.sql.Timestamp;
 @Entity
@@ -15,12 +16,11 @@ import java.sql.Timestamp;
 @ToString
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="USER")
+@Table(name="USERS")
 public class User {
-
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private String id;
 
     @Column(name="first_name", length=255, nullable=false, unique=false)
     private String firstName;
@@ -28,23 +28,23 @@ public class User {
     private String lastName;
     @Column(name="email", length=255, nullable=false, unique=false)
     private String email;
-    //@Column(name="role", length=10, nullable=false, unique=false)
-    //private String role;
-    private enum Role{ADMIN,USER};
+    @Enumerated(EnumType.STRING)
+    @Column(name="role", length=10, nullable=false, unique=false)
+    private Role role;
     @Column(name="password", length=255, nullable=false, unique=false)
     private String password;
     @Column(name="is_active")
     private Boolean isActive;
+    @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
     private Timestamp createDateTime;
+    @LastModifiedDate
     @Column(name="update_date_time",  nullable=false, unique=false)
     private Timestamp updateDateTime;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="USER_ID")
-    private Subscriptions subscriptions;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    private List<Subscription> subscriptions;
 
-    @OneToMany( mappedBy = "comments")
-    private Set<Comments> comments;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    private List<Comments> comment;
 }
