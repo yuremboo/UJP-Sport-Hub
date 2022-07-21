@@ -1,6 +1,8 @@
 package entity;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,6 +14,7 @@ import java.sql.Timestamp;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="USER")
 public class User {
 

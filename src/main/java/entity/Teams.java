@@ -1,5 +1,7 @@
 package entity;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,6 +15,7 @@ import java.util.UUID;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="TEAMS")
 public class Teams {
 
