@@ -1,4 +1,4 @@
-package com.example.sporthubujp.entity;
+package com.softserve.edu.sporthubujp.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -6,9 +6,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -31,12 +32,16 @@ public class Category {
     private Boolean isActive;
     @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
-    private Timestamp createDateTime;
+    private LocalDateTime createDateTime;
     @LastModifiedDate
-    @Column(name="update_date_time",  nullable=false, unique=false)
-    private Timestamp updateDateTime;
-    @Column(name = "parent_categories_id", length = 255)
-    private String parentCategoriesId;
+    @Column(name="update_date_time",  nullable=true, unique=false)
+    private LocalDateTime updateDateTime;
+    @ManyToOne(fetch = FetchType.LAZY, optional=true)
+    @JoinColumn(name="parent_category_id")
+    private Category parent;
+
+    @OneToMany(mappedBy="parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+    private Set<Category> children = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
     private List<Article> articles;

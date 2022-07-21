@@ -1,7 +1,7 @@
-package com.example.sporthubujp.controllers;
+package com.softserve.edu.sporthubujp.controllers;
 
-import com.example.sporthubujp.dto.ArticleDTO;
-import com.example.sporthubujp.services.ArticleService;
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

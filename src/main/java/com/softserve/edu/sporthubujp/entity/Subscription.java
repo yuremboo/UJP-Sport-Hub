@@ -1,4 +1,4 @@
-package com.example.sporthubujp.entity;
+package com.softserve.edu.sporthubujp.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -6,8 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.util.UUID;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,19 +21,12 @@ public class Subscription {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
-
-    @Column(name = "user_id", length = 16, nullable = false, unique = false)
-    private String userId;
-    @Column(name = "team_id ", length = 16)
-    private String teamId;
-    @Column(name = "category_id", length = 16)
-    private String categoryId;
     @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
-    private Timestamp createDateTime;
+    private LocalDateTime createDateTime;
     @LastModifiedDate
-    @Column(name="update_date_time",  nullable=false, unique=false)
-    private Timestamp updateDateTime;
+    @Column(name="update_date_time",  nullable=true, unique=false)
+    private LocalDateTime updateDateTime;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false,foreignKey = @ForeignKey(name="fk_subscriptions_user"), insertable=false, updatable=false)

@@ -1,8 +1,7 @@
-package com.example.sporthubujp.services;
+package com.softserve.edu.sporthubujp.services;
 
-import com.example.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDateTime;
 
