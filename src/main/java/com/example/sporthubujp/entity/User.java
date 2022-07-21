@@ -10,11 +10,7 @@ import java.util.List;
 import java.util.UUID;
 import java.sql.Timestamp;
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="USERS")
 public class User {

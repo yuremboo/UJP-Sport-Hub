@@ -10,11 +10,7 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="COMMENTS")
 public class Comments {
@@ -34,7 +30,9 @@ public class Comments {
     @LastModifiedDate
     @Column(name="update_date_time",  nullable=false, unique=false)
     private Timestamp updateDateTime;
+    @Column(name = "likes", nullable = true, unique = false)
     private Integer likes ;
+    @Column(name = "dislikes", nullable = true, unique = false)
     private Integer dislikes  ;
 
     @ManyToOne

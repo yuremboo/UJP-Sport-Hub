@@ -11,11 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="CATEGORIES")
 public class Category {
@@ -33,7 +29,7 @@ public class Category {
     @Column(name="create_date_time",  nullable=false, unique=false)
     private Timestamp createDateTime;
     @LastModifiedDate
-    @Column(name="update_date_time",  nullable=false, unique=false)
+    @Column(name="update_date_time", unique=false)
     private Timestamp updateDateTime;
     @Column(name = "parent_categories_id", length = 255)
     private String parentCategoriesId;
