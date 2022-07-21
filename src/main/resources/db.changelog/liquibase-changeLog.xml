@@ -7,4 +7,176 @@
    http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+    <changeSet author="HUAWEI (generated)" id="1658433980501-1">
+        <createTable tableName="teams">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="teams_pkey"/>
+            </column>
+            <column name="category_id" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="location" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="logo" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subcategory" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-2">
+        <addUniqueConstraint columnNames="name" constraintName="uk_a510no6sjwqcx153yd5sm4jrr" tableName="teams"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-3">
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-4">
+        <createTable tableName="article">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="article_pkey"/>
+            </column>
+            <column name="category_id" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comments_active" type="BOOLEAN"/>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN"/>
+            <column name="text" type="OID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-5">
+        <createTable tableName="categories">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="categories_pkey"/>
+            </column>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="parent_categories_id" type="VARCHAR(255)"/>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-6">
+        <createTable tableName="comments">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="comments_pkey"/>
+            </column>
+            <column name="article_id" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="comment" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="commenter_id" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dislikes" type="INTEGER"/>
+            <column name="likes" type="INTEGER"/>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-7">
+        <createTable tableName="subscriptions">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="subscriptions_pkey"/>
+            </column>
+            <column name="category_id" type="VARCHAR(16)"/>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="team_id" type="VARCHAR(16)"/>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-8">
+        <createTable tableName="users">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN"/>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-9">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="article" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-10">
+        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="article" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-11">
+        <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-12">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-13">
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-14">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="HUAWEI (generated)" id="1658433980501-15">
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
 </databaseChangeLog>

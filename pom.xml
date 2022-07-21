@@ -90,6 +90,7 @@
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>src/main/resources/db.changelog/liquibase-changeLog.xml</changeLogFile>
+                    <outputChangeLogFile>src/main/resources/db.changelog/liquibase-changeLog.xml</outputChangeLogFile>
                 </configuration>
             </plugin>
         </plugins>
