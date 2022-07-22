@@ -1,7 +1,7 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.13.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-1">
-        <createTable tableName="teams">
+    <changeSet author="Ostap Klymko" id="1658478465736-1">
+        <createTable tableName="TEAMS">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="teams_pkey"/>
             </column>
@@ -26,14 +26,14 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-2">
-        <addUniqueConstraint columnNames="name" constraintName="uk_a510no6sjwqcx153yd5sm4jrr" tableName="teams"/>
+    <changeSet author="Ostap Klymko" id="1658478465736-2">
+        <addUniqueConstraint columnNames="name" constraintName="uk_name" tableName="teams"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-3">
+    <changeSet author="Ostap Klymko" id="1658478465736-3">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-4">
-        <createTable tableName="article">
+    <changeSet author="Ostap Klymko" id="1658478465736-4">
+        <createTable tableName="ARTICLE">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="article_pkey"/>
             </column>
@@ -54,8 +54,8 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-5">
-        <createTable tableName="categories">
+    <changeSet author="Ostap Klymko" id="1658478465736-5">
+        <createTable tableName="CATEGORIES">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="categories_pkey"/>
             </column>
@@ -73,8 +73,8 @@
             <column name="parent_category_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-6">
-        <createTable tableName="comments">
+    <changeSet author="Ostap Klymko" id="1658478465736-6">
+        <createTable tableName="COMMENTS">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="comments_pkey"/>
             </column>
@@ -95,8 +95,8 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-7">
-        <createTable tableName="subscriptions">
+    <changeSet author="Ostap Klymko" id="1658478465736-7">
+        <createTable tableName="SUBSCRIPTIONS">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="subscriptions_pkey"/>
             </column>
@@ -111,8 +111,8 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-8">
-        <createTable tableName="users">
+    <changeSet author="Ostap Klymko" id="1658478465736-8">
+        <createTable tableName="USERS">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
             </column>
@@ -138,28 +138,28 @@
             <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-9">
-        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories" constraintName="FKb4wpldr8vct7v1t65n4521gwl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    <changeSet author="Ostap Klymko" id="1658478465736-9">
+        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories" constraintName="fk_category_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-10">
+    <changeSet author="Ostap Klymko" id="1658478465736-10">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="article" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-11">
+    <changeSet author="Ostap Klymko" id="1658478465736-11">
         <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="article" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-12">
+    <changeSet author="Ostap Klymko" id="1658478465736-12">
         <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-13">
+    <changeSet author="Ostap Klymko" id="1658478465736-13">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-14">
+    <changeSet author="Ostap Klymko" id="1658478465736-14">
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-15">
+    <changeSet author="Ostap Klymko" id="1658478465736-15">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko (generated)" id="1658478465736-16">
+    <changeSet author="Ostap Klymko" id="1658478465736-16">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
 </databaseChangeLog>
