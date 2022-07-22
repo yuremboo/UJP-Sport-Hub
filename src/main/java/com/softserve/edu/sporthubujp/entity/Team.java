@@ -33,6 +33,7 @@ public class Team {
     private LocalDateTime updateDateTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 
     @ManyToOne

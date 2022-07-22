@@ -37,14 +37,18 @@ public class Category {
     private Category parent;
 
     @OneToMany(mappedBy="parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+    @EqualsAndHashCode.Exclude
     private Set<Category> children = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Article> articles;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Team> teams;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 }

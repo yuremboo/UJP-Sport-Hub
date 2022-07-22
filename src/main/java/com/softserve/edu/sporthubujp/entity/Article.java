@@ -40,6 +40,7 @@ public class Article {
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "article",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 
 }

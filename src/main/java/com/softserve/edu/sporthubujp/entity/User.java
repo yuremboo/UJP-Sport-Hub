@@ -38,8 +38,10 @@ public class User {
     private LocalDateTime updateDateTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 }
