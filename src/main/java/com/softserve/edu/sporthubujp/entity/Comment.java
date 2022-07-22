@@ -9,35 +9,32 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="COMMENTS")
+@Table(name = "COMMENTS")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     @Column(name = "comment", length = 255, nullable = false, unique = false)
-    private String comment  ;
+    private String comment;
     @CreatedDate
-    @Column(name="create_date_time",  nullable=false, unique=false)
+    @Column(name = "create_date_time", nullable = false, unique = false)
     private LocalDateTime createDateTime;
     @LastModifiedDate
-    @Column(name="update_date_time",  nullable=true, unique=false)
+    @Column(name = "update_date_time", nullable = true, unique = false)
     private LocalDateTime updateDateTime;
-    private Integer likes ;
-    private Integer dislikes  ;
-
+    @Column(name = "likes", nullable = true, unique = false)
+    private Integer likes;
+    @Column(name = "dislikes", nullable = true, unique = false)
+    private Integer dislikes;
     @ManyToOne
-    @JoinColumn(name = "commenter_id", nullable = false,foreignKey = @ForeignKey(name="fk_comments_user"), insertable=false, updatable=false)
+    @JoinColumn(name = "commenter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_user"), insertable = false, updatable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false,foreignKey = @ForeignKey(name="fk_comments_article"), insertable=false, updatable=false)
+    @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_article"), insertable = false, updatable = false)
     private Article article;
 
 }

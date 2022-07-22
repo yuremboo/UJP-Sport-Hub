@@ -12,11 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="CATEGORIES")
 public class Category {
