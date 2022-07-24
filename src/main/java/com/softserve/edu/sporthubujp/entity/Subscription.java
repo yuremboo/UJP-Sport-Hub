@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="SUBSCRIPTIONS")
+@NoArgsConstructor
 public class Subscription {
 
     @Id

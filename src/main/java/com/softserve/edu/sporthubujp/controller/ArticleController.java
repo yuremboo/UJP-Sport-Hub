@@ -1,7 +1,8 @@
-package com.softserve.edu.sporthubujp.controllers;
+package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.services.ArticleService;
+import com.softserve.edu.sporthubujp.repository.ArticleRepository;
+import com.softserve.edu.sporthubujp.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ public class ArticleController {
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
+
     }
 
     @GetMapping("/{id}")

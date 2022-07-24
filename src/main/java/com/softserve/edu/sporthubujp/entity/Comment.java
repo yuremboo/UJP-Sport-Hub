@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="COMMENTS")
+@NoArgsConstructor
 public class Comment {
 
     @Id

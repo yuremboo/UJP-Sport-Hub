@@ -1,19 +1,21 @@
 package com.softserve.edu.sporthubujp.dto;
 
+import com.softserve.edu.sporthubujp.entity.Category;
+import com.softserve.edu.sporthubujp.entity.Comment;
 import lombok.*;
 
 import java.time.LocalDateTime;
-@AllArgsConstructor
+import java.util.List;
+
 @Data
-@EqualsAndHashCode
-@ToString
 public class ArticleDTO {
     private String id;
     private String title;
-    private String aText;
+    private String text;
     private Boolean isActive;
     private Boolean commentsActive;
-    private String categoryId;
-    private LocalDateTime publicationDateTime;
+    private Category category;
+    private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
+    private List<Comment> comments;
 }

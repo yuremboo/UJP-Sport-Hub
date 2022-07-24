@@ -19,6 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="CATEGORIES")
+@NoArgsConstructor
 public class Category {
 
     @Id
