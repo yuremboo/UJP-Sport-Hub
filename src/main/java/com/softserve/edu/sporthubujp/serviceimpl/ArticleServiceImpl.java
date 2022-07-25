@@ -14,17 +14,14 @@ import java.time.LocalDateTime;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
-    private final ArticleMapper articleMapper;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleMapper articleMapper) {
+    public ArticleServiceImpl(ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
-        this.articleMapper = articleMapper;
     }
 
     public ArticleDTO getArticleById(String id) {
-        return articleMapper.entityToDto(articleRepository.getReferenceById(id));
+        return ArticleMapper.INSTANCE.entityToDto(articleRepository.getReferenceById(id));
     }
 
 }
