@@ -9,11 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="USERS")
 public class User {
@@ -42,8 +38,10 @@ public class User {
     private LocalDateTime updateDateTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 }

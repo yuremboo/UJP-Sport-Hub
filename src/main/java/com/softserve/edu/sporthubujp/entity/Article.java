@@ -10,11 +10,7 @@ import java.util.List;
 
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="ARTICLE")
 public class Article {
@@ -25,7 +21,8 @@ public class Article {
 
     @Column(name = "title", length = 255, nullable = false, unique = false)
     private String title ;
-    @Column(name = "text", columnDefinition="TEXT", nullable = false, unique = false)
+    @Lob
+    @Column(name = "text", nullable = false, unique = false)
     private String text ;
     @Column(name = "is_active")
     private Boolean isActive;
@@ -43,6 +40,7 @@ public class Article {
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "article",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 
 }
