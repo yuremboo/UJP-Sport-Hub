@@ -6,6 +6,7 @@ import com.softserve.edu.sporthubujp.entity.Category;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,8 @@ class MapperTest {
                 null, null, null), null);
 
         //when
-        ArticleDTO articleDTO = ArticleMapper.INSTANCE.entityToDto(article);
+        ArticleDTO articleDTO =
+                Mappers.getMapper(ArticleMapper.class).entityToDto(article);
 
         //then
         Assertions.assertEquals(article.getCategory(),
