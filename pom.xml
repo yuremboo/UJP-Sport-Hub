@@ -89,6 +89,7 @@
                 <configuration>
                     <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                     <changeLogFile>src/main/resources/db.changelog/liquibase-changeLog.xml</changeLogFile>
+                    <url>env.JDBC_DATABASE_URL</url>
                 </configuration>
             </plugin>
         </plugins>
