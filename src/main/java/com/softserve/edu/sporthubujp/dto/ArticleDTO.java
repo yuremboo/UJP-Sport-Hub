@@ -14,8 +14,7 @@ public class ArticleDTO {
     private String text;
     private Boolean isActive;
     private Boolean commentsActive;
-    private Category category;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private List<Comment> comments;
+    private CategoryDTO category;
 }

@@ -1,7 +1,6 @@
 package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +15,6 @@ public class ArticleController {
     @Autowired
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-
     }
 
     @GetMapping("/{id}")
