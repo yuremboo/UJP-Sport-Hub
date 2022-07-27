@@ -9,11 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="TEAMS")
 @NoArgsConstructor
@@ -38,6 +34,7 @@ public class Team {
     private LocalDateTime updateDateTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 
     @ManyToOne
