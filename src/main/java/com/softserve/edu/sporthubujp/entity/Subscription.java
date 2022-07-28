@@ -9,11 +9,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
+@Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="SUBSCRIPTIONS")
 @NoArgsConstructor
