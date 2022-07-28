@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository
-    ) {
+    public ArticleServiceImpl(ArticleRepository articleRepository,
+                              ArticleMapper articleMapper) {
         this.articleRepository = articleRepository;
+        this.articleMapper = articleMapper;
     }
 
     public ArticleDTO getArticleById(String id) {
-        return ArticleMapper.INSTANCE.entityToDto(articleRepository
+        return articleMapper.entityToDto(articleRepository
                 .getReferenceById(id));
     }
 }

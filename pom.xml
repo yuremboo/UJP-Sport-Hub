@@ -129,7 +129,7 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-
+            <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.13.0</version>
