@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "COMMENTS")
-
 public class Comment {
 
     @Id
