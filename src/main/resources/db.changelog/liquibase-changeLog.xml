@@ -170,7 +170,7 @@
             <column name="first_name" value="John"/>
             <column name="is_active"/>
             <column name="last_name" value="Smith"/>
-            <column name="password" value="sT3@6Ej0jd%*"/>
+            <column name="password" value="$2a$12$L.MOwsM80oyK3IDHX5a4r.VZppLzcn3LaQl/Acv14NmA99AacIQqS"/>
             <column name="role" value="ADMIN"/>
             <column name="update_date_time"/>
         </insert>
