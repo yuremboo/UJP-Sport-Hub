@@ -13,6 +13,7 @@ import java.util.List;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="ARTICLE")
+@NoArgsConstructor
 public class Article {
 
     @Id
