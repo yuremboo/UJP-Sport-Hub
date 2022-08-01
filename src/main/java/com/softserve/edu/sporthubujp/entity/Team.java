@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="TEAMS")
+@NoArgsConstructor
 public class Team {
 
     @Id

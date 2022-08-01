@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="USERS")
+@NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

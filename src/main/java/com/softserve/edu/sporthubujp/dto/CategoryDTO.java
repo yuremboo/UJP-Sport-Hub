@@ -1,17 +1,14 @@
 package com.softserve.edu.sporthubujp.dto;
 
-import lombok.*;
-
+import lombok.Data;
 import java.time.LocalDateTime;
-
 @Data
-public class ArticleDTO {
+public class CategoryDTO {
     private String id;
-    private String title;
-    private String text;
+    private String name;
+    private String description;
     private Boolean isActive;
-    private Boolean commentsActive;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private CategoryDTO category;
+    private CategoryDTO parent;
 }
