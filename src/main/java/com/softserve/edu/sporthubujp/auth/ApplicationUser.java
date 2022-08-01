@@ -1,10 +1,7 @@
 package com.softserve.edu.sporthubujp.auth;
 
 import com.softserve.edu.sporthubujp.entity.Role;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +11,7 @@ import javax.persistence.Enumerated;
 import java.util.Collection;
 import java.util.Collections;
 
-@Getter
-@AllArgsConstructor
+@Data
 public class ApplicationUser implements UserDetails {
 
     private final String username;
