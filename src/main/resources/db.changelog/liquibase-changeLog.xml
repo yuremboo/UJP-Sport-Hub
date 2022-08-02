@@ -42,7 +42,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="is_active" type="BOOLEAN"/>
-            <column name="text" type="OID">
+            <column name="text" type="TEXT">
                 <constraints nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
