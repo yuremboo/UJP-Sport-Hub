@@ -31,11 +31,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticleById(String id)
     {
-        Article deleteArticleById = articleRepository.getReferenceById(id);
         if(!articleRepository.existsById(id))
         {
             throw new ArticleServiceException("Record with provided id is not found");
         }
-        articleRepository.delete(deleteArticleById);
+        articleRepository.deleteById(id);
     }
 }
