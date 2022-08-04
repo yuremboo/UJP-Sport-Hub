@@ -42,7 +42,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="is_active" type="BOOLEAN"/>
-            <column name="text" type="OID">
+            <column name="text" type="TEXT">
                 <constraints nullable="false"/>
             </column>
             <column name="title" type="VARCHAR(255)">
@@ -161,5 +161,18 @@
     </changeSet>
     <changeSet author="Ostap Klymko" id="1658478465736-16">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    </changeSet>
+    <changeSet author="Ostap Klymko" id="1659358419959-1">
+        <insert tableName="users">
+            <column name="id" value="1f468f0a-a741-4b13-9427-9b0a835d8303"/>
+            <column name="create_date_time" valueDate="2022-08-01 16:02:50.007013"/>
+            <column name="email" value="johnsmith@gmail.com"/>
+            <column name="first_name" value="John"/>
+            <column name="is_active"/>
+            <column name="last_name" value="Smith"/>
+            <column name="password" value="$2a$12$L.MOwsM80oyK3IDHX5a4r.VZppLzcn3LaQl/Acv14NmA99AacIQqS"/>
+            <column name="role" value="ADMIN"/>
+            <column name="update_date_time"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

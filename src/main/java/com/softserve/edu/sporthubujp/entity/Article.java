@@ -22,8 +22,7 @@ public class Article {
 
     @Column(name = "title", length = 255, nullable = false, unique = false)
     private String title ;
-    //@Lob
-    @Column(name = "text", nullable = false, unique = false)
+    @Column(columnDefinition="text", name = "text", nullable = false, unique = false)
     private String text ;
     @Column(name = "is_active")
     private Boolean isActive;
