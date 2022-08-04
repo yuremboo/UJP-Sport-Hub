@@ -3,15 +3,18 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
+import com.softserve.edu.sporthubujp.registration.token.ConfirmationToken;
+import com.softserve.edu.sporthubujp.registration.token.ConfirmationTokenService;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -24,9 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
-
-
-//    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Override
     public String signUpUser(UserDTO userDTO) {
@@ -52,15 +53,15 @@ public class UserServiceImpl implements UserService {
 
         String token = UUID.randomUUID().toString();
 
-//        ConfirmationToken confirmationToken = new ConfirmationToken(
-//                token,
-//                LocalDateTime.now(),
-//                LocalDateTime.now().plusMinutes(15),
-//                user
-//        );
-//
-//        confirmationTokenService.saveConfirmationToken(
-//                confirmationToken);
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                user
+        );
+
+        confirmationTokenService.saveConfirmationToken(
+                confirmationToken);
 
 //        TODO: SEND EMAIL
 
@@ -72,12 +73,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.enableUser(email);
     }
 
-    // TODO: optional
-    @Override
-    public UserDTO selectUserByEmail(String email) throws UsernameNotFoundException {
-        return userMapper.entityToDto(userRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException(
-                        String.format(USER_NOT_FOUND_MSG, email))));
+//    // TODO: optional
+//    @Override
+//    public UserDTO selectUserByEmail(String email) throws UsernameNotFoundException {
+//        return userMapper.entityToDto(userRepository.findByEmail(email).orElseThrow(() ->
+//                new UsernameNotFoundException(
+//                        String.format(USER_NOT_FOUND_MSG, email))));
+//
+//    }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return (UserDetails) userRepository.findByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException(
+                        String.format(USER_NOT_FOUND_MSG, email)));
     }
 }
