@@ -18,6 +18,9 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Transactional
     @Modifying
     @Query("UPDATE User a " +
-            "SET a.isActive = TRUE WHERE a.email = ?1")
+            "SET a.isActive = TRUE, " +
+            "a.createDateTime = current_time " +
+            "WHERE a.email = ?1 ")
     int enableUser(String email);
+
 }
