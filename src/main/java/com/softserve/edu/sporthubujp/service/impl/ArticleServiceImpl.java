@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
@@ -31,5 +32,16 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, id));
         }
         return articleMapper.entityToDto(article);
+    }
+
+
+    @Override
+    public void deleteArticleById(String id)
+    {
+        if(!articleRepository.existsById(id))
+        {
+            throw new ArticleServiceException("Record with provided id is not found");
+        }
+        articleRepository.deleteById(id);
     }
 }

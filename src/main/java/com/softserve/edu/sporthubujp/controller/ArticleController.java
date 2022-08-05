@@ -29,4 +29,10 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getArticleById(id));
     }
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId)
+    {
+        articleService.deleteArticleById(articleId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
 }
