@@ -1,11 +1,10 @@
-package com.softserve.edu.sporthubujp.exception;
+package com.softserve.edu.sporthubujp.exception.handler;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 @Data

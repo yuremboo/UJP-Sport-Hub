@@ -1,4 +1,4 @@
-package com.softserve.edu.sporthubujp.exception;
+package com.softserve.edu.sporthubujp.exception.handler;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
