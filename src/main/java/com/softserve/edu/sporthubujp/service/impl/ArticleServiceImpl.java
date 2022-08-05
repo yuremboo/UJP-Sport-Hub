@@ -1,6 +1,8 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
@@ -23,5 +25,16 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDTO getArticleById(String id) {
         return articleMapper.entityToDto(articleRepository
                 .getReferenceById(id));
+    }
+
+
+    @Override
+    public void deleteArticleById(String id)
+    {
+        if(!articleRepository.existsById(id))
+        {
+            throw new ArticleServiceException("Record with provided id is not found");
+        }
+        articleRepository.deleteById(id);
     }
 }
