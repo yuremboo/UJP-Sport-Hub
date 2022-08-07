@@ -8,5 +8,6 @@ import org.mapstruct.Mapper;
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface ArticleMapper {
     Article dtoToEntity(ArticleDTO articleDTO);
+
     ArticleDTO entityToDto(Article article);
 }
