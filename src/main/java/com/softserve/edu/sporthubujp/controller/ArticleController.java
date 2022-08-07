@@ -1,5 +1,8 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/articles")
 
 public class ArticleController {
+    private static final Logger LOG = LogManager.getLogger(ArticleController.class);
     private final ArticleService articleService;
 
     @Autowired
