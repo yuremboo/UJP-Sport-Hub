@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Getter
 @Setter
@@ -30,8 +31,7 @@ public class UserDTO implements UserDetails {
                    String lastName,
                    String email,
                    String password,
-                   Role role
-                   ) {
+                   Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -45,6 +45,7 @@ public class UserDTO implements UserDetails {
                 new SimpleGrantedAuthority(role.name());
         return Collections.singletonList(authority);
     }
+
 
     @Override
     public String getUsername() {
@@ -63,7 +64,7 @@ public class UserDTO implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
