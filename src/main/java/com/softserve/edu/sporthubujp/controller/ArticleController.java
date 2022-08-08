@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/articles")
 
 public class ArticleController {
-    private static final Logger LOG = LogManager.getLogger(ArticleController.class);
+    private static final Logger LOG = Logger.getLogger(ArticleController.class.getName());
     private final ArticleService articleService;
 
     @Autowired
@@ -25,12 +26,13 @@ public class ArticleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
+        LOG.log(Level.INFO, "Get article by id {0}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
     }
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId)
-    {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
+        LOG.log(Level.INFO, "Delete article by id {0}", articleId);
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
