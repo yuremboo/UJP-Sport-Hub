@@ -1,5 +1,7 @@
-package com.softserve.edu.sporthubujp.registration.token;
+package com.softserve.edu.sporthubujp.service.impl;
 
+import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.repository.ConfirmationTokenRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

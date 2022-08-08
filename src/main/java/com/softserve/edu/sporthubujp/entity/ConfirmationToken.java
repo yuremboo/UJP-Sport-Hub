@@ -1,4 +1,4 @@
-package com.softserve.edu.sporthubujp.registration.token;
+package com.softserve.edu.sporthubujp.entity;
 
 import com.softserve.edu.sporthubujp.entity.User;
 import lombok.Getter;

@@ -1,12 +1,13 @@
-package com.softserve.edu.sporthubujp.registration;
+package com.softserve.edu.sporthubujp.service.impl;
 
+import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.email.EmailSender;
 import com.softserve.edu.sporthubujp.email.EmailValidator;
 import com.softserve.edu.sporthubujp.entity.Role;
-import com.softserve.edu.sporthubujp.registration.token.ConfirmationToken;
-import com.softserve.edu.sporthubujp.registration.token.ConfirmationTokenService;
+import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.service.UserService;
+import com.softserve.edu.sporthubujp.service.impl.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
 
-    public String register(RegistrationRequest request) {
+    public String register(RegistrationRequestDTO request) {
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
