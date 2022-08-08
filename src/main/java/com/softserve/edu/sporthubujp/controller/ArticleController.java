@@ -39,9 +39,17 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/articles/category_id/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesByCategoryId(id,pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles/category_id/{id}/isactive/{isactive}")
     public ResponseEntity<List<ArticleListDTO>>
-    getAllArticlesByCategoryId(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
+    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
