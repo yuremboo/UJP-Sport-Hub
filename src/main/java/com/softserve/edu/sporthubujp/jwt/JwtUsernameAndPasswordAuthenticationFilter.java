@@ -1,6 +1,7 @@
 package com.softserve.edu.sporthubujp.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softserve.edu.sporthubujp.dto.AuthenticationRequestDTO;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,8 +37,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                                                 HttpServletResponse response) throws AuthenticationException {
 
         try {
-            UsernameAndPasswordAuthenticationRequest authenticationRequest = new ObjectMapper()
-                    .readValue(request.getInputStream(), UsernameAndPasswordAuthenticationRequest.class);
+            AuthenticationRequestDTO authenticationRequest = new ObjectMapper()
+                    .readValue(request.getInputStream(), AuthenticationRequestDTO.class);
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     authenticationRequest.getEmail(),

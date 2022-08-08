@@ -1,7 +1,8 @@
-package com.softserve.edu.sporthubujp.registration;
+package com.softserve.edu.sporthubujp.controller;
 
+import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
+import com.softserve.edu.sporthubujp.service.impl.RegistrationService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,7 +13,7 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public String register(@RequestBody RegistrationRequest request) {
+    public String register(@RequestBody RegistrationRequestDTO request) {
         return registrationService.register(request);
     }
 

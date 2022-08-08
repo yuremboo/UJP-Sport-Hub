@@ -1,5 +1,6 @@
-package com.softserve.edu.sporthubujp.registration.token;
+package com.softserve.edu.sporthubujp.repository;
 
+import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
