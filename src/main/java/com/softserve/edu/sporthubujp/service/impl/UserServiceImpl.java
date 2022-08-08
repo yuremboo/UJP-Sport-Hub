@@ -9,7 +9,6 @@ import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +18,6 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private final static String USER_NOT_FOUND_MSG =
-            "user with email %s not found";
 
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
@@ -47,6 +43,7 @@ public class UserServiceImpl implements UserService {
                 .encode(user.getPassword());
 
         user.setPassword(encodedPassword);
+        user.setCreateDateTime(LocalDateTime.now());
 
         userRepository.save(user);
 
@@ -72,19 +69,4 @@ public class UserServiceImpl implements UserService {
         return userRepository.enableUser(email);
     }
 
-//    // TODO: optional
-//    @Override
-//    public UserDTO selectUserByEmail(String email) throws UsernameNotFoundException {
-//        return userMapper.entityToDto(userRepository.findByEmail(email).orElseThrow(() ->
-//                new UsernameNotFoundException(
-//                        String.format(USER_NOT_FOUND_MSG, email))));
-//
-//    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return (UserDetails) userRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException(
-                        String.format(USER_NOT_FOUND_MSG, email)));
-    }
 }
