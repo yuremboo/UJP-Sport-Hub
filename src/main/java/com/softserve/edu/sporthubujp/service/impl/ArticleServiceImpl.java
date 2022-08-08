@@ -27,7 +27,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .getReferenceById(id));
     }
 
-
     @Override
     public void deleteArticleById(String id)
     {
@@ -36,5 +35,25 @@ public class ArticleServiceImpl implements ArticleService {
             throw new ArticleServiceException("Record with provided id is not found");
         }
         articleRepository.deleteById(id);
+    }
+
+    public Article updateArticle(Article newArticle, String id)
+    {
+        return articleRepository.findById(id)
+            .map(article -> {
+                article.setTitle(newArticle.getTitle());
+                article.setText(newArticle.getText());
+                article.setCaption(newArticle.getCaption());
+                article.setAlt(newArticle.getAlt());
+                article.setLocation(newArticle.getLocation());
+                article.setPicture(newArticle.getPicture());
+                article.setCategory(newArticle.getCategory());
+                article.setTeam(newArticle.getTeam());
+                return articleRepository.save(article);
+            })
+            .orElseGet(() -> {
+                newArticle.setId(id);
+                return articleRepository.save(newArticle);
+            });
     }
 }
