@@ -11,10 +11,11 @@ import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class ArticleServiceImpl implements ArticleService {
-    private static final Logger LOG = Logger.getLogger(ArticleServiceImpl.class.getName());
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
 
@@ -26,7 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     public ArticleDTO getArticleById(String id) {
-        LOG.info("Get article by id in service");
+        log.info("Get article by id in service");
         return articleMapper.entityToDto(articleRepository
                 .getReferenceById(id));
     }
@@ -35,11 +36,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteArticleById(String id)
     {
-        LOG.info("Delete article by id in service");
+        log.info("Delete article by id in service");
         if(!articleRepository.existsById(id))
         {
-            //LOG.log(Level.WARNING,"Record with provided id is not found" );
-            LOG.throwing(ArticleServiceImpl.class.getName(),"deleteArticleById",new ArticleServiceException("Record with provided id is not found"));
+            log.error("Record with provided id is not found");
             throw new ArticleServiceException("Record with provided id is not found");
         }
         articleRepository.deleteById(id);
