@@ -1,9 +1,5 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +22,11 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getArticleById(id));
+            articleService.getArticleById(id));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
