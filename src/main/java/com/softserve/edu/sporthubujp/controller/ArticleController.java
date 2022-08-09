@@ -36,7 +36,7 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getArticleById(id));
     }
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/comments")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(
