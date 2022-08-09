@@ -2,10 +2,10 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.email.EmailValidator;
 import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
