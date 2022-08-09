@@ -32,8 +32,8 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle, @PathVariable("id") String id)
-    {
+    public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
+                                                 @PathVariable("id") String id) {
         articleService.updateArticle(newArticle, id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
