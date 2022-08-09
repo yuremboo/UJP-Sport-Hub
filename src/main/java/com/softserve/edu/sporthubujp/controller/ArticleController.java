@@ -21,7 +21,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getArticleById(id));
