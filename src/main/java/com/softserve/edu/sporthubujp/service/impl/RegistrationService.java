@@ -8,6 +8,7 @@ import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class RegistrationService {
 
     private final UserService userService;
@@ -23,10 +25,12 @@ public class RegistrationService {
     private final EmailSenderService emailSender;
 
     public String register(RegistrationRequestDTO request) {
+        log.info(String.format("Service: registration user with email %s", request.getEmail()));
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
         if (!isValidEmail) {
+            log.error(String.format("Service: email %s is not valid", request.getEmail()));
             throw new IllegalStateException("email not valid");
         }
 
@@ -40,6 +44,7 @@ public class RegistrationService {
         );
 
         String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+
         emailSender.send(
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
@@ -49,18 +54,21 @@ public class RegistrationService {
 
     @Transactional
     public String confirmToken(String token) {
+        log.info(String.format("Service: confirming token %s", token));
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
+            log.error(String.format("Service: token %s is already confirmed", token));
             throw new IllegalStateException("email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
+            log.error(String.format("Service: token %s is expired", token));
             throw new IllegalStateException("token expired");
         }
 
