@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface ArticleService {
     ArticleDTO getArticleById(String id);
+//<<<<<<< HEAD
     List<ArticleDTO> getAllArticles();
 
    List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
 
     List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
+//=======
+    void deleteArticleById(String id);
+//>>>>>>> 71ec57aae344332149422d9cd1a67d9a3760e634
 }
