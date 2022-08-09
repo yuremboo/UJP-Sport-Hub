@@ -9,9 +9,9 @@ import java.util.regex.Pattern;
 @Service
 public class EmailValidator implements Predicate<String> {
 
-    String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+" +
-                    "/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
-    Pattern pattern = Pattern.compile(regex);
+    private final String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^-]+(?:\\.[a-zA-Z0-9_!#$%&'*+" +
+            "/=?`{|}~^-]+)*@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$";
+    private final Pattern pattern = Pattern.compile(regex);
 
     @Override
     public boolean test(String email) {
