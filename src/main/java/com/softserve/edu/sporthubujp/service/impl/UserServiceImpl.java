@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
                 .isPresent();
 
         if (userExists) {
-            // TODO check of attributes are the same and
-            // TODO if email not confirmed send confirmation email.
 
             log.error(String.format("Service: email %s already taken", userDTO.getEmail()));
             throw new IllegalStateException("email already taken");
@@ -62,8 +60,6 @@ public class UserServiceImpl implements UserService {
 
         confirmationTokenService.saveConfirmationToken(
                 confirmationToken);
-
-//        TODO: SEND EMAIL
 
         return token;
     }
