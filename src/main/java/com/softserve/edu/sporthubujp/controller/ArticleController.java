@@ -1,8 +1,10 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
+import com.softserve.edu.sporthubujp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -13,17 +15,19 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
+
 
 @RestController
 @RequestMapping("api/v1")
 public class ArticleController {
     private final ArticleService articleService;
+    private final CommentService commentService;
 
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService, CommentService commentService) {
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
     @GetMapping("/articles/{id}")
@@ -32,7 +36,15 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getArticleById(id));
     }
+
+    @GetMapping("/{id}/comments")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            commentService.getAllCommentByArticleId(id));
+    }
     @DeleteMapping(path = "/articles/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId)
     {
         articleService.deleteArticleById(articleId);
