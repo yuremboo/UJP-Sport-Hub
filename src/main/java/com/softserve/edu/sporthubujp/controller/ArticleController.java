@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import java.util.List;
+
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
