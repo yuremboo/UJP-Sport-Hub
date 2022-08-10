@@ -16,7 +16,7 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequestDTO request) {
-        log.info(String.format("Controller: registration user with email %s", request.getEmail()));
+        log.info(String.format("Controller: registering user with email %s", request.getEmail()));
         return registrationService.register(request);
     }
 
