@@ -1,9 +1,9 @@
 package com.softserve.edu.sporthubujp.security;
 
-import com.softserve.edu.sporthubujp.auth.ApplicationUserService;
 import com.softserve.edu.sporthubujp.jwt.JwtConfig;
 import com.softserve.edu.sporthubujp.jwt.JwtTokenVerifier;
 import com.softserve.edu.sporthubujp.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.softserve.edu.sporthubujp.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,18 +24,18 @@ import javax.crypto.SecretKey;
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
-    private final ApplicationUserService applicationUserService;
+    private final UserDetailsServiceImpl userDetailsService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
 
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
-                                     ApplicationUserService applicationUserService,
+                                     UserDetailsServiceImpl userDetailsService,
                                      SecretKey secretKey,
                                      JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
-        this.applicationUserService = applicationUserService;
+        this.userDetailsService = userDetailsService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
     }
@@ -51,7 +51,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**")
+                    .permitAll()
                 .anyRequest()
                 .authenticated();
     }
@@ -65,7 +66,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder);
-        provider.setUserDetailsService(applicationUserService);
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 }
