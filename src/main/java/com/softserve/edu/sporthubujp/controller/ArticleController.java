@@ -35,7 +35,7 @@ public class ArticleController {
     }
 
     @PutMapping(path = "/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
         @PathVariable("id") String id) {
         articleService.updateArticle(newArticle, id);
