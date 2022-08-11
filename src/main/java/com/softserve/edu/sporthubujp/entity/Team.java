@@ -33,11 +33,14 @@ public class Team {
     @Column(name="update_date_time",  nullable=true, unique=false)
     private LocalDateTime updateDateTime;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
-    @EqualsAndHashCode.Exclude
-    private List<Subscription> subscriptions;
-
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), insertable=false, updatable=false)
     private Category category;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    private List<Subscription> subscriptions;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
+    @EqualsAndHashCode.Exclude
+    private List<Article> article;
 }

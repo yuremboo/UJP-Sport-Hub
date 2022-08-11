@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import java.util.Objects;
+
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,6 @@ public class ArticleServiceImpl implements ArticleService {
         return articleMapper.entityToDto(article);
     }
 
-
     @Override
     public void deleteArticleById(String id)
     {
@@ -58,6 +59,18 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.deleteById(id);
     }
 
+    public Article updateArticle(Article newArticle, String id) {
+        return articleRepository.findById(id)
+            .map(article -> {
+                articleMapper.updateArticle(article, newArticle);
+                return articleRepository.save(article);
+            })
+            .orElseGet(() -> {
+                newArticle.setId(id);
+                return articleRepository.save(newArticle);
+            });
+    }
+    
     public List<ArticleDTO> getAllArticles(){
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.findAll();
@@ -102,5 +115,4 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
-
 }
