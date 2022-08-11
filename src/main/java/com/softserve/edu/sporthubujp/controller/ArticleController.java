@@ -1,11 +1,12 @@
 package com.softserve.edu.sporthubujp.controller;
 
 import java.util.List;
-
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.service.ArticleService;
+import org.mapstruct.MappingTarget;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,15 @@ public class ArticleController {
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
         log.info("Delete article by id {}", articleId);
         articleService.deleteArticleById(articleId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+    @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
+        @PathVariable("id") String id) {
+        articleService.updateArticle(newArticle, id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 

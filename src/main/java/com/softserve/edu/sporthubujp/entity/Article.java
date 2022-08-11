@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="ARTICLE")
+@Table(name="ARTICLES")
 @NoArgsConstructor
 public class Article {
 
@@ -24,6 +24,14 @@ public class Article {
     private String title ;
     @Column(columnDefinition="text", name = "text", nullable = false, unique = false)
     private String text ;
+    @Column(name = "caption", length = 255, nullable = false, unique = false)
+    private String caption;
+    @Column(name = "alt", length = 255, nullable = false, unique = false)
+    private String alt;
+    @Column(name = "location", length = 255, nullable = false, unique = false)
+    private String location;
+    @Column(name = "picture", length = 255, nullable = false, unique = false)
+    private String picture;
     @Column(name = "is_active")
     private Boolean isActive;
     @Column(name = "comments_active")
@@ -38,6 +46,9 @@ public class Article {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_category"), insertable=false, updatable=false)
     private Category category;
+    @ManyToOne
+    @JoinColumn(name = "team_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_team"), insertable=false, updatable=false)
+    private Team team;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "article",cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
