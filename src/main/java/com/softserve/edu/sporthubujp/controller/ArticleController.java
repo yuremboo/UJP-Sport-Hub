@@ -3,6 +3,8 @@ package com.softserve.edu.sporthubujp.controller;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.service.ArticleService;
+
+import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,11 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @PutMapping(path = "/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
-                                                 @PathVariable("id") String id) {
+        @PathVariable("id") String id) {
         articleService.updateArticle(newArticle, id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

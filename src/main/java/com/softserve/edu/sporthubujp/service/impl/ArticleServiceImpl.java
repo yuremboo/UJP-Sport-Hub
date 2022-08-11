@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import java.util.Objects;
+
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
@@ -37,18 +39,10 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.deleteById(id);
     }
 
-    public Article updateArticle(Article newArticle, String id)
-    {
+    public Article updateArticle(Article newArticle, String id) {
         return articleRepository.findById(id)
             .map(article -> {
-                article.setTitle(newArticle.getTitle());
-                article.setText(newArticle.getText());
-                article.setCaption(newArticle.getCaption());
-                article.setAlt(newArticle.getAlt());
-                article.setLocation(newArticle.getLocation());
-                article.setPicture(newArticle.getPicture());
-                article.setCategory(newArticle.getCategory());
-                article.setTeam(newArticle.getTeam());
+                articleMapper.updateArticle(article, newArticle);
                 return articleRepository.save(article);
             })
             .orElseGet(() -> {
