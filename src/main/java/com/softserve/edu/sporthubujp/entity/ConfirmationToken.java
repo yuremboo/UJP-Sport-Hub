@@ -1,10 +1,10 @@
 package com.softserve.edu.sporthubujp.entity;
 
-import com.softserve.edu.sporthubujp.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
+@Table(name="CONFIRMATION_TOKEN")
 public class ConfirmationToken {
 
     @Id

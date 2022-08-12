@@ -9,7 +9,9 @@ import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommentServiceImpl  implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;

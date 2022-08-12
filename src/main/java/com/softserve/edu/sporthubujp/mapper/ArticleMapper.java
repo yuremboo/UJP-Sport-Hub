@@ -9,6 +9,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface ArticleMapper {
     Article dtoToEntity(ArticleDTO articleDTO);
+
     ArticleDTO entityToDto(Article article);
 
     Article updateArticle(@MappingTarget Article articleFromDb,  Article newArticle);
