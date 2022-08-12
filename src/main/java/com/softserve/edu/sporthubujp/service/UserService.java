@@ -8,4 +8,6 @@ public interface UserService {
     String signUpUser(UserDTO userDTO);
 
     int enableUser(String email);
+
+    String findUserByEmail(String email);
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ArticleService {
     ArticleDTO getArticleById(String id);
-
+    
     List<ArticleDTO> getAllArticles();
 
     List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
@@ -18,6 +18,8 @@ public interface ArticleService {
     List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
     void deleteArticleById(String id);
+
+    List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     Article updateArticle(Article newArticle, String id);
 }

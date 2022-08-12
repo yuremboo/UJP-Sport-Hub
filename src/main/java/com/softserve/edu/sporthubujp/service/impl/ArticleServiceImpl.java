@@ -5,8 +5,11 @@ import java.util.Objects;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
@@ -31,7 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleMapper articleMapper) {
+        ArticleMapper articleMapper) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
     }
@@ -58,6 +61,18 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.deleteById(id);
     }
 
+    @Override
+    public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.getAllArticlesBySubscription(idUser);
+
+        List<ArticleDTO> articlesDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articlesDTOS.add(articleMapper.entityToDto(article));
+        }
+        return articlesDTOS;
+    }
+
     public Article updateArticle(Article newArticle, String id) {
         return articleRepository.findById(id)
                 .map(article -> {
@@ -69,7 +84,7 @@ public class ArticleServiceImpl implements ArticleService {
                     return articleRepository.save(newArticle);
                 });
     }
-
+    
     public List<ArticleDTO> getAllArticles(){
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.findAll();
