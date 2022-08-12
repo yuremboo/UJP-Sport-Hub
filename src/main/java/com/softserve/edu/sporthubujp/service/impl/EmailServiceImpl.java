@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 
 @Service
 @AllArgsConstructor
@@ -28,12 +29,14 @@ public class EmailServiceImpl implements EmailSenderService {
                     new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
-            System.out.println(to);
-            helper.setSubject("Confirm your email");
-            helper.setFrom("sporthub@gmail.com");
+
+            helper.setSubject("Subscription in Sports Hub");
+            helper.setFrom("sportshub@gmail.com", "Sports Hub");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             log.error(String.format("Service: failed to send email message to %s", to));
+            throw new IllegalStateException("failed to send email");
+        } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("failed to send email");
         }
     }
