@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String signUpUser(UserDTO userDTO) {
 
-        log.info(String.format("Service: signing up user with the email %s", userDTO.getEmail()));
+        log.info(String.format("Service: signing up user with the email.html %s", userDTO.getEmail()));
 
         User user = userMapper.dtoToEntity(userDTO);
         boolean userExists = userRepository
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
 
         if (userExists) {
 
-            log.error(String.format("Service: email %s already taken", userDTO.getEmail()));
-            throw new IllegalStateException("email already taken");
+            log.error(String.format("Service: email.html %s already taken", userDTO.getEmail()));
+            throw new IllegalStateException("email.html already taken");
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encodedPassword);
         user.setCreateDateTime(LocalDateTime.now());
 
-        log.info(String.format("Service: saving user with the email %s", userDTO.getEmail()));
+        log.info(String.format("Service: saving user with the email.html %s", userDTO.getEmail()));
         userRepository.save(user);
 
         String token = UUID.randomUUID().toString();
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int enableUser(String email) {
-        log.debug(String.format("enabling user with the email %s", email));
+        log.debug(String.format("enabling user with the email.html %s", email));
         return userRepository.enableUser(email);
     }
 

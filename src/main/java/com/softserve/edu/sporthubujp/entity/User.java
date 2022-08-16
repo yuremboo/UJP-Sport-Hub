@@ -24,7 +24,7 @@ public class User {
     private String firstName;
     @Column(name="last_name", length=255, nullable=false, unique=false)
     private String lastName;
-    @Column(name="email", length=255, nullable=false, unique=false)
+    @Column(name="email.html", length=255, nullable=false, unique=false)
     private String email;
     @Enumerated(EnumType.STRING)
     @Column(name="role", length=10, nullable=false, unique=false)
