@@ -4,6 +4,7 @@ import com.softserve.edu.sporthubujp.jwt.JwtConfig;
 import com.softserve.edu.sporthubujp.jwt.JwtTokenVerifier;
 import com.softserve.edu.sporthubujp.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.softserve.edu.sporthubujp.service.impl.UserDetailsServiceImpl;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,26 +32,25 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
-    private final CorsConfig config;
 
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
                                      UserDetailsServiceImpl userDetailsService,
                                      SecretKey secretKey,
-                                     JwtConfig jwtConfig, CorsConfig config) {
+                                     JwtConfig jwtConfig) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
-        this.config = config;
     }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors().and()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .csrf().disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -77,11 +77,13 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-    @Bean
+//    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD", "PUT"));
+        configuration.addAllowedHeader("X-Requested-With");
+        configuration.addAllowedHeader("Content-Type");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
