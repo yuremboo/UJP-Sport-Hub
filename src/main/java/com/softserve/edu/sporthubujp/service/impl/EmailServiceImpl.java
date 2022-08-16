@@ -9,7 +9,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Service
@@ -25,6 +30,7 @@ public class EmailServiceImpl implements EmailSenderService {
         try {
             log.info(String.format("Service: sending email message to %s", to));
             MimeMessage mimeMessage = mailSender.createMimeMessage();
+
             MimeMessageHelper helper =
                     new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
@@ -33,10 +39,8 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setSubject("Subscription in Sports Hub");
             helper.setFrom("sportshub@gmail.com", "Sports Hub");
             mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             log.error(String.format("Service: failed to send email message to %s", to));
-            throw new IllegalStateException("failed to send email");
-        } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("failed to send email");
         }
     }
