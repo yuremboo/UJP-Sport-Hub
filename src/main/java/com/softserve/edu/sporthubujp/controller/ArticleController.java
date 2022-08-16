@@ -1,13 +1,12 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import java.util.List;
-import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.service.ArticleService;
-import org.mapstruct.MappingTarget;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -15,12 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
 
 
 @Slf4j
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class ArticleController {
     private final ArticleService articleService;
     private final CommentService commentService;
