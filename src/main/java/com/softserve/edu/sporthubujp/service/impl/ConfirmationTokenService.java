@@ -26,9 +26,9 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.findByToken(token);
     }
 
-    public int setConfirmedAt(String token) {
+    public void setConfirmedAt(String token) {
         log.debug(String.format("Service: confirming token %s", token));
-        return confirmationTokenRepository.updateConfirmedAt(
+        confirmationTokenRepository.updateConfirmedAt(
                 token, LocalDateTime.now());
     }
 }

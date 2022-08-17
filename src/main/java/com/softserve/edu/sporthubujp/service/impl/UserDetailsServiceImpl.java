@@ -32,12 +32,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND_MSG, email)));
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
+        return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(String.valueOf(Role.USER))
+                .authorities(String.valueOf(user.getRole()))
                 .build();
-
-        return userDetails;
     }
 }

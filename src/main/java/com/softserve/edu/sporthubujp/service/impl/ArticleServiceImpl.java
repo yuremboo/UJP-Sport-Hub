@@ -1,7 +1,5 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import java.util.Objects;
-
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
