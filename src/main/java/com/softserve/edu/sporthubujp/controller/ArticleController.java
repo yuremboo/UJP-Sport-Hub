@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.List;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
@@ -74,11 +75,11 @@ public class ArticleController {
 
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
+    public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
         @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
-        articleService.updateArticle(newArticle, id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.updateArticle(newArticle, id));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
