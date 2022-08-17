@@ -63,10 +63,9 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
-        log.info("Get all articles by subscription through user id {}", idUser);
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.getAllArticlesBySubscription(idUser);
-
+        log.info("Get all articles by subscription through user id {}", idUser);
         List<ArticleDTO> articlesDTOS = new LinkedList<>();
         for (var article : articles) {
             articlesDTOS.add(articleMapper.entityToDto(article));
@@ -89,7 +88,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDTO> getAllArticles(){
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.findAll();
-
+        log.info("Get all article in service");
         List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
@@ -101,7 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.findAllByCategoryId(categoryId, pageable);
-
+        log.info("Get all articles by category id in service");
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
@@ -118,7 +117,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-
+        log.info("Get all articles by category id {} and if article.active {}", categoryId,isActive);
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class CategoryController {
@@ -25,6 +28,7 @@ public class CategoryController {
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/categories")
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+        log.info("Get all categories");
         return ResponseEntity.status(HttpStatus.OK).body(
                 categoryService.getAllCategories());
     }
