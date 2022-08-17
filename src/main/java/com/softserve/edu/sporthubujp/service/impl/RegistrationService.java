@@ -30,13 +30,13 @@ public class RegistrationService {
     private final EmailSenderService emailSender;
 
     public String register(RegistrationRequestDTO request) throws IOException {
-        log.info(String.format("Service: registration user with email.html %s", request.getEmail()));
+        log.info(String.format("Service: registration user with email %s", request.getEmail()));
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
         if (!isValidEmail) {
-            log.error(String.format("Service: email.html %s is not valid", request.getEmail()));
-            throw new IllegalStateException("email.html not valid");
+            log.error(String.format("Service: email %s is not valid", request.getEmail()));
+            throw new IllegalStateException("email not valid");
         }
 
         String token = userService.signUpUser(
@@ -67,7 +67,7 @@ public class RegistrationService {
 
         if (confirmationToken.getConfirmedAt() != null) {
             log.error(String.format("Service: token %s is already confirmed", token));
-            throw new IllegalStateException("email.html already confirmed");
+            throw new IllegalStateException("email already confirmed");
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();

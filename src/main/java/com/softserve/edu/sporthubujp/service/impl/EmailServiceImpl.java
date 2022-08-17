@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailSenderService {
     @Async
     public void send(String to, String email) {
         try {
-            log.info(String.format("Service: sending email.html message to %s", to));
+            log.info(String.format("Service: sending email message to %s", to));
             MimeMessage mimeMessage = mailSender.createMimeMessage();
 
             MimeMessageHelper helper =
@@ -40,8 +40,8 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setFrom("sportshub@gmail.com", "Sports Hub");
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            log.error(String.format("Service: failed to send email.html message to %s", to));
-            throw new IllegalStateException("failed to send email.html");
+            log.error(String.format("Service: failed to send email message to %s", to));
+            throw new IllegalStateException("failed to send email");
         }
     }
 }

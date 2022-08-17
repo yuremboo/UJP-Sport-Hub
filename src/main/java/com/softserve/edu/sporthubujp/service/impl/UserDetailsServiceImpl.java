@@ -16,7 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final static String USER_NOT_FOUND_MSG =
-            "user with email.html %s not found";
+            "user with email %s not found";
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -26,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        log.info(String.format("Service: loading user with email.html %s", email));
+        log.info(String.format("Service: loading user with email %s", email));
 
         User user = userRepository.findByEmail(email).orElseThrow(() ->
                 new UsernameNotFoundException(

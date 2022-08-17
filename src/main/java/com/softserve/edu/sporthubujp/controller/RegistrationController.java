@@ -18,7 +18,7 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequestDTO request) throws IOException {
-        log.info(String.format("Controller: registering user with email.html %s", request.getEmail()));
+        log.info(String.format("Controller: registering user with email %s", request.getEmail()));
         return registrationService.register(request);
     }
 
