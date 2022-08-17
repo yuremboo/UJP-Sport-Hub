@@ -11,12 +11,12 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, String> {
     @Transactional
-    @Modifying
-    @Query("SELECT * FROM Article " +
-        "JOIN Category ON Category.id = Article.category_id " +
-        "JOIN Subscription ON Subscription.category_id = Category.id "+
-        "WHERE Subscription.user_id = ?1 " +
-        "ORDER BY Article.create_date_time ")
+    @Query("SELECT a FROM Article a "
+        + "JOIN a.category c "
+        + "JOIN c.subscriptions s "
+        + "JOIN s.user u "
+        + "WHERE u.id = ?1 "
+        + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesBySubscription(String idUser);
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 

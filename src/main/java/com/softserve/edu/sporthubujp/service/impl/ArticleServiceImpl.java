@@ -63,6 +63,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
+        log.info("Get all articles by subscription through user id {}", idUser);
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.getAllArticlesBySubscription(idUser);
 

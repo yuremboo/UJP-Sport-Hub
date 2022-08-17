@@ -21,10 +21,6 @@ public interface UserRepository extends JpaRepository<User, String> {
             "WHERE a.email = ?1 ")
     int enableUser(String email);
 
-    @Transactional
-    @Modifying
-    @Query("SELECT id " +
-        "FROM User " +
-        "WHERE email = ?1 ")
+    @Query(value = "SELECT id FROM User WHERE email LIKE ?1 ")
     String findUserIdByEmail(String email);
 }

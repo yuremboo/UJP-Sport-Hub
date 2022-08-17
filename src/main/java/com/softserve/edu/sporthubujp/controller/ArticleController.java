@@ -5,11 +5,13 @@ import java.util.List;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -57,14 +59,16 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @PreAuthorize("hasAnyAuthority('USER')")
     @GetMapping("/articles/subscription")
-    public void getAllArticlesBySubscription(Principal principal) {
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<ArticleDTO>>
+    getAllArticlesBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
+        log.info("get all articles of the user with an email under {} subscription",email);
         String idUser = userService.findUserByEmail(email);
-        System.out.println(idUser);
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//            articleService.getAllArticlesBySubscription(idUser));
+        log.info("Id user = {}",idUser);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getAllArticlesBySubscription(idUser));
     }
 
     @PutMapping(path = "/{id}")

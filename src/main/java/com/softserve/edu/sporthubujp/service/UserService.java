@@ -1,7 +1,7 @@
 package com.softserve.edu.sporthubujp.service;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-
+import com.softserve.edu.sporthubujp.entity.User;
 
 public interface UserService {
 
