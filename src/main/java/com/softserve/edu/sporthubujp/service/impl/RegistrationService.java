@@ -6,6 +6,10 @@ import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.email.EmailValidator;
 import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.exception.TokenAlreadyConfirmedException;
+import com.softserve.edu.sporthubujp.exception.InvalidEmailException;
+import com.softserve.edu.sporthubujp.exception.TokenExpiredException;
+import com.softserve.edu.sporthubujp.exception.TokenNotFoundException;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
@@ -13,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.SendFailedException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -23,20 +28,26 @@ import java.util.Locale;
 @AllArgsConstructor
 @Slf4j
 public class RegistrationService {
+    private final static String TOKEN_NOT_FOUND = "Service: token %s not found";
+    private final static String INVALID_EMAIL = "Service: email %s is not valid";
+    private final static String TOKEN_ALREADY_CONFIRMED = "Service: token %s is already confirmed";
+    private final static String TOKEN_EXPIRED = "Service: token %s expired";
 
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSender;
 
-    public String register(RegistrationRequestDTO request) throws IOException {
+    public String register(RegistrationRequestDTO request)
+            throws IOException, SendFailedException {
+
         log.info(String.format("Service: registration user with email %s", request.getEmail()));
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 
         if (!isValidEmail) {
-            log.error(String.format("Service: email %s is not valid", request.getEmail()));
-            throw new IllegalStateException("email not valid");
+            log.error(String.format(INVALID_EMAIL, request.getEmail()));
+            throw new InvalidEmailException(String.format(INVALID_EMAIL, request.getEmail()));
         }
 
         String token = userService.signUpUser(
@@ -63,18 +74,18 @@ public class RegistrationService {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
-                        new IllegalStateException("token not found"));
+                        new TokenNotFoundException(String.format(TOKEN_NOT_FOUND, token)));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            log.error(String.format("Service: token %s is already confirmed", token));
-            throw new IllegalStateException("email already confirmed");
+            log.error(String.format(TOKEN_ALREADY_CONFIRMED, token));
+            throw new TokenAlreadyConfirmedException(String.format(TOKEN_ALREADY_CONFIRMED, token));
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            log.error(String.format("Service: token %s is expired", token));
-            throw new IllegalStateException("token expired");
+            log.error(String.format(TOKEN_EXPIRED, token));
+            throw new TokenExpiredException(String.format(TOKEN_EXPIRED, token));
         }
 
         confirmationTokenService.setConfirmedAt(token);
@@ -88,10 +99,13 @@ public class RegistrationService {
                 + " " + LocalDateTime.now().getDayOfMonth()
                 + ", " + LocalDateTime.now().getYear();
 
-        StringBuilder email = new StringBuilder(Files.asCharSource(new File("src/main/resources/templates/email.html"),
-                StandardCharsets.UTF_8).read());
+        StringBuilder email = new StringBuilder(Files
+                .asCharSource(new File("src/main/resources/templates/email.html"), StandardCharsets.UTF_8)
+                .read());
 
-        email.insert(email.indexOf("Hub") + 3, date).insert(email.indexOf("href=\"\"") + 6, link);
+        email
+                .insert(email.indexOf("Hub") + 3, date)
+                .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();
     }

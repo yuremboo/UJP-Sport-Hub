@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.SendFailedException;
 import java.io.IOException;
 
 @RestController
@@ -19,7 +20,8 @@ public class RegistrationController {
     private final RegistrationService registrationService;
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody RegistrationRequestDTO request) throws IOException {
+    public ResponseEntity<String> register(@RequestBody RegistrationRequestDTO request)
+            throws IOException, SendFailedException {
         log.info(String.format("Controller: registering user with email %s", request.getEmail()));
         return ResponseEntity
                 .status(HttpStatus.OK)

@@ -2,6 +2,7 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
+    private final static String EMAIL_ALREADY_TAKEN = "Service: email %s already taken";
 
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
@@ -35,9 +37,8 @@ public class UserServiceImpl implements UserService {
                 .isPresent();
 
         if (userExists) {
-
-            log.error(String.format("Service: email %s already taken", userDTO.getEmail()));
-            throw new IllegalStateException("email already taken");
+            log.error(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
+            throw new EmailAlreadyTakenException(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()

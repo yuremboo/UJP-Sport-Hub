@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
+import javax.mail.SendFailedException;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
@@ -22,11 +23,12 @@ import java.io.UnsupportedEncodingException;
 @Slf4j
 public class EmailServiceImpl implements EmailSenderService {
 
+    private final static String EMAIL_SENDING_FAILURE = "Service: failed to send email message to %s";
     private final JavaMailSender mailSender;
 
     @Override
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String email) throws SendFailedException {
         try {
             log.info(String.format("Service: sending email message to %s", to));
             MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -40,8 +42,8 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setFrom("sportshub@gmail.com", "Sports Hub");
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            log.error(String.format("Service: failed to send email message to %s", to));
-            throw new IllegalStateException("failed to send email");
+            log.error(String.format(EMAIL_SENDING_FAILURE, to));
+            throw new SendFailedException(String.format(EMAIL_SENDING_FAILURE, to));
         }
     }
 }
