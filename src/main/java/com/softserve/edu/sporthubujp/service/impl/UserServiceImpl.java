@@ -69,5 +69,10 @@ public class UserServiceImpl implements UserService {
         log.debug(String.format("enabling user with the email %s", email));
         return userRepository.enableUser(email);
     }
+    @Override
+    public String findUserByEmail(String email) {
+        log.info(String.format("find user with the email %s", email));
+        return userRepository.findUserIdByEmail(email);
+    }
 
 }

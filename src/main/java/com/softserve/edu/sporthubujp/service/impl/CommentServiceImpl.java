@@ -11,6 +11,9 @@ import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CommentServiceImpl  implements CommentService {
     private final CommentRepository commentRepository;
@@ -26,7 +29,7 @@ public class CommentServiceImpl  implements CommentService {
     public List<CommentDTO> getAllCommentByArticleId(String articleId) {
         List<Comment> comments = new LinkedList<Comment>();
         comments = commentRepository.findAllByArticleId(articleId);
-
+        log.info("Get all comments by article id {} in service", articleId);
         List<CommentDTO> commentsDTOS = new LinkedList<>();
         for (var comment : comments) {
             commentsDTOS.add(commentMapper.entityToDto(comment));

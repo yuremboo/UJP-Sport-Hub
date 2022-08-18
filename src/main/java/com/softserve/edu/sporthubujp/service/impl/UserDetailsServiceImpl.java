@@ -1,6 +1,5 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +31,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 new UsernameNotFoundException(
                         String.format(USER_NOT_FOUND_MSG, email)));
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User
+        return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail())
                 .password(user.getPassword())
-                .authorities(String.valueOf(Role.USER))
+                .authorities(String.valueOf(user.getRole()))
                 .build();
-
-        return userDetails;
     }
 }

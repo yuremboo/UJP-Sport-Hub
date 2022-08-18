@@ -1,20 +1,17 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import java.util.Objects;
-
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleMapper articleMapper) {
+        ArticleMapper articleMapper) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
     }
@@ -58,6 +55,18 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.deleteById(id);
     }
 
+    @Override
+    public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.getAllArticlesBySubscription(idUser);
+        log.info("Get all articles by subscription through user id {}", idUser);
+        List<ArticleDTO> articlesDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articlesDTOS.add(articleMapper.entityToDto(article));
+        }
+        return articlesDTOS;
+    }
+
     public Article updateArticle(Article newArticle, String id) {
         return articleRepository.findById(id)
                 .map(article -> {
@@ -69,11 +78,11 @@ public class ArticleServiceImpl implements ArticleService {
                     return articleRepository.save(newArticle);
                 });
     }
-
+    
     public List<ArticleDTO> getAllArticles(){
         List<Article> articles = new LinkedList<Article>();
         articles = articleRepository.findAll();
-
+        log.info("Get all article in service");
         List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
@@ -85,7 +94,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.findAllByCategoryId(categoryId, pageable);
-
+        log.info("Get all articles by category id in service");
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
@@ -102,7 +111,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-
+        log.info("Get all articles by category id {} and if article.active {}", categoryId,isActive);
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));

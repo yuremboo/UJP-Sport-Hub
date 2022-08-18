@@ -11,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.LinkedList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
@@ -26,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> getAllCategories() {
         List<Category> categories = new LinkedList<>();
         categories = categoryRepository.findAll();
-
+        log.info("Get all categories in service");
         List<CategoryDTO> categoryDTOS = new LinkedList<>();
         for (var category : categories) {
             categoryDTOS.add(categoryMapper.entityToDto(category));
