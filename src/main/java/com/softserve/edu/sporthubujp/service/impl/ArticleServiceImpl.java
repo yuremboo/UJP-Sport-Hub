@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Comment;
@@ -71,16 +72,13 @@ public class ArticleServiceImpl implements ArticleService {
         return articlesDTOS;
     }
 
-    public Article updateArticle(Article newArticle, String id) {
+    public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
                 .map(article -> {
                     articleMapper.updateArticle(article, newArticle);
-                    return articleRepository.save(article);
+                    return articleMapper.entityToDto(articleRepository.save(article));
                 })
-                .orElseGet(() -> {
-                    newArticle.setId(id);
-                    return articleRepository.save(newArticle);
-                });
+                .orElseThrow(EntityNotExistsException::new);
     }
     
     public List<ArticleDTO> getAllArticles(){
