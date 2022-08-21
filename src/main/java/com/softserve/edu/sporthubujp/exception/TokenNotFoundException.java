@@ -1,8 +1,5 @@
 package com.softserve.edu.sporthubujp.exception;
 
-
-import net.snowflake.client.jdbc.internal.google.api.gax.rpc.NotFoundException;
-
 import java.util.NoSuchElementException;
 
 public class TokenNotFoundException extends NoSuchElementException {

@@ -47,7 +47,7 @@ public class RegistrationService {
 
         if (!isValidEmail) {
             log.error(String.format(INVALID_EMAIL, request.getEmail()));
-            throw new InvalidEmailException(String.format(INVALID_EMAIL, request.getEmail()));
+            throw new InvalidEmailException(String.format(INVALID_EMAIL, request.getEmail()), request);
         }
 
         String token = userService.signUpUser(
@@ -78,14 +78,14 @@ public class RegistrationService {
 
         if (confirmationToken.getConfirmedAt() != null) {
             log.error(String.format(TOKEN_ALREADY_CONFIRMED, token));
-            throw new TokenAlreadyConfirmedException(String.format(TOKEN_ALREADY_CONFIRMED, token));
+            throw new TokenAlreadyConfirmedException(String.format(TOKEN_ALREADY_CONFIRMED, token), confirmationToken);
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
             log.error(String.format(TOKEN_EXPIRED, token));
-            throw new TokenExpiredException(String.format(TOKEN_EXPIRED, token));
+            throw new TokenExpiredException(String.format(TOKEN_EXPIRED, token), confirmationToken);
         }
 
         confirmationTokenService.setConfirmedAt(token);

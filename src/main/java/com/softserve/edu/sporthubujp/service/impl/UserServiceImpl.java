@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
         if (userExists) {
             log.error(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
-            throw new EmailAlreadyTakenException(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
+            throw new EmailAlreadyTakenException(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()), userDTO);
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()
