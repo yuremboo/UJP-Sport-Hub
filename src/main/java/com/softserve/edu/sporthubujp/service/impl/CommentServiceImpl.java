@@ -4,18 +4,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
-import com.softserve.edu.sporthubujp.entity.Comment;
+import org.springframework.stereotype.Service;
+
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
+import com.softserve.edu.sporthubujp.entity.comment.Comment;
+import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
-import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class CommentServiceImpl  implements CommentService {
+public class CommentServiceImpl implements CommentService {
+
+    private static final String COMMENT_NOT_FOUND_BY_ID = "Comment not found by id: %s";
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
@@ -36,4 +40,30 @@ public class CommentServiceImpl  implements CommentService {
         }
         return commentsDTOS;
     }
+
+    @Override public void deleteComment(String id) {
+        log.info("Delete comment by id in service");
+        if (!commentRepository.existsById(id)) {
+            log.error(String.format(COMMENT_NOT_FOUND_BY_ID, id));
+            throw new ArticleServiceException(String.format(COMMENT_NOT_FOUND_BY_ID, id));
+        }
+        commentRepository.deleteById(id);
+    }
+
+    @Override public Comment updateComment(Comment newComment, String id) {
+        return commentRepository.findById(id)
+            .map(comment -> {
+                commentMapper.updateComment(comment, newComment);
+                return commentRepository.save(comment);
+            })
+            .orElseGet(() -> {
+                newComment.setId(id);
+                return commentRepository.save(newComment);
+            });
+    }
+
+    @Override public Comment addNewComment(Comment newComment) {
+        return commentRepository.save(newComment);
+    }
+
 }

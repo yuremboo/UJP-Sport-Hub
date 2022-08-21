@@ -4,7 +4,7 @@ import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
-import com.softserve.edu.sporthubujp.entity.Comment;
+import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface CommentMapper {

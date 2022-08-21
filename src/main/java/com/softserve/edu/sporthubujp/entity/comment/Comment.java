@@ -1,4 +1,4 @@
-package com.softserve.edu.sporthubujp.entity;
+package com.softserve.edu.sporthubujp.entity.comment;
 
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -7,6 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
+import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.User;
 
 @Entity
 @Data
