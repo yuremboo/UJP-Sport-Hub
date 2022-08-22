@@ -33,6 +33,9 @@ public class RegistrationService {
     private final static String TOKEN_ALREADY_CONFIRMED = "Service: token %s is already confirmed";
     private final static String TOKEN_EXPIRED = "Service: token %s expired";
 
+    private final static String LOGIN_ROUTE = "<meta http-equiv=\"refresh\" content=\"0;" +
+            " url=http://localhost:3000/login\" />";
+
     private final UserService userService;
     private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
@@ -91,7 +94,8 @@ public class RegistrationService {
         confirmationTokenService.setConfirmedAt(token);
         userService.enableUser(
                 confirmationToken.getUser().getEmail());
-        return "Email confirmed";
+
+        return LOGIN_ROUTE;
     }
 
     private String buildEmail(String link) throws IOException {

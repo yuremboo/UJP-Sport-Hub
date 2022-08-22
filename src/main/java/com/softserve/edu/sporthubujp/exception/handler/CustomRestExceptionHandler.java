@@ -121,7 +121,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)
-    protected ResponseEntity<Object> handleUsernameNotFound(
+    protected ResponseEntity<Object> handleCustomUsernameNotFound(
             UsernameNotFoundException ex) {
 
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);

@@ -15,6 +15,7 @@ import java.io.IOException;
 @RequestMapping(path = "api/v1/registration")
 @AllArgsConstructor
 @Slf4j
+@CrossOrigin
 public class RegistrationController {
 
     private final RegistrationService registrationService;
