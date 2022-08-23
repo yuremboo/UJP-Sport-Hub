@@ -1,7 +1,11 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
+import com.softserve.edu.sporthubujp.dto.UserSaveDTO;
 import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
@@ -73,6 +77,15 @@ public class UserServiceImpl implements UserService {
     public String findUserByEmail(String email) {
         log.info(String.format("find user with the email %s", email));
         return userRepository.findUserIdByEmail(email);
+    }
+
+    public UserDTO updateUser(UserSaveDTO newUser, String id) {
+        return userRepository.findById(id)
+            .map(user -> {
+                userMapper.updateUser(user, newUser);
+                return userMapper.entityToDto(userRepository.save(user));
+            })
+            .orElseThrow(EntityNotExistsException::new);
     }
 
 }

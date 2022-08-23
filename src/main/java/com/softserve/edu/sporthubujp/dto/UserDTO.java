@@ -17,6 +17,7 @@ public class UserDTO {
     private String email;
     private Role role;
     private String password;
+    private String photo;
     private Boolean isActive;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
