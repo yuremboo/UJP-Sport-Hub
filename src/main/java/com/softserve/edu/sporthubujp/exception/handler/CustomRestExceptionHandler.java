@@ -6,11 +6,13 @@ import javax.persistence.EntityNotFoundException;
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.*;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -120,9 +122,9 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(UsernameNotFoundException.class)
+    @ExceptionHandler(BadCredentialsException.class)
     protected ResponseEntity<Object> handleCustomUsernameNotFound(
-            UsernameNotFoundException ex) {
+            BadCredentialsException ex) {
 
         ApiError apiError = new ApiError(HttpStatus.NOT_FOUND);
         apiError.setMessage(ex.getMessage());
@@ -138,6 +140,24 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(HttpStatus.BAD_GATEWAY);
         apiError.setMessage(ex.getMessage());
         apiError.setDebugMessage(ex.toString());
+
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(EmailNotConfirmedException.class)
+    protected ResponseEntity<Object> handleEmailNotConfirmed(
+            EmailNotConfirmedException ex) {
+
+        ApiError apiError = new ApiError(HttpStatus.FORBIDDEN);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.toString());
+
+        User user = ex.getUser();
+        ApiValidationError apiValidationError = new ApiValidationError(List.of(user), ex.getMessage());
+        apiValidationError.setField("email");
+        apiValidationError.setRejectedValue(user.getEmail());
+
+        apiError.setSubErrors(List.of(apiValidationError));
 
         return buildResponseEntity(apiError);
     }
