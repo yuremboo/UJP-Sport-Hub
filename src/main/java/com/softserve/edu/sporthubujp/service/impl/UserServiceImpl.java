@@ -1,9 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-import com.softserve.edu.sporthubujp.dto.UserSaveDTO;
+import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
@@ -79,7 +77,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserIdByEmail(email);
     }
 
-    public UserDTO updateUser(UserSaveDTO newUser, String id) {
+    public UserDTO updateUser(UserSaveProfileDTO newUser, String id) {
         return userRepository.findById(id)
             .map(user -> {
                 userMapper.updateUser(user, newUser);

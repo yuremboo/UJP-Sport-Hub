@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-import com.softserve.edu.sporthubujp.dto.UserSaveDTO;
+import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class UserController {
 
     @PutMapping(path = "/profile/edit/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserSaveDTO newUser,
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserSaveProfileDTO newUser,
         @PathVariable("id") String id) {
         log.info("Update user by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
