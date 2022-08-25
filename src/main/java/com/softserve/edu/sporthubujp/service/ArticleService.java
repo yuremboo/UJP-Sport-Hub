@@ -21,5 +21,7 @@ public interface ArticleService {
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
+    List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
+
     Article updateArticle(Article newArticle, String id);
 }

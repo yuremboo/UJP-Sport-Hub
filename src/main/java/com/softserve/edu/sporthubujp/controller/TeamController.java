@@ -54,12 +54,21 @@ public class TeamController {
             teamService.getAllTeamsBySubscription(idUser));
     }
 
+    @GetMapping("/teams/search_name/{searchName}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<TeamDTO>>
+    searchTeamsByName(@PathVariable String searchName) {
+        log.info("Get all teams of the name {}",searchName);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            teamService.searchTeamsByName(searchName));
+    }
+
     @DeleteMapping("/teams/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> deleteTeamByIdSubscription(
         @NotNull Principal principal,@PathVariable("id") String teamId) {
         String email= principal.getName();
-        log.info("Get all teams of the user with an email under {} subscription",email);
+        log.info("Delete team of the user with an email under {} subscription",email);
         String idUser = userService.findUserByEmail(email);
         log.info("Id user = {}",idUser);
         log.info("Delete team by id {}", teamId);

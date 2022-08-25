@@ -20,12 +20,42 @@ public interface TeamRepository  extends JpaRepository<Team, String> {
         //+ "ORDER BY a.createDateTime ")
     List<Team> getAllTeamsBySubscription(String idUser);
 
+    @Transactional
+    @Query("SELECT t FROM Team t "
+        + "WHERE t.name LIKE ?1% ")
+    List<Team> searchTeamsByName(String nameTeam);
 
-//    @Transactional
-//    @Modifying
-//    @Query("DELETE s FROM Subscription "
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Subscription "
+        + "WHERE EXISTS (SELECT s FROM Subscription s "
+        + "JOIN s.team t "
+        + "JOIN s.user u "
+        + "WHERE u.id = ?1 AND t.id = ?2) ")
+    void deleteTeamsBySubscription(String idUser, String teamId);
+//@Transactional
+//@Modifying
+//@Query("DELETE FROM Subscription s "
+//    + "WHERE :id ")
+//void deleteTeamsBySubscription(String id);
+//    @Query("SELECT s FROM Subscription s "
 //        + "JOIN s.team t "
 //        + "JOIN s.user u "
 //        + "WHERE u.id = ?1 AND t.id = ?2 ")
-//    void deleteTeamsBySubscription(String idUser, String teamI);
+//    String deleteTeamsBySubscription(String idUser, String teamId);
+
+    @Transactional
+    @Query(value = "SELECT s FROM Subscription s "
+        + "JOIN s.team t "
+        + "JOIN s.user u "
+        + "WHERE u.id = ?1 AND t.id = ?2 ")
+    boolean existsSubscriptionByIdTeamByIdUser(String idUser, String teamId);
 }
+//    @Transactional
+//    @Modifying
+//    @Query("DELETE FROM Subscription s "
+//        + "JOIN s.team t "
+//        + "JOIN s.user u "
+//        + "WHERE u.id = ?1 AND t.id = ?2 ")
+//    void deleteTeamsBySubscription(String idUser, String teamId);
+//}

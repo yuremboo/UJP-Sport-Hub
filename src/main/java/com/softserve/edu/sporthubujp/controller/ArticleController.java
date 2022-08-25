@@ -72,6 +72,19 @@ public class ArticleController {
             articleService.getAllArticlesBySubscription(idUser));
     }
 
+    @GetMapping("/articles/teams/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<ArticleListDTO>>
+    getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
+        String email= principal.getName();
+        log.info("Get articles of the user with an email under {} subscription",email);
+        String idUser = userService.findUserByEmail(email);
+        log.info("Id user = {}",idUser);
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getArticlesByTeamByUserId(idUser,teamId));
+    }
+
     @PutMapping(path = "/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,

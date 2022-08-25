@@ -9,5 +9,7 @@ public interface TeamService {
 
     List<TeamDTO> getAllTeamsBySubscription(String idUser);
 
+    List<TeamDTO> searchTeamsByName(String nameTeam);
+
     void deleteTeamByIdSubscription(String idUser, String teamId);
 }
