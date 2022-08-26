@@ -4,7 +4,6 @@ import com.softserve.edu.sporthubujp.jwt.JwtConfig;
 import com.softserve.edu.sporthubujp.jwt.JwtTokenVerifier;
 import com.softserve.edu.sporthubujp.jwt.JwtUsernameAndPasswordAuthenticationFilter;
 import com.softserve.edu.sporthubujp.service.impl.UserDetailsServiceImpl;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +21,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -58,7 +58,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**")
+                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories")
                     .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -81,7 +81,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD", "PUT"));
+        configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD", "PUT", "OPTIONS"));
         configuration.addAllowedHeader("X-Requested-With");
         configuration.addAllowedHeader("Content-Type");
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

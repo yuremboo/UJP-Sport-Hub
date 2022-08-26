@@ -71,7 +71,7 @@ public class ArticleController {
             articleService.getAllArticlesBySubscription(idUser));
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
         @PathVariable("id") String id) {
@@ -82,10 +82,10 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
-    public ResponseEntity<List<ArticleDTO>> getAllArticles() {
+    public ResponseEntity<List<ArticleListDTO>> getAllArticles(Pageable pageable) {
         log.info("Get all article");
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticles());
+                articleService.getAllArticles(pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
