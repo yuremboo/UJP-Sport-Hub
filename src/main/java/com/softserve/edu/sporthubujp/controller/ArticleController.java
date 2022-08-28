@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.controller;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
-
-
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -35,8 +34,6 @@ public class ArticleController {
         this.commentService = commentService;
         this.userService = userService;
     }
-
-
     @GetMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
@@ -73,11 +70,11 @@ public class ArticleController {
 
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<Article> updateArticle(@RequestBody Article newArticle,
+    public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
         @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
-        articleService.updateArticle(newArticle, id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.updateArticle(newArticle, id));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -105,12 +102,4 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
-
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/category_id")
-//    public ResponseEntity<List<ArticleListDTO>> getAllArticlesByCategoryId(@RequestParam String id, @RequestParam boolean isactive, Pageable pageable) {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
-//    }
-
 }
