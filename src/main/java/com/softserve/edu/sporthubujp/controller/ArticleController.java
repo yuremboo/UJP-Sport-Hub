@@ -1,4 +1,5 @@
-package com.softserve.edu.sporthubujp.controller;
+Котик, [28.08.2022 17:56]
+    package com.softserve.edu.sporthubujp.controller;
 
 import java.security.Principal;
 import java.util.List;
@@ -66,11 +67,12 @@ public class ArticleController {
     public ResponseEntity<List<ArticleDTO>>
     getAllArticlesBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
-        log.info("Get all articles of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
+        log.info("Get all articles of the user with an email under {} subscription", email);
+        User user = userService.findUserByEmail(email);
+        //        String idUser = userService.findUserByEmail(email);
+        log.info("Id user = {}", user.getId());
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesBySubscription(idUser));
+            articleService.getAllArticlesBySubscription(user.getId()));
     }
 
     @PutMapping(path = "/{id}")
@@ -87,16 +89,17 @@ public class ArticleController {
     public ResponseEntity<List<ArticleDTO>> getAllArticles() {
         log.info("Get all article");
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticles());
+            articleService.getAllArticles());
     }
 
+    Котик, [28.08.2022 17:56]
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles/category_id/{id}")
     public ResponseEntity<List<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryId(id,pageable));
+            articleService.getAllArticlesByCategoryId(id,pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -105,14 +108,14 @@ public class ArticleController {
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+            articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/category_id")
-//    public ResponseEntity<List<ArticleListDTO>> getAllArticlesByCategoryId(@RequestParam String id, @RequestParam boolean isactive, Pageable pageable) {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
-//    }
+    //    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    //    @GetMapping("/category_id")
+    //    public ResponseEntity<List<ArticleListDTO>> getAllArticlesByCategoryId(@RequestParam String id, @RequestParam boolean isactive, Pageable pageable) {
+    //        return ResponseEntity.status(HttpStatus.OK).body(
+    //                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+    //    }
 
 }

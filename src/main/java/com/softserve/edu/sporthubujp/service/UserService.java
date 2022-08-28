@@ -2,6 +2,7 @@ package com.softserve.edu.sporthubujp.service;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
+import com.softserve.edu.sporthubujp.entity.User;
 
 public interface UserService {
 
@@ -9,7 +10,7 @@ public interface UserService {
 
     int enableUser(String email);
 
-    String findUserByEmail(String email);
+    User findUserByEmail(String email);
 
-    UserDTO updateUser(UserSaveProfileDTO newUser, String id);
+    UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 }

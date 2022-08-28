@@ -11,8 +11,8 @@ import org.mapstruct.NullValueCheckStrategy;
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true), nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface UserMapper {
     User dtoToEntity(UserDTO userDTO);
-
     UserDTO entityToDto(User user);
-
     User updateUser(@MappingTarget User userFromDb,  UserSaveProfileDTO newUser);
+    UserDTO dtoToSaveDto(UserSaveProfileDTO userSaveProfileDTO);
+    UserSaveProfileDTO saveDtoToDto(UserDTO userDTO);
 }
