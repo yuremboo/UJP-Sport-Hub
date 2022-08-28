@@ -1,17 +1,14 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import java.security.Principal;
-import java.util.List;
-import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
-
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.extern.slf4j.Slf4j;
-
-
+import java.security.Principal;
+import java.util.List;
 @Slf4j
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
+@CrossOrigin(origins = "*")
 public class ArticleController {
     private final ArticleService articleService;
     private final CommentService commentService;
@@ -37,8 +34,6 @@ public class ArticleController {
         this.commentService = commentService;
         this.userService = userService;
     }
-
-
     @GetMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
@@ -73,7 +68,7 @@ public class ArticleController {
             articleService.getAllArticlesBySubscription(idUser));
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
         @PathVariable("id") String id) {
@@ -84,10 +79,10 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
-    public ResponseEntity<List<ArticleDTO>> getAllArticles() {
+    public ResponseEntity<List<ArticleListDTO>> getAllArticles(Pageable pageable) {
         log.info("Get all article");
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticles());
+                articleService.getAllArticles(pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -107,12 +102,4 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
-
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/category_id")
-//    public ResponseEntity<List<ArticleListDTO>> getAllArticlesByCategoryId(@RequestParam String id, @RequestParam boolean isactive, Pageable pageable) {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
-//    }
-
 }

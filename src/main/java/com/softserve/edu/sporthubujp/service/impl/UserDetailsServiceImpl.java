@@ -1,6 +1,5 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EmailNotConfirmedException;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
