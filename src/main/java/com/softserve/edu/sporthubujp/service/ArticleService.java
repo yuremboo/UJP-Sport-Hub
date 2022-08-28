@@ -2,6 +2,7 @@ package com.softserve.edu.sporthubujp.service;
 
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import org.springframework.data.domain.Pageable;
@@ -23,5 +24,5 @@ public interface ArticleService {
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
 
-    Article updateArticle(Article newArticle, String id);
+    ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
 }
