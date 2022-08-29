@@ -3,7 +3,6 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
@@ -69,7 +68,17 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articlesDTOS;
     }
-
+    @Override
+    public List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory) {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.getAllArticlesByCategoryName(nameCategory);
+        log.info("Get all articles by category name: {}", nameCategory);
+        List<ArticleDTO> articlesDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articlesDTOS.add(articleMapper.entityToDto(article));
+        }
+        return articlesDTOS;
+    }
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
                 .map(article -> {

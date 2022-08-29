@@ -67,7 +67,14 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getAllArticlesBySubscription(idUser));
     }
-
+    @GetMapping("/articles/category/{nameCategory}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<ArticleDTO>>
+    getAllArticlesByCategoryName(@PathVariable String nameCategory) {
+        log.info("Get all articles by category name: {}", nameCategory);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getAllArticlesByCategoryName(nameCategory));
+    }
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,

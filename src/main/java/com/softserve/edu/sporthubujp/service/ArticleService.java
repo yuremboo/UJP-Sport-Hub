@@ -22,5 +22,7 @@ public interface ArticleService {
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
+    List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
+
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
 }
