@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 interface ApiSubError {
 
 }
@@ -12,12 +14,12 @@ interface ApiSubError {
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 class ApiValidationError implements ApiSubError {
-    private String object;
+    private List<Object> object;
     private String field;
     private Object rejectedValue;
     private String message;
 
-    ApiValidationError(String object, String message) {
+    ApiValidationError(List<Object> object, String message) {
         this.object = object;
         this.message = message;
     }
