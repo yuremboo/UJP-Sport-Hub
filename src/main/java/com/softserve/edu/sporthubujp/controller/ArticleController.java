@@ -1,6 +1,3 @@
-Котик, [28.08.2022 17:56]
-    package com.softserve.edu.sporthubujp.controller;
-
 import java.security.Principal;
 import java.util.List;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
@@ -92,7 +89,6 @@ public class ArticleController {
             articleService.getAllArticles());
     }
 
-    Котик, [28.08.2022 17:56]
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles/category_id/{id}")
     public ResponseEntity<List<ArticleListDTO>>

@@ -35,14 +35,11 @@ public class UserController {
     @PutMapping(path = "/profile/edit")
     @PreAuthorize("hasAuthority('USER')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
-        @RequestBody UserSaveProfileDTO userSaveProfileDTO) {
-
+        @RequestBody UserSaveProfileDTO newUser) {
         User user = userService.findUserByEmail(principal.getName());
-
         log.info(String.format("Controller: updating user with id %s", user.getId()));
-
         return ResponseEntity.status(HttpStatus.OK).body(
-            userService.updateUser(user, userSaveProfileDTO));
+            userService.updateUser(user, newUser));
     }
 
 }
