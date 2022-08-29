@@ -44,7 +44,7 @@ public class RegistrationService {
     public String register(RegistrationRequestDTO request)
             throws IOException, SendFailedException {
 
-        log.info(String.format("Service: registration user with email %s", request.getEmail()));
+        log.info(String.format("Service: registering user with email %s", request.getEmail()));
         boolean isValidEmail = emailValidator.
                 test(request.getEmail());
 

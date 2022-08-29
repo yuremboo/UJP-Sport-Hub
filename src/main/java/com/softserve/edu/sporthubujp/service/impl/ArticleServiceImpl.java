@@ -1,21 +1,22 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -97,15 +98,21 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(EntityNotExistsException::new);
     }
     
-    public List<ArticleDTO> getAllArticles(){
-        List<Article> articles = new LinkedList<Article>();
-        articles = articleRepository.findAll();
+    public List<ArticleListDTO> getAllArticles(Pageable pageable){
+//        List<Article> articles = new LinkedList<Article>();
+        Page<Article> articles;
+        articles = articleRepository.findAll(pageable);
         log.info("Get all article in service");
         List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
         }
-        return articleDTOS;
+
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
     }
 
     @Override

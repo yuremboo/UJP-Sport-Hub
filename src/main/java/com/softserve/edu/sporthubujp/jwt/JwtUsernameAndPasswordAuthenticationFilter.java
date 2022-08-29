@@ -2,11 +2,16 @@ package com.softserve.edu.sporthubujp.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserve.edu.sporthubujp.dto.AuthenticationRequestDTO;
+import com.softserve.edu.sporthubujp.dto.AuthenticationResponseDTO;
+import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
+import net.snowflake.client.jdbc.internal.google.gson.Gson;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.crypto.SecretKey;
@@ -23,13 +28,15 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     private final AuthenticationManager authenticationManager;
     private final JwtConfig jwtConfig;
     private final SecretKey secretKey;
+    private final UserRepository userRepository;
 
     public JwtUsernameAndPasswordAuthenticationFilter(AuthenticationManager authenticationManager,
                                                       JwtConfig jwtConfig,
-                                                      SecretKey secretKey) {
+                                                      SecretKey secretKey, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.jwtConfig = jwtConfig;
         this.secretKey = secretKey;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -66,5 +73,27 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .compact();
 
         response.addHeader(jwtConfig.getAuthorizationHeader(), jwtConfig.getTokenPrefix() + token);
+
+        User user = userRepository
+                .findByEmail(authResult.getName())
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(
+                        "user with email %s not found", authResult.getName())));
+
+        AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO(
+
+                user.getId(),
+                user.getFirstName(),
+                user.getLastName(),
+                user.getEmail(),
+                user.getRole(),
+                token
+        );
+
+        String json = new Gson().toJson(authenticationResponseDTO);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
+
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -158,6 +159,17 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         apiValidationError.setRejectedValue(user.getEmail());
 
         apiError.setSubErrors(List.of(apiValidationError));
+
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(InternalAuthenticationServiceException.class)
+    protected ResponseEntity<Object> handleInternalAuthenticationService(
+            InternalAuthenticationServiceException ex) {
+
+        ApiError apiError = new ApiError(NOT_FOUND);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.toString());
 
         return buildResponseEntity(apiError);
     }
