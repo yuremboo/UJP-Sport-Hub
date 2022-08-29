@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/profile/edit")
-    @PreAuthorize("hasAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
         @RequestBody UserSaveProfileDTO newUser) {
         User user = userService.findUserByEmail(principal.getName());

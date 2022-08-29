@@ -84,13 +84,20 @@ public class UserServiceImpl implements UserService {
 
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 
-        userRepository.findByEmail(newUser.getEmail()).ifPresent(
-            user -> {
-                throw new EmailAlreadyTakenException(
-                    String.format(EMAIL_ALREADY_TAKEN, userMapper.dtoToSaveDto(newUser).getEmail()),
-                    userMapper.dtoToSaveDto(newUser));
-            }
-        );
+        boolean isPresentButMe = Objects.equals(oldUser.getEmail(), newUser.getEmail());
+
+        if (!isPresentButMe) {
+            userRepository.findByEmail(newUser.getEmail()).ifPresent(
+                user -> {
+                    throw new EmailAlreadyTakenException(
+                        String.format(EMAIL_ALREADY_TAKEN, userMapper.dtoToSaveDto(newUser).getEmail()),
+                        userMapper.dtoToSaveDto(newUser));
+                }
+            );
+        }
+
+        oldUser.setUpdateDateTime(LocalDateTime.now());
+
         return userMapper.entityToDto(userRepository.save(
             userMapper.updateUser(oldUser, newUser))
         );
