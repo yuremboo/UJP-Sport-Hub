@@ -6,6 +6,7 @@ import com.softserve.edu.sporthubujp.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,8 +17,8 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG =
-            "Service: user with email %s not found";
-    private static final String EMAIL_NOT_CONFIRMED = "Service: email %s not confirmed";
+            "Incorrect user ID or password. Try again";
+//    private static final String EMAIL_NOT_CONFIRMED = "Service: email %s not confirmed";
     private final UserRepository userRepository;
 
     @Autowired
@@ -32,13 +33,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository
                 .findByEmail(email)
-                .orElseThrow(() -> new BadCredentialsException(
-                        String.format(USER_NOT_FOUND_MSG, email)));
+                .orElseThrow(() -> new InternalAuthenticationServiceException(USER_NOT_FOUND_MSG));
 
         if (user.getIsActive() == null) {
-            log.error(String.format(EMAIL_NOT_CONFIRMED, user.getEmail()));
-            throw new EmailNotConfirmedException(
-                    String.format(EMAIL_NOT_CONFIRMED, user.getEmail()), user);
+            log.error(USER_NOT_FOUND_MSG);
+            throw new InternalAuthenticationServiceException(USER_NOT_FOUND_MSG);
         }
 
         return org.springframework.security.core.userdetails.User

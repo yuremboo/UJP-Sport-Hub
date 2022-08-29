@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.security;
 import com.softserve.edu.sporthubujp.jwt.JwtConfig;
 import com.softserve.edu.sporthubujp.jwt.JwtTokenVerifier;
 import com.softserve.edu.sporthubujp.jwt.JwtUsernameAndPasswordAuthenticationFilter;
+import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import javax.crypto.SecretKey;
 import java.util.Arrays;
 import java.util.List;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -32,17 +34,18 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsServiceImpl userDetailsService;
     private final SecretKey secretKey;
     private final JwtConfig jwtConfig;
-
+    private final UserRepository userRepository;
 
     @Autowired
     public ApplicationSecurityConfig(PasswordEncoder passwordEncoder,
                                      UserDetailsServiceImpl userDetailsService,
                                      SecretKey secretKey,
-                                     JwtConfig jwtConfig) {
+                                     JwtConfig jwtConfig, UserRepository userRepository) {
         this.passwordEncoder = passwordEncoder;
         this.userDetailsService = userDetailsService;
         this.secretKey = secretKey;
         this.jwtConfig = jwtConfig;
+        this.userRepository = userRepository;
     }
 
 
@@ -55,7 +58,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories")
@@ -77,17 +80,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
-//    @Bean
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","HEAD", "PUT", "OPTIONS"));
-        configuration.addAllowedHeader("X-Requested-With");
-        configuration.addAllowedHeader("Content-Type");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH",
+                "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type",
+                "x-auth-token"));
+        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        UrlBasedCorsConfigurationSource source = new
+                UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
+
         return source;
     }
-
 
 }
