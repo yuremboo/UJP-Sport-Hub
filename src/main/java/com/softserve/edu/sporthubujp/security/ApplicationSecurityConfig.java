@@ -22,6 +22,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import java.util.Arrays;
+import java.util.List;
+
 
 @Configuration
 @EnableWebSecurity
@@ -50,7 +52,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
                 .sessionManagement()
@@ -59,7 +61,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**")
+                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories")
                     .permitAll()
                 .anyRequest()
                 .authenticated();
@@ -93,4 +95,5 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
         return source;
     }
+
 }
