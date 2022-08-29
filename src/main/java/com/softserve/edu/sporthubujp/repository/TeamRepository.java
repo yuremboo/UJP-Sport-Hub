@@ -33,17 +33,6 @@ public interface TeamRepository  extends JpaRepository<Team, String> {
         + "JOIN s.user u "
         + "WHERE u.id = ?1 AND t.id = ?2) ")
     void deleteTeamsBySubscription(String idUser, String teamId);
-//@Transactional
-//@Modifying
-//@Query("DELETE FROM Subscription s "
-//    + "WHERE :id ")
-//void deleteTeamsBySubscription(String id);
-//    @Query("SELECT s FROM Subscription s "
-//        + "JOIN s.team t "
-//        + "JOIN s.user u "
-//        + "WHERE u.id = ?1 AND t.id = ?2 ")
-//    String deleteTeamsBySubscription(String idUser, String teamId);
-
     @Transactional
     @Query(value = "SELECT s FROM Subscription s "
         + "JOIN s.team t "
@@ -51,11 +40,3 @@ public interface TeamRepository  extends JpaRepository<Team, String> {
         + "WHERE u.id = ?1 AND t.id = ?2 ")
     boolean existsSubscriptionByIdTeamByIdUser(String idUser, String teamId);
 }
-//    @Transactional
-//    @Modifying
-//    @Query("DELETE FROM Subscription s "
-//        + "JOIN s.team t "
-//        + "JOIN s.user u "
-//        + "WHERE u.id = ?1 AND t.id = ?2 ")
-//    void deleteTeamsBySubscription(String idUser, String teamId);
-//}
