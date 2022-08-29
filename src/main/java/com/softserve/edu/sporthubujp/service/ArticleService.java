@@ -12,7 +12,7 @@ import java.util.List;
 public interface ArticleService {
     ArticleDTO getArticleById(String id);
     
-    List<ArticleDTO> getAllArticles();
+    List<ArticleListDTO> getAllArticles(Pageable pageable);
 
     List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
 

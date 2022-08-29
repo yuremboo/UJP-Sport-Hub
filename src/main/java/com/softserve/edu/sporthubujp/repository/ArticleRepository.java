@@ -1,9 +1,9 @@
 package com.softserve.edu.sporthubujp.repository;
 
 import com.softserve.edu.sporthubujp.entity.Article;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +18,7 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
         + "WHERE u.id = ?1 "
         + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesBySubscription(String idUser);
+    Page<Article> findAll(Pageable pageable);
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 
     List<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
