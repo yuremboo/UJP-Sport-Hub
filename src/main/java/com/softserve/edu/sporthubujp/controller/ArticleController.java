@@ -5,9 +5,8 @@ import java.util.List;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
@@ -48,7 +47,7 @@ public class ArticleController {
 
     @GetMapping("/{id}/comments")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByArticleId(@PathVariable String id) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             commentService.getAllCommentByArticleId(id));

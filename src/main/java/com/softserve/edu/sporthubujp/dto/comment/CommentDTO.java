@@ -1,4 +1,4 @@
-package com.softserve.edu.sporthubujp.dto;
+package com.softserve.edu.sporthubujp.dto.comment;
 
 import java.time.LocalDateTime;
 

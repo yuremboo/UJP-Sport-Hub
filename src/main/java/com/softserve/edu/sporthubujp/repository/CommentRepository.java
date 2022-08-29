@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
-public interface CommentRepository  extends JpaRepository<Comment, String> {
+public interface CommentRepository extends JpaRepository<Comment, String> {
     List<Comment> findAllByArticleId(String articleId);
 }

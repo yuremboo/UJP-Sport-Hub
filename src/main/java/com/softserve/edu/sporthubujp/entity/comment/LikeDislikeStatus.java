@@ -14,28 +14,27 @@ import javax.persistence.Table;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.softserve.edu.sporthubujp.entity.User;
-import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
 import lombok.Data;
 
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "DISLIKES")
-public class Dislike {
+@Table(name = "LIKEDISLIKESTATUSES")
+public class LikeDislikeStatus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
 
-    @Column(name = "is_disliked")
-    private Boolean isDisliked;
+    @Column(name = "liked_disliked")
+    private Boolean likedDisliked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_dislikes_user"), insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_user"), insertable = false, updatable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = false, foreignKey = @ForeignKey(name = "fk_dislikes_comment"), insertable = false, updatable = false)
+    @JoinColumn(name = "comment_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_comment"), insertable = false, updatable = false)
     private Comment comment;
 }

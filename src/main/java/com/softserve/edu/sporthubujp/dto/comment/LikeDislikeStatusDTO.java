@@ -3,7 +3,7 @@ package com.softserve.edu.sporthubujp.dto.comment;
 import lombok.Data;
 
 @Data
-public class LikeDTO {
+public class LikeDislikeStatusDTO {
     private String id;
-    private Boolean isLiked;
+    private Boolean likedDisliked;
 }

@@ -46,7 +46,7 @@ public class CommentController {
     }
 
     @PostMapping("/comments")
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<Comment> addNewComment(Comment newComment) {
         log.info("Add new comment to article with id{}", newComment.getArticle().getId());
         commentService.addNewComment(newComment);
