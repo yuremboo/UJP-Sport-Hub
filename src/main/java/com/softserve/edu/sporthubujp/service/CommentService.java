@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.service;
 import java.util.List;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
 public interface CommentService {
@@ -10,8 +11,8 @@ public interface CommentService {
 
     void deleteComment(String commentId);
 
-    CommentDTO updateComment(CommentDTO newComment, String id);
+    CommentDTO updateComment(CommentSaveDTO newComment, String id);
 
-    CommentDTO addNewComment(CommentDTO newComment);
+    CommentSaveDTO addNewComment(CommentSaveDTO newComment);
 
 }

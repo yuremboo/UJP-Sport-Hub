@@ -1,9 +1,11 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
@@ -39,7 +42,7 @@ public class CommentController {
 
     @PutMapping("/comments/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<Comment> updateComment(@RequestBody CommentDTO newComment,
+    public ResponseEntity<CommentDTO> updateComment(CommentSaveDTO newComment,
         @PathVariable("id") String id) {
         log.info("Update comment by id {}", id);
         commentService.updateComment(newComment, id);
@@ -48,8 +51,8 @@ public class CommentController {
 
     @PostMapping("/comments")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<Comment> addNewComment(CommentDTO newComment) {
-        log.info("Add new comment to article");
+    public ResponseEntity<CommentSaveDTO> addNewComment(@NotNull CommentSaveDTO newComment) {
+        log.info(String.format("Add new comment to article %s", newComment.toString()));
         commentService.addNewComment(newComment);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

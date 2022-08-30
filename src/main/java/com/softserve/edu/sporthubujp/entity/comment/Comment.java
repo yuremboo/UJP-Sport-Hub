@@ -1,6 +1,8 @@
 package com.softserve.edu.sporthubujp.entity.comment;
 
 import lombok.*;
+
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,7 +20,8 @@ import com.softserve.edu.sporthubujp.entity.User;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
     @Column(name = "comment", length = 255, nullable = false, unique = false)
     private String comment;
@@ -32,12 +35,12 @@ public class Comment {
     private Integer likes;
     @Column(name = "dislikes", nullable = true, unique = false)
     private Integer dislikes;
-    @ManyToOne
-    @JoinColumn(name = "commenter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_user"), insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "commenter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_user"), updatable = false)
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_article"), insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_article"), updatable = false)
     private Article article;
 
 }

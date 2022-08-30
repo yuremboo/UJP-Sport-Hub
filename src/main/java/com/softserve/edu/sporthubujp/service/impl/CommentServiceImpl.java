@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
@@ -51,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(id);
     }
 
-    @Override public CommentDTO updateComment(CommentDTO newComment, String id) {
+    @Override public CommentDTO updateComment(CommentSaveDTO newComment, String id) {
         return commentRepository.findById(id)
             .map(comment -> {
                 commentMapper.updateComment(comment, newComment);
@@ -60,8 +61,7 @@ public class CommentServiceImpl implements CommentService {
             .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override public CommentDTO addNewComment(CommentDTO newComment) {
-        return commentMapper.entityToDto(commentRepository.save(commentMapper.dtoToEntity(newComment)));
+    @Override public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+        return commentMapper.entityToDtoSave(commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
     }
-
 }
