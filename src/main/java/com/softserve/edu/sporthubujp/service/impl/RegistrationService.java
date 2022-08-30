@@ -65,7 +65,7 @@ public class RegistrationService {
                         Role.USER)
         );
 
-        String link = "https://ujp-sports-hub.herokuapp.com/api/v1/registration/confirm?token=" + token;
+        String link = "http://localhost:3000/api/v1/registration/confirm?token=" + token;
 
         emailSender.send(
                 EMAIL_SERVER,
