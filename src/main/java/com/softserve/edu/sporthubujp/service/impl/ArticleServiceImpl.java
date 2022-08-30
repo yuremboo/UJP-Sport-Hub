@@ -3,7 +3,6 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
@@ -12,14 +11,15 @@ import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
+import com.softserve.edu.sporthubujp.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -31,11 +31,14 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
 
+    private final CommentService commentService;
+
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-        ArticleMapper articleMapper) {
+                              ArticleMapper articleMapper, CommentService commentService) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.commentService = commentService;
     }
 
     public ArticleDTO getArticleById(String id) {
@@ -147,5 +150,34 @@ public class ArticleServiceImpl implements ArticleService {
             articleListDTOS.add(new ArticleListDTO(articleDTO));
         }
         return articleListDTOS;
+    }
+
+    @Override
+    public List<ArticleListDTO> getMostCommentedArticles() {
+        List<ArticleListDTO> allArticlesDTOS = getAllArticles(Pageable.unpaged());
+        Map<String, Integer> mapArticleComments = new HashMap<>();
+
+        for (var article : allArticlesDTOS) {
+            mapArticleComments.put(article.getId(), commentService.getNumOfCommentsByArticleId(article.getId()));
+        }
+
+        Map<String, Integer> sortedMap =
+                mapArticleComments.entrySet().stream()
+                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                        .limit(3)
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        List<ArticleDTO> mostCommentedArticleDTOS = new ArrayList<>();
+
+        for (Map.Entry<String, Integer> entry : sortedMap.entrySet()) {
+            mostCommentedArticleDTOS.add(getArticleById(entry.getKey()));
+        }
+
+        List<ArticleListDTO> mostCommentedArticleListDTOS = new LinkedList<>();
+        for (var articleDTO : mostCommentedArticleDTOS) {
+            mostCommentedArticleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return mostCommentedArticleListDTOS;
     }
 }

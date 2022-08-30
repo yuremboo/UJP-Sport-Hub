@@ -4,7 +4,6 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -117,11 +116,11 @@ public class ArticleController {
                 articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/category_id")
-//    public ResponseEntity<List<ArticleListDTO>> getAllArticlesByCategoryId(@RequestParam String id, @RequestParam boolean isactive, Pageable pageable) {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
-//    }
-
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/mostcommented")
+    public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles(){
+        log.info("Get most commented articles");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getMostCommentedArticles());
+    }
 }
