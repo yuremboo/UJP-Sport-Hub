@@ -4,6 +4,8 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Comment;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
@@ -71,6 +73,23 @@ public class ArticleServiceImpl implements ArticleService {
             articlesDTOS.add(articleMapper.entityToDto(article));
         }
         return articlesDTOS;
+    }
+
+
+    @Override
+    public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
+        List<Article> articles = new LinkedList<>();
+        articles = articleRepository.getArticlesByTeamId(idUser,teamId);
+        log.info("Get articles by teams id subscription");
+        List<ArticleDTO> articleDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
     }
 
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {

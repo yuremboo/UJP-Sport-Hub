@@ -22,6 +22,8 @@ public interface ArticleService {
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
+    List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
+
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     List<ArticleListDTO> getMostCommentedArticles();
 }
