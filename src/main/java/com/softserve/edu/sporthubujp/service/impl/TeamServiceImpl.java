@@ -3,11 +3,14 @@ package com.softserve.edu.sporthubujp.service.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
+
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
+import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
 import com.softserve.edu.sporthubujp.entity.Team;
+import com.softserve.edu.sporthubujp.mapper.SubscriptionMapper;
 import com.softserve.edu.sporthubujp.mapper.TeamMapper;
+import com.softserve.edu.sporthubujp.repository.SubscriptionRepository;
 import com.softserve.edu.sporthubujp.repository.TeamRepository;
 import com.softserve.edu.sporthubujp.service.TeamService;
 
@@ -17,14 +20,17 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TeamServiceImpl  implements TeamService {
 
-    private static final String TEAM_NOT_DELETE_BY_ID = "Record with provided id: %s is not found";
     private static final String NOT_SEARCH_TEAM_BY_NAME = "Record with name team: %s is not found";
     private final TeamRepository teamRepository;
+    private final SubscriptionRepository subscriptionRepository;
     private final TeamMapper teamMapper;
-
-    public TeamServiceImpl(TeamRepository teamRepository, TeamMapper teamMapper) {
+    private final SubscriptionMapper subscriptionMapper;
+    public TeamServiceImpl(TeamRepository teamRepository, SubscriptionRepository subscriptionRepository, TeamMapper teamMapper,
+        SubscriptionMapper subscriptionMapper) {
         this.teamRepository = teamRepository;
+        this.subscriptionRepository = subscriptionRepository;
         this.teamMapper = teamMapper;
+        this.subscriptionMapper = subscriptionMapper;
     }
 
     @Override
@@ -40,7 +46,7 @@ public class TeamServiceImpl  implements TeamService {
     }
 
     @Override
-    public List<TeamDTO> getAllTeamsBySubscription(String idUser) {
+    public List<TeamSubscriptionDTO> getAllTeamsBySubscription(String idUser) {
         List<Team> teams = new LinkedList<Team>();
         teams = teamRepository.getAllTeamsBySubscription(idUser);
         log.info("Get all teams by subscription through user id {}", idUser);
@@ -48,7 +54,14 @@ public class TeamServiceImpl  implements TeamService {
         for (var team : teams) {
             teamsDTOS.add(teamMapper.entityToDto(team));
         }
-        return teamsDTOS;
+
+        List<TeamSubscriptionDTO> teamSubscriptionDTO = new LinkedList<>();
+        for (var teamsDTO : teamsDTOS) {
+            String subscription=subscriptionMapper.entityToDto(subscriptionRepository.getAllSubscriptionByTeams(idUser,teamsDTO.getId())).getId();
+            log.info("Get all teams by subscription id {}", subscription);
+            teamSubscriptionDTO.add(new TeamSubscriptionDTO(teamsDTO,subscription));
+        }
+        return teamSubscriptionDTO;
     }
 
     @Override
@@ -67,20 +80,6 @@ public class TeamServiceImpl  implements TeamService {
             teamsDTOS.add(teamMapper.entityToDto(team));
         }
         return teamsDTOS;
-    }
-
-    @Override
-    public void deleteTeamByIdSubscription(String idUser, String teamId) {
-        log.info("Delete team by subscription through user id {}", idUser);
-//        if(teamRepository.existsSubscriptionByIdTeamByIdUser(idUser,teamId))
-//        {
-//            log.error(String.format(TEAM_NOT_DELETE_BY_ID, teamId));
-//            //throw new TeamServiceException(String.format(TEAM_NOT_DELETE_BY_ID, teamId));
-//        }
-        teamRepository.deleteTeamsBySubscription(idUser, teamId);
-//        String st=teamRepository.deleteTeamsBySubscription(idUser, teamId);
-//        teamRepository.deleteTeamsBySubscription(st);
-        //teamRepository.deleteById( teamId);
     }
 
 }

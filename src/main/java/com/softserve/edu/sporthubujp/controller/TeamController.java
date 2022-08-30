@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
+import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
 import com.softserve.edu.sporthubujp.service.TeamService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
@@ -43,7 +44,7 @@ public class TeamController {
 
     @GetMapping("/teams/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<TeamDTO>>
+    public ResponseEntity<List<TeamSubscriptionDTO>>
     getAllTeamsBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
         log.info("Get all teams of the user with an email under {} subscription",email);
@@ -61,18 +62,5 @@ public class TeamController {
         log.info("Get all teams of the name {}",searchName);
         return ResponseEntity.status(HttpStatus.OK).body(
             teamService.searchTeamsByName(searchName));
-    }
-
-    @DeleteMapping("/teams/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<Void> deleteTeamByIdSubscription(
-        @NotNull Principal principal,@PathVariable("id") String teamId) {
-        String email= principal.getName();
-        log.info("Delete team of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
-        log.info("Delete team by id {}", teamId);
-        teamService.deleteTeamByIdSubscription(idUser,teamId);
-        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
