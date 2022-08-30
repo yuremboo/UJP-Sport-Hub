@@ -1,17 +1,16 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -35,5 +34,11 @@ public class CommentServiceImpl  implements CommentService {
             commentsDTOS.add(commentMapper.entityToDto(comment));
         }
         return commentsDTOS;
+    }
+
+    @Override
+    public int getNumOfCommentsByArticleId(String articleId) {
+        List<CommentDTO> commentDTOS = getAllCommentByArticleId(articleId);
+        return commentDTOS.size();
     }
 }

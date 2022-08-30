@@ -18,12 +18,22 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
         + "WHERE u.id = ?1 "
         + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesBySubscription(String idUser);
+
     @Transactional
     @Query("SELECT a FROM Article a "
         + "JOIN a.category c "
         + "WHERE c.name = ?1 "
         + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesByCategoryName(String nameCategory);
+
+    @Transactional
+    @Query("SELECT a FROM Article a "
+        + "JOIN a.team t "
+        + "JOIN t.subscriptions s "
+        + "JOIN s.user u "
+        + "WHERE u.id = ?1 AND t.id = ?2 "
+        + "ORDER BY a.createDateTime ")
+    List<Article> getArticlesByTeamId(String idUser, String teamId);
     Page<Article> findAll(Pageable pageable);
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 
