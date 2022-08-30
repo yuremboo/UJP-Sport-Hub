@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
@@ -30,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getAllCommentByArticleId(String articleId) {
+    public List<CommentDTO> getAllCommentsByArticleId(String articleId) {
         List<Comment> comments = new LinkedList<Comment>();
         comments = commentRepository.findAllByArticleId(articleId);
         log.info("Get all comments by article id {} in service", articleId);
@@ -50,20 +51,17 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(id);
     }
 
-    @Override public Comment updateComment(Comment newComment, String id) {
+    @Override public CommentDTO updateComment(CommentDTO newComment, String id) {
         return commentRepository.findById(id)
             .map(comment -> {
                 commentMapper.updateComment(comment, newComment);
-                return commentRepository.save(comment);
+                return commentMapper.entityToDto(commentRepository.save(comment));
             })
-            .orElseGet(() -> {
-                newComment.setId(id);
-                return commentRepository.save(newComment);
-            });
+            .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override public Comment addNewComment(Comment newComment) {
-        return commentRepository.save(newComment);
+    @Override public CommentDTO addNewComment(CommentDTO newComment) {
+        return commentMapper.entityToDto(commentRepository.save(commentMapper.dtoToEntity(newComment)));
     }
 
 }

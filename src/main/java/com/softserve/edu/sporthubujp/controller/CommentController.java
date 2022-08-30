@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
@@ -38,7 +39,7 @@ public class CommentController {
 
     @PutMapping("/comments/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<Comment> updateArticle(@RequestBody Comment newComment,
+    public ResponseEntity<Comment> updateComment(@RequestBody CommentDTO newComment,
         @PathVariable("id") String id) {
         log.info("Update comment by id {}", id);
         commentService.updateComment(newComment, id);
@@ -47,8 +48,8 @@ public class CommentController {
 
     @PostMapping("/comments")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<Comment> addNewComment(Comment newComment) {
-        log.info("Add new comment to article with id{}", newComment.getArticle().getId());
+    public ResponseEntity<Comment> addNewComment(CommentDTO newComment) {
+        log.info("Add new comment to article");
         commentService.addNewComment(newComment);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

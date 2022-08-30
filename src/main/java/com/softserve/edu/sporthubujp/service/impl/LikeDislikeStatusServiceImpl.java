@@ -3,6 +3,8 @@ package com.softserve.edu.sporthubujp.service.impl;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +12,7 @@ import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.entity.comment.LikeDislikeStatus;
+import com.softserve.edu.sporthubujp.exception.LikeDislikeStatusServiceException;
 import com.softserve.edu.sporthubujp.mapper.LikeDislikeStatusMapper;
 import com.softserve.edu.sporthubujp.repository.LikeDislikeStatusRepository;
 import com.softserve.edu.sporthubujp.service.LikeDislikeStatusService;
@@ -45,22 +48,21 @@ public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
         log.info("Delete like-dislike status by id in service");
         if (!likeDislikeStatusRepository.existsById(id)) {
             log.error(String.format(LIKEDISLIKESTATUS_NOT_FOUND_BY_ID, id));
+            throw new LikeDislikeStatusServiceException(String.format(LIKEDISLIKESTATUS_NOT_FOUND_BY_ID, id));
         }
         likeDislikeStatusRepository.deleteById(id);
     }
 
-    @Override public LikeDislikeStatus updateLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus, String id) {
+    @Override public LikeDislikeStatusDTO updateLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus, String id) {
         return likeDislikeStatusRepository.findById(id)
             .map(likeDislikeStatus -> {
-                likeDislikeStatusMapper.updateLikeDislikeStatus(likeDislikeStatus, likeDislikeStatusMapper.dtoToEntity(newLDStatus));
-                return likeDislikeStatusRepository.save(likeDislikeStatus);
-            }).orElseGet(()->{
-                newLDStatus.setId(id);
-                return likeDislikeStatusRepository.save( likeDislikeStatusMapper.dtoToEntity(newLDStatus));
-            });
+                likeDislikeStatusMapper.updateLikeDislikeStatus(likeDislikeStatus, newLDStatus);
+                return likeDislikeStatusMapper.entityToDto(likeDislikeStatusRepository.save(likeDislikeStatus));
+            })
+            .orElseThrow(EntityExistsException::new);
     }
 
-    @Override public LikeDislikeStatus addNewLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus) {
-        return likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoToEntity(newLDStatus));
+    @Override public LikeDislikeStatusDTO addNewLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus) {
+        return likeDislikeStatusMapper.entityToDto(likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoToEntity(newLDStatus)));
     }
 }

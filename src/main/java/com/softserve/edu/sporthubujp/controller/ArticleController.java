@@ -2,9 +2,8 @@ package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -47,7 +46,7 @@ public class ArticleController {
     public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentByArticleId(id));
+            commentService.getAllCommentsByArticleId(id));
     }
     @DeleteMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")

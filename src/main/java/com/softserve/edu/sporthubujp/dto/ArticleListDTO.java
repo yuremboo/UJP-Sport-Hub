@@ -29,7 +29,7 @@ public class ArticleListDTO {
         }
         return builder.toString();
     }
-    public ArticleListDTO(ArticleDTO articleDTO){
+    public ArticleListDTO(ArticleDTO articleDTO) {
         this.id = articleDTO.getId();
         this.title = articleDTO.getTitle();
         this.isActive = articleDTO.getIsActive();

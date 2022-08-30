@@ -11,5 +11,5 @@ import com.softserve.edu.sporthubujp.entity.comment.LikeDislikeStatus;
 public interface LikeDislikeStatusMapper {
     LikeDislikeStatus dtoToEntity(LikeDislikeStatusDTO likeDislikeStatusDTO);
     LikeDislikeStatusDTO entityToDto(LikeDislikeStatus likeDislikeStatus);
-    void updateLikeDislikeStatus(@MappingTarget LikeDislikeStatus likeDislikeStatusFromDB, LikeDislikeStatus newLDStatus);
+    void updateLikeDislikeStatus(@MappingTarget LikeDislikeStatus likeDislikeStatusFromDB, LikeDislikeStatusDTO newLDStatus);
 }

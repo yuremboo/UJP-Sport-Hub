@@ -3,7 +3,6 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;

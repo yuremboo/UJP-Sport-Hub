@@ -12,5 +12,5 @@ public interface CommentMapper {
     Comment dtoToEntity(CommentDTO commentDTO);
     CommentDTO entityToDto(Comment comment);
 
-    void updateComment(@MappingTarget Comment commentFromDB, Comment newComment);
+    void updateComment(@MappingTarget Comment commentFromDB, CommentDTO newComment);
 }
