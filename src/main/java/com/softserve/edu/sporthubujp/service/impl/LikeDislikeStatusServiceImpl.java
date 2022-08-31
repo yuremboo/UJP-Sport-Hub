@@ -8,9 +8,8 @@ import javax.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusDTO;
-import com.softserve.edu.sporthubujp.entity.comment.Comment;
+import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.LikeDislikeStatus;
 import com.softserve.edu.sporthubujp.exception.LikeDislikeStatusServiceException;
 import com.softserve.edu.sporthubujp.mapper.LikeDislikeStatusMapper;
@@ -62,7 +61,8 @@ public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
             .orElseThrow(EntityExistsException::new);
     }
 
-    @Override public LikeDislikeStatusDTO addNewLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus) {
-        return likeDislikeStatusMapper.entityToDto(likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoToEntity(newLDStatus)));
+    @Override public LikeDislikeStatusSaveDTO addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus) {
+        return likeDislikeStatusMapper.entityToDtoSave(
+            likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoSaveToEntity(newLDStatus)));
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusDTO;
+import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.entity.comment.LikeDislikeStatus;
 import com.softserve.edu.sporthubujp.service.CommentService;
@@ -53,12 +55,13 @@ public class LikeDislikeStatusController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PostMapping("/likedislikestatuses")
+    @PostMapping(value = "/likedislikestatuses",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<Comment> addNewLikeDislikeStatus(LikeDislikeStatusDTO newLikeDislikeStatus) {
-        log.info("Add new user's like-dislike status to comment");
-        likeDislikeStatusService.addNewLikeDislikeStatus(newLikeDislikeStatus);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<LikeDislikeStatusSaveDTO> addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLikeDislikeStatus) {
+        log.info("Add new user's like-dislike status to comment" + newLikeDislikeStatus.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(likeDislikeStatusService.addNewLikeDislikeStatus(newLikeDislikeStatus));
     }
 
     @GetMapping("/{id}/likedislikestatuses")
