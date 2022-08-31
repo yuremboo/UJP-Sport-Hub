@@ -11,11 +11,17 @@ import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -32,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getAllCommentsByArticleId(String articleId) {
+    public List<CommentDTO> getAllCommentByArticleId(String articleId) {
         List<Comment> comments = new LinkedList<Comment>();
         comments = commentRepository.findAllByArticleId(articleId);
         log.info("Get all comments by article id {} in service", articleId);
@@ -41,6 +47,12 @@ public class CommentServiceImpl implements CommentService {
             commentsDTOS.add(commentMapper.entityToDto(comment));
         }
         return commentsDTOS;
+    }
+
+    @Override
+    public int getNumOfCommentsByArticleId(String articleId) {
+        List<CommentDTO> commentDTOS = getAllCommentByArticleId(articleId);
+        return commentDTOS.size();
     }
 
     @Override public void deleteComment(String id) {

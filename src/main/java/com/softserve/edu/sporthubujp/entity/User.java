@@ -34,6 +34,8 @@ public class User {
     private Role role;
     @Column(name="password", length=255, nullable=false, unique=false)
     private String password;
+    @Column(name="photo", length=255, nullable=true, unique=false)
+    private String photo;
     @Column(name="is_active")
     private Boolean isActive;
     @CreatedDate

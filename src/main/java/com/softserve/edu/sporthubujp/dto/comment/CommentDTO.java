@@ -12,6 +12,6 @@ public class CommentDTO {
     private Integer dislikes;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private String commenterId;
-    private String articleId;
+    private UserDTO user;
+    private ArticleDTO article;
 }

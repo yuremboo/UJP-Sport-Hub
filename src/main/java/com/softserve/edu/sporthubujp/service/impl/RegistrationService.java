@@ -34,7 +34,10 @@ public class RegistrationService {
     private final static String TOKEN_EXPIRED = "Service: token %s expired";
 
     private final static String LOGIN_ROUTE = "<meta http-equiv=\"refresh\" content=\"0;" +
-            " url=https://ujp-sports-hub-ui.herokuapp.com/login\" />";
+            " url=http://localhost:3000/login\" />";
+            
+    private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
+
 
     private final UserService userService;
     private final EmailValidator emailValidator;
@@ -62,10 +65,10 @@ public class RegistrationService {
                         Role.USER)
         );
 
-        String link = "https://ujp-sports-hub.herokuapp.com/api/v1/registration/confirm?token=" + token;
+        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
 
         emailSender.send(
-                request.getEmail(),
+                EMAIL_SERVER,
                 buildEmail(link));
 
         return token;
