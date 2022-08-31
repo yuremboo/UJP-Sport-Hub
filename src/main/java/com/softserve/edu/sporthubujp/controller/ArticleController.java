@@ -105,8 +105,8 @@ public class ArticleController {
                 articleService.getAllArticles(pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    @GetMapping("/articles/category_id/{id}")
     public ResponseEntity<List<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
