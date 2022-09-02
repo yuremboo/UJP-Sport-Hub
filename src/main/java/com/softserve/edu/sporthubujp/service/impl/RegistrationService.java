@@ -3,11 +3,9 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.google.common.io.Files;
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-import com.softserve.edu.sporthubujp.email.EmailValidator;
 import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.exception.TokenAlreadyConfirmedException;
-import com.softserve.edu.sporthubujp.exception.InvalidEmailException;
 import com.softserve.edu.sporthubujp.exception.TokenExpiredException;
 import com.softserve.edu.sporthubujp.exception.TokenNotFoundException;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
@@ -29,7 +27,6 @@ import java.util.Locale;
 @Slf4j
 public class RegistrationService {
     private final static String TOKEN_NOT_FOUND = "Service: token %s not found";
-    private final static String INVALID_EMAIL = "Service: email %s is not valid";
     private final static String TOKEN_ALREADY_CONFIRMED = "Service: token %s is already confirmed";
     private final static String TOKEN_EXPIRED = "Service: token %s expired";
 
@@ -40,7 +37,6 @@ public class RegistrationService {
 
 
     private final UserService userService;
-    private final EmailValidator emailValidator;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSenderService emailSender;
 
@@ -48,13 +44,6 @@ public class RegistrationService {
             throws IOException, SendFailedException {
 
         log.info(String.format("Service: registering user with email %s", request.getEmail()));
-        boolean isValidEmail = emailValidator.
-                test(request.getEmail());
-
-        if (!isValidEmail) {
-            log.error(String.format(INVALID_EMAIL, request.getEmail()));
-            throw new InvalidEmailException(String.format(INVALID_EMAIL, request.getEmail()), request);
-        }
 
         String token = userService.signUpUser(
                 new UserDTO(
