@@ -1,4 +1,4 @@
-package validator;
+package com.softserve.edu.sporthubujp.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

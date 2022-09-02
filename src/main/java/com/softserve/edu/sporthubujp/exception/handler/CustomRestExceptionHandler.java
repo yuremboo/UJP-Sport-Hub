@@ -183,4 +183,22 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return buildResponseEntity(apiError);
     }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    protected ResponseEntity<Object> handleInvalidPassword(
+            InvalidPasswordException ex) {
+
+        ApiError apiError = new ApiError(HttpStatus.NOT_ACCEPTABLE);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.toString());
+
+        RegistrationRequestDTO request = ex.getRequestDTO();
+        ApiValidationError apiValidationError = new ApiValidationError(List.of(request), ex.getMessage());
+        apiValidationError.setField("password");
+        apiValidationError.setRejectedValue(request.getPassword());
+
+        apiError.setSubErrors(List.of(apiValidationError));
+
+        return buildResponseEntity(apiError);
+    }
 }

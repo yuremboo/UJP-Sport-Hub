@@ -5,9 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import validator.EmailConstraint;
-import validator.NameConstraint;
-import validator.PasswordConstraint;
+import com.softserve.edu.sporthubujp.validator.EmailConstraint;
+import com.softserve.edu.sporthubujp.validator.NameConstraint;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,20 +25,25 @@ public class User {
     @Column(name="first_name", length=255, nullable=false, unique=false)
     @NameConstraint
     private String firstName;
+
     @Column(name="last_name", length=255, nullable=false, unique=false)
     @NameConstraint
     private String lastName;
+
     @Column(name="email", length=255, nullable=false, unique=true)
     @EmailConstraint
     private String email;
+
     @Enumerated(EnumType.STRING)
     @Column(name="role", length=10, nullable=false, unique=false)
     private Role role;
+
     @Column(name="password", length=255, nullable=false, unique=false)
-    @PasswordConstraint
     private String password;
+
     @Column(name="is_active")
     private Boolean isActive;
+
     @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
     private LocalDateTime createDateTime;
