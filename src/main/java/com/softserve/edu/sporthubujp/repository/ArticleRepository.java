@@ -26,6 +26,11 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
         + "WHERE u.id = ?1 AND t.id = ?2 "
         + "ORDER BY a.createDateTime ")
     List<Article> getArticlesByTeamId(String idUser, String teamId);
+    @Transactional
+    @Query("SELECT a FROM Article a "
+        + "ORDER BY a.views "
+        + "MAX 3 ")
+    List<Article> getMorePopularArticles();
     Page<Article> findAll(Pageable pageable);
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 

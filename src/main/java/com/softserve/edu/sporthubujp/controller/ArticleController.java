@@ -55,6 +55,13 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/morePopular")
+    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
+        log.info("Get more popular articles");
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getMorePopularArticles());
+    }
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
@@ -66,7 +73,6 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getAllArticlesBySubscription(idUser));
     }
-
 
     @GetMapping("/articles/teams/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")

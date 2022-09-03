@@ -62,7 +62,20 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleRepository.deleteById(id);
     }
-
+    @Override
+    public List<ArticleListDTO> getMorePopularArticles() {
+        List<Article> articles = articleRepository.getMorePopularArticles();
+        log.info("Get 3 more popular articles");
+        List<ArticleDTO> articleDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
+    }
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
         List<Article> articles = new LinkedList<Article>();

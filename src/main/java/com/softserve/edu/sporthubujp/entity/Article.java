@@ -28,6 +28,8 @@ public class Article {
     private String caption;
     @Column(name = "alt", length = 255, nullable = false, unique = false)
     private String alt;
+    @Column(name = "views", length = 255, nullable = false, unique = false)
+    private Integer views;
     @Column(name = "location", length = 255, nullable = false, unique = false)
     private String location;
     @Column(name = "picture", length = 255, nullable = false, unique = false)
