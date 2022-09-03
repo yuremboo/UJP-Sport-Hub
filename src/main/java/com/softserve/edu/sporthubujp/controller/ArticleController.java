@@ -74,11 +74,11 @@ public class ArticleController {
             articleService.getAllArticlesBySubscription(user.getId()));
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/edit-article/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
         @PathVariable("id") String id) {
-        log.info("Update article by id {}", id);
+        log.info("Update article by id {}", newArticle.toString());
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.updateArticle(newArticle, id));
     }
