@@ -1,17 +1,26 @@
 package com.softserve.edu.sporthubujp.entity.comment;
 
-import lombok.*;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.User;
+
+import lombok.Data;
 
 @Entity
 @Data
@@ -20,11 +29,11 @@ import com.softserve.edu.sporthubujp.entity.User;
 public class Comment {
 
     @Id
-    @GeneratedValue(generator="system-uuid")
-    @GenericGenerator(name="system-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "system-uuid")
+    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
-    @Column(name = "comment", length = 255, nullable = false, unique = false)
-    private String comment;
+    @Column(name = "comment_text", length = 255, nullable = false, unique = false)
+    private String commentText;
     @CreatedDate
     @Column(name = "create_date_time", nullable = false, unique = false)
     private LocalDateTime createDateTime;
@@ -35,11 +44,11 @@ public class Comment {
     private Integer likes;
     @Column(name = "dislikes", nullable = true, unique = false)
     private Integer dislikes;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "commenter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_user"), updatable = false)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_article"), updatable = false)
     private Article article;
 

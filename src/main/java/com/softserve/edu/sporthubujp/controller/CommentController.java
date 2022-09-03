@@ -54,9 +54,8 @@ public class CommentController {
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<CommentSaveDTO> addNewComment(@NotNull CommentSaveDTO newComment) {
-        log.info(String.format("Add new comment to article %s", newComment.toString()));
-        commentService.addNewComment(newComment);
-        return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody CommentSaveDTO newComment) {
+        log.info(String.format("Add new comment to article %s", newComment));
+        return ResponseEntity.status(HttpStatus.OK).body(commentService.addNewComment(newComment));
     }
 }

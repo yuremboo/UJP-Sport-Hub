@@ -54,7 +54,7 @@ public class Article {
     @JoinColumn(name = "team_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_team"), insertable=false, updatable=false)
     private Team team;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article")
     @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 

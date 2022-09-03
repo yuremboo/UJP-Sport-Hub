@@ -3,8 +3,9 @@ package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -76,7 +77,7 @@ public class ArticleController {
     getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
         String email= principal.getName();
         log.info("Get articles of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
+        String idUser = userService.findUserByEmail(email).getId();
         log.info("Id user = {}",idUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -110,12 +111,21 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/isactive/{isactive}")
+    @GetMapping("/admin/articles/category_id/{id}/isactive/{isActive}")
     public ResponseEntity<List<ArticleListDTO>>
-    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
+    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isActive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+            articleService.getAllArticlesByCategoryIdAndIsActive(id, isActive, pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/articles/six-categories/{categoryId}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getSixActiveArticlesByCategoryId(@PathVariable String categoryId) {
+        log.info("Get all active articles by category id {}", categoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getSixActiveArticlesByCategoryId(categoryId));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")

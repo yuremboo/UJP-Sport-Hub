@@ -48,7 +48,7 @@ public class TeamController {
     getAllTeamsBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
         log.info("Get all teams of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
+        String idUser = userService.findUserByEmail(email).getId();
         log.info("Id user = {}",idUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(

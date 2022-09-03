@@ -11,8 +11,6 @@ import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
-import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;

@@ -18,6 +18,7 @@ public interface ArticleService {
 
     List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
+    List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId);
     void deleteArticleById(String id);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);

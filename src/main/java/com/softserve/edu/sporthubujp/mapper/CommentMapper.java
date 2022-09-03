@@ -11,14 +11,20 @@ import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
 @Mapper(componentModel = "spring", builder = @Builder(disableBuilder = true))
 public interface CommentMapper {
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "article.id", source = "articleId")
     Comment dtoToEntity(CommentDTO commentDTO);
+
+    @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "articleId", source = "article.id")
     CommentDTO entityToDto(Comment comment);
 
+    @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "article.id", source = "articleId")
-    @Mapping(target = "user.id", source = "commenterId")
     Comment dtoSaveToEntity(CommentSaveDTO commentSaveDTO);
+
+    @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "articleId", source = "article.id")
-    @Mapping(target = "commenterId", source = "user.id")
     CommentSaveDTO entityToDtoSave(Comment comment);
 
     void updateComment(@MappingTarget Comment commentFromDB, CommentSaveDTO newComment);

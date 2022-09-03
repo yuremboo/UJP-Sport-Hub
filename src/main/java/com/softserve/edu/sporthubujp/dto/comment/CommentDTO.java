@@ -7,11 +7,11 @@ import lombok.Data;
 @Data
 public class CommentDTO {
     private String id;
-    private String comment;
+    private String commentText;
     private Integer likes;
     private Integer dislikes;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private UserDTO user;
-    private ArticleDTO article;
+    private String userId;
+    private String articleId;
 }

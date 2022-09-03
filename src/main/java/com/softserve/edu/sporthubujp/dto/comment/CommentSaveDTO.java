@@ -2,6 +2,9 @@ package com.softserve.edu.sporthubujp.dto.comment;
 
 import java.time.LocalDateTime;
 
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.UserDTO;
+
 import lombok.Data;
 
 @Data
@@ -10,7 +13,7 @@ public class CommentSaveDTO {
     private Integer dislikes;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private String commenterId;
+    private String userId;
     private String articleId;
-    private String comment;
+    private String commentText;
 }
