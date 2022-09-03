@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,4 +43,13 @@ public class UserController {
             userService.updateUser(user, newUser));
     }
 
+    @PutMapping(path = "/change/password")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<UserDTO> updatePassword(@NotNull Principal principal,
+        @RequestBody UserSavePasswordDTO newUser) {
+        User user = userService.findUserByEmail(principal.getName());
+        log.info(String.format("Controller: updating password with id %s", user.getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.updatePassword(user, newUser));
+    }
 }

@@ -9,9 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserSaveProfileDTO {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String photo;
+public class UserSavePasswordDTO {
+    private String password;
 }

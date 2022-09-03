@@ -1,6 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
+import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
@@ -103,4 +104,12 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) {
+        return userRepository.findById(oldUser.getId())
+            .map(user -> {
+                userMapper.updatePassword(user, newUser);
+                return userMapper.entityToDto(userRepository.save(user));
+            })
+            .orElseThrow(EntityNotExistsException::new);
+    }
 }
