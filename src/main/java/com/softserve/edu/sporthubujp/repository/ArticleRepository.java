@@ -37,8 +37,7 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
 
     @Transactional
     @Query("SELECT a FROM Article a "
-        + "JOIN a.category c "
-        + "WHERE c.id = ?1 AND a.isActive = true "
+        + "WHERE a.category.id = ?1 AND a.isActive = true "
         + "ORDER BY a.createDateTime DESC ")
     List<Article> findAllActiveArticlesByCategoryId(String categoryId);
 }

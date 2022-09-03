@@ -11,7 +11,7 @@ public class ArticleListDTO {
     private String title;
     private String shortText;
     private Boolean isActive;
-    private CategoryDTO category;
+    private String categoryId;
 
     private String getFirstSentence(String articleText){
         char[] textArray = articleText.toCharArray();
@@ -34,6 +34,6 @@ public class ArticleListDTO {
         this.title = articleDTO.getTitle();
         this.isActive = articleDTO.getIsActive();
         this.shortText = getFirstSentence(articleDTO.getText());
-        this.category = articleDTO.getCategory();
+        this.categoryId = articleDTO.getCategoryId();
     }
 }
