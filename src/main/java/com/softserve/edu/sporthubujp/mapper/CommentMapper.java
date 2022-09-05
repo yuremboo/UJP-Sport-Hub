@@ -27,5 +27,7 @@ public interface CommentMapper {
     @Mapping(target = "articleId", source = "article.id")
     CommentSaveDTO entityToDtoSave(Comment comment);
 
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "article.id", source = "articleId")
     void updateComment(@MappingTarget Comment commentFromDB, CommentSaveDTO newComment);
 }

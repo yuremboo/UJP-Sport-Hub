@@ -1,15 +1,19 @@
 package com.softserve.edu.sporthubujp.entity.comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -21,6 +25,7 @@ import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.User;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
@@ -51,5 +56,9 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "article_id", nullable = false, foreignKey = @ForeignKey(name = "fk_comments_article"), updatable = false)
     private Article article;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment", cascade = CascadeType.ALL)
+    @EqualsAndHashCode.Exclude
+    private List<LikeDislikeStatus> likeDislikeStatuses;
 
 }

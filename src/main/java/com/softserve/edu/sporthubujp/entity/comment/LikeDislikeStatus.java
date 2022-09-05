@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.entity.comment;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -33,10 +34,10 @@ public class LikeDislikeStatus {
     private Boolean likedDisliked;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_user"), insertable = false, updatable = false)
+    @JoinColumn(name = "user_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_user"),updatable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "comment_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_comment"), insertable = false, updatable = false)
+    @JoinColumn(name = "comment_id", nullable = false, foreignKey = @ForeignKey(name = "fk_likes_comment"), updatable = false)
     private Comment comment;
 }

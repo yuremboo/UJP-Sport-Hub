@@ -10,7 +10,7 @@ public interface CommentService {
     int getNumOfCommentsByArticleId(String articleId);
     void deleteComment(String commentId);
 
-    CommentDTO updateComment(CommentSaveDTO newComment, String id);
+    CommentSaveDTO updateComment(CommentSaveDTO newComment, String id);
 
     CommentSaveDTO addNewComment(CommentSaveDTO newComment);
 

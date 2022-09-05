@@ -38,7 +38,7 @@ public class LikeDislikeStatusController {
         this.likeDislikeStatusService = likeDislikeStatusService;
     }
 
-    @DeleteMapping("/likedislikestatuses/{id}")
+    @DeleteMapping("/like-dislike-statuses/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> deleteLikeDislikeStatus(@PathVariable("id") String id) {
         log.info("Delete like-dislike status by id {}", id);
@@ -46,25 +46,24 @@ public class LikeDislikeStatusController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PutMapping("/likedislikestatuses/{id}")
+    @PutMapping("/like-dislike-statuses/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<LikeDislikeStatus> updateLikeDislikeStatus(@RequestBody LikeDislikeStatusDTO newLikeDislikeStatus,
+    public ResponseEntity<LikeDislikeStatusSaveDTO> updateLikeDislikeStatus(@RequestBody LikeDislikeStatusSaveDTO newLikeDislikeStatus,
         @PathVariable("id") String id) {
         log.info("Update like-dislike status by id {}", id);
-        likeDislikeStatusService.updateLikeDislikeStatus(newLikeDislikeStatus, id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            likeDislikeStatusService.updateLikeDislikeStatus(newLikeDislikeStatus, id));
     }
 
-    @PostMapping(value = "/likedislikestatuses",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/like-dislike-statuses")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<LikeDislikeStatusSaveDTO> addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLikeDislikeStatus) {
+    public ResponseEntity<LikeDislikeStatusSaveDTO> addNewLikeDislikeStatus(@RequestBody LikeDislikeStatusSaveDTO newLikeDislikeStatus) {
         log.info("Add new user's like-dislike status to comment" + newLikeDislikeStatus.toString());
-        return ResponseEntity.status(HttpStatus.OK).body(likeDislikeStatusService.addNewLikeDislikeStatus(newLikeDislikeStatus));
+        return ResponseEntity.status(HttpStatus.OK).body(
+            likeDislikeStatusService.addNewLikeDislikeStatus(newLikeDislikeStatus));
     }
 
-    @GetMapping("/{id}/likedislikestatuses")
+    @GetMapping("/{id}/like-dislike-statuses")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<LikeDislikeStatusDTO>> getAllLikeDislikeStatusesByUserId(@PathVariable String id) {
         log.info("Get all like-dislike statuses by user id {}", id);

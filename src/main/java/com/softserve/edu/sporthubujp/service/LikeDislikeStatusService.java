@@ -8,6 +8,6 @@ import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusSaveDTO;
 public interface LikeDislikeStatusService {
     List<LikeDislikeStatusDTO> getAllStatusesByUserId(String userId);
     void deleteLikeDislikeStatus(String id);
-    LikeDislikeStatusDTO updateLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus, String id);
+    LikeDislikeStatusSaveDTO updateLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus, String id);
     LikeDislikeStatusSaveDTO addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus);
 }

@@ -52,16 +52,18 @@ public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
         likeDislikeStatusRepository.deleteById(id);
     }
 
-    @Override public LikeDislikeStatusDTO updateLikeDislikeStatus(LikeDislikeStatusDTO newLDStatus, String id) {
+    @Override
+    public LikeDislikeStatusSaveDTO updateLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus, String id) {
         return likeDislikeStatusRepository.findById(id)
             .map(likeDislikeStatus -> {
                 likeDislikeStatusMapper.updateLikeDislikeStatus(likeDislikeStatus, newLDStatus);
-                return likeDislikeStatusMapper.entityToDto(likeDislikeStatusRepository.save(likeDislikeStatus));
+                return likeDislikeStatusMapper.entityToDtoSave(likeDislikeStatusRepository.save(likeDislikeStatus));
             })
             .orElseThrow(EntityExistsException::new);
     }
 
-    @Override public LikeDislikeStatusSaveDTO addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus) {
+    @Override
+    public LikeDislikeStatusSaveDTO addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus) {
         return likeDislikeStatusMapper.entityToDtoSave(
             likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoSaveToEntity(newLDStatus)));
     }

@@ -53,7 +53,8 @@ public class CommentServiceImpl implements CommentService {
         return commentDTOS.size();
     }
 
-    @Override public void deleteComment(String id) {
+    @Override
+    public void deleteComment(String id) {
         log.info("Delete comment by id in service");
         if (!commentRepository.existsById(id)) {
             log.error(String.format(COMMENT_NOT_FOUND_BY_ID, id));
@@ -62,16 +63,19 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(id);
     }
 
-    @Override public CommentDTO updateComment(CommentSaveDTO newComment, String id) {
+    @Override
+    public CommentSaveDTO updateComment(CommentSaveDTO newComment, String id) {
         return commentRepository.findById(id)
             .map(comment -> {
                 commentMapper.updateComment(comment, newComment);
-                return commentMapper.entityToDto(commentRepository.save(comment));
+                return commentMapper.entityToDtoSave(commentRepository.save(comment));
             })
             .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
-        return commentMapper.entityToDtoSave(commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
+    @Override
+    public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+        return commentMapper.entityToDtoSave(
+            commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
     }
 }

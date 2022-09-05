@@ -1,12 +1,9 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
-import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -43,16 +39,14 @@ public class CommentController {
 
     @PutMapping("/comments/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<CommentDTO> updateComment(CommentSaveDTO newComment,
+    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody CommentSaveDTO newComment,
         @PathVariable("id") String id) {
         log.info("Update comment by id {}", id);
-        commentService.updateComment(newComment, id);
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            commentService.updateComment(newComment, id));
     }
 
-    @PostMapping(value = "/comments",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping("/comments")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody CommentSaveDTO newComment) {
         log.info(String.format("Add new comment to article %s", newComment));
