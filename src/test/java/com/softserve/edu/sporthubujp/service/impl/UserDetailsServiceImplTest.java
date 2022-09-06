@@ -1,10 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.entity.Role;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +25,9 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserDetailsServiceImplTest {
+
+    private final static String USER_NOT_FOUND_MSG =
+            "Incorrect user ID or password. Try again";
     @Mock
     private UserRepository userRepository;
     static MockedStatic<User> dummyStaticUser = Mockito.mockStatic(User.class, RETURNS_DEEP_STUBS);
@@ -47,7 +47,7 @@ class UserDetailsServiceImplTest {
 
         assertThatThrownBy(() -> underTest.loadUserByUsername(anyString()))
                 .isInstanceOf(InternalAuthenticationServiceException.class)
-                .hasMessageContaining("Incorrect user ID or password. Try again");
+                .hasMessageContaining(USER_NOT_FOUND_MSG);
 
         dummyStaticUser.verify(
                 () -> User.withUsername(anyString()),
@@ -68,7 +68,7 @@ class UserDetailsServiceImplTest {
 
         assertThatThrownBy(() -> underTest.loadUserByUsername(anyString()))
                 .isInstanceOf(InternalAuthenticationServiceException.class)
-                .hasMessageContaining("Incorrect user ID or password. Try again");
+                .hasMessageContaining(USER_NOT_FOUND_MSG);
 
         dummyStaticUser.verify(
                 () -> User.withUsername(anyString()),
@@ -89,6 +89,8 @@ class UserDetailsServiceImplTest {
                 .authorities(anyString())
                 .build();
 
+        dummyStaticUser.reset();
+
         given(userRepository.findByEmail(anyString()))
                 .willReturn(Optional.of(user));
 
@@ -104,8 +106,7 @@ class UserDetailsServiceImplTest {
         underTest.loadUserByUsername(anyString());
 
         dummyStaticUser.verify(
-                () -> User.withUsername(anyString()),
-                times(2)
+                () -> User.withUsername(anyString())
         );
     }
 }
