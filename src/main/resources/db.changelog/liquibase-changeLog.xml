@@ -17,6 +17,9 @@
             <column name="logo" type="SMALLINT">
                 <constraints nullable="false"/>
             </column>
+            <column name="alt" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
@@ -38,6 +41,9 @@
                 <constraints nullable="false" primaryKey="true" primaryKeyName="articles_pkey"/>
             </column>
             <column name="alt" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="views" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
             <column name="caption" type="VARCHAR(255)">
