@@ -38,7 +38,6 @@ class UserServiceImplTest {
     private UserMapper userMapper;
     @Mock
     private ConfirmationTokenService confirmationTokenService;
-//    static MockedStatic<UUID> dummyStaticUUID = Mockito.mockStatic(UUID.class);
     @InjectMocks
     private UserServiceImpl underTest;
 
@@ -99,8 +98,6 @@ class UserServiceImplTest {
 
         verify(user).setPassword(anyString());
         verify(user).setCreateDateTime(any(LocalDateTime.class));
-
-        // verify randomUUID method call
 
         verify(confirmationTokenService)
                 .saveConfirmationToken(any(ConfirmationToken.class));
