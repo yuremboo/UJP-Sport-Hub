@@ -2,8 +2,7 @@ package com.softserve.edu.sporthubujp.dto.comment;
 
 import java.time.LocalDateTime;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.dto.UserDTO;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -15,5 +14,6 @@ public class CommentSaveDTO {
     private LocalDateTime updateDateTime;
     private String userId;
     private String articleId;
+    @NotNull
     private String commentText;
 }

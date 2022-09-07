@@ -30,7 +30,7 @@ public class LikeDislikeStatus {
     @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
-    @Column(name = "liked_disliked")
+    @Column(name = "liked_disliked", nullable = false)
     private Boolean likedDisliked;
 
     @ManyToOne

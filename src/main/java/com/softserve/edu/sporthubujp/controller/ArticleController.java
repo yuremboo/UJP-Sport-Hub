@@ -58,7 +58,7 @@ public class ArticleController {
     public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentByArticleId(id));
+            commentService.getAllCommentsByArticleId(id));
     }
 
     @DeleteMapping("/articles/{id}")

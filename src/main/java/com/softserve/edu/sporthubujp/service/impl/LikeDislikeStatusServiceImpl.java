@@ -3,17 +3,17 @@ package com.softserve.edu.sporthubujp.service.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.EntityExistsException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusDTO;
 import com.softserve.edu.sporthubujp.dto.comment.LikeDislikeStatusSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.LikeDislikeStatus;
-import com.softserve.edu.sporthubujp.exception.LikeDislikeStatusServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.LikeDislikeStatusMapper;
+import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.repository.LikeDislikeStatusRepository;
+import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.service.LikeDislikeStatusService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -21,20 +21,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
+    private static final String COMMENT_NOT_FOUND_BY_ID = "Comment not found by id: %s";
+    public static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
     private static final String LIKEDISLIKESTATUS_NOT_FOUND_BY_ID = "Like-dislike status not found by id: %s";
     private final LikeDislikeStatusRepository likeDislikeStatusRepository;
     private final LikeDislikeStatusMapper likeDislikeStatusMapper;
+    private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public LikeDislikeStatusServiceImpl(LikeDislikeStatusRepository likeDislikeStatusRepository,
-        LikeDislikeStatusMapper likeDislikeStatusMapper) {
+        LikeDislikeStatusMapper likeDislikeStatusMapper,
+        CommentRepository commentRepository,
+        UserRepository userRepository) {
         this.likeDislikeStatusRepository = likeDislikeStatusRepository;
         this.likeDislikeStatusMapper = likeDislikeStatusMapper;
+        this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     @Override public List<LikeDislikeStatusDTO> getAllStatusesByUserId(String userId) {
-        List<LikeDislikeStatus> statuses;
-        statuses = likeDislikeStatusRepository.findAllByUserId(userId);
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, userId));
+        }
+        List<LikeDislikeStatus> statuses = likeDislikeStatusRepository.findAllByUserId(userId);
         log.info("Get all like-dislike statuses by user id {} in service", userId);
         List<LikeDislikeStatusDTO> statusDTOS = new LinkedList<>();
         for (var status : statuses) {
@@ -47,23 +57,33 @@ public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
         log.info("Delete like-dislike status by id in service");
         if (!likeDislikeStatusRepository.existsById(id)) {
             log.error(String.format(LIKEDISLIKESTATUS_NOT_FOUND_BY_ID, id));
-            throw new LikeDislikeStatusServiceException(String.format(LIKEDISLIKESTATUS_NOT_FOUND_BY_ID, id));
+            throw new EntityNotExistsException(String.format(LIKEDISLIKESTATUS_NOT_FOUND_BY_ID, id));
         }
         likeDislikeStatusRepository.deleteById(id);
     }
 
     @Override
     public LikeDislikeStatusSaveDTO updateLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus, String id) {
+        if (!commentRepository.existsById(newLDStatus.getCommentId())) {
+            throw new EntityNotExistsException(String.format(COMMENT_NOT_FOUND_BY_ID, newLDStatus.getCommentId()));
+        } else if (!userRepository.existsById(newLDStatus.getUserId())) {
+            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newLDStatus.getUserId()));
+        }
         return likeDislikeStatusRepository.findById(id)
             .map(likeDislikeStatus -> {
                 likeDislikeStatusMapper.updateLikeDislikeStatus(likeDislikeStatus, newLDStatus);
                 return likeDislikeStatusMapper.entityToDtoSave(likeDislikeStatusRepository.save(likeDislikeStatus));
             })
-            .orElseThrow(EntityExistsException::new);
+            .orElseThrow(EntityNotExistsException::new);
     }
 
     @Override
     public LikeDislikeStatusSaveDTO addNewLikeDislikeStatus(LikeDislikeStatusSaveDTO newLDStatus) {
+        if (!commentRepository.existsById(newLDStatus.getCommentId())) {
+            throw new EntityNotExistsException(String.format(COMMENT_NOT_FOUND_BY_ID, newLDStatus.getCommentId()));
+        } else if (!userRepository.existsById(newLDStatus.getUserId())) {
+            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newLDStatus.getUserId()));
+        }
         return likeDislikeStatusMapper.entityToDtoSave(
             likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoSaveToEntity(newLDStatus)));
     }
