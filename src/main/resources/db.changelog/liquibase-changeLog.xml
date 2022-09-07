@@ -167,6 +167,9 @@
             <column name="password" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="photo" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
             <column name="role" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
@@ -212,6 +215,7 @@
             <column name="is_active" value="true"/>
             <column name="last_name" value="Smith"/>
             <column name="password" value="$2a$10$QQNuv0HsjssA/mc/Udu8T.3OT4EFrgMOjHykXJvgC5EeODiGc1p5u"/>
+            <column name="photo"/>
             <column name="role" value="ADMIN"/>
             <column name="update_date_time"/>
         </insert>

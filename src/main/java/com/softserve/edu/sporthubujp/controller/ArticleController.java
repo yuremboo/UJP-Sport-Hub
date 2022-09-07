@@ -1,9 +1,10 @@
 package com.softserve.edu.sporthubujp.controller;
 
+
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -60,11 +61,26 @@ public class ArticleController {
     public ResponseEntity<List<ArticleDTO>>
     getAllArticlesBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
-        log.info("Get all articles of the user with an email under {} subscription",email);
+        log.info("Get all articles of the user with an email under {} subscription", email);
+        User user = userService.findUserByEmail(email);
+        //        String idUser = userService.findUserByEmail(email);
+        log.info("Id user = {}", user.getId());
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getAllArticlesBySubscription(user.getId()));
+    }
+
+
+    @GetMapping("/articles/teams/{id}")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<List<ArticleListDTO>>
+    getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
+        String email= principal.getName();
+        log.info("Get articles of the user with an email under {} subscription",email);
         String idUser = userService.findUserByEmail(email);
         log.info("Id user = {}",idUser);
+
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesBySubscription(idUser));
+            articleService.getArticlesByTeamByUserId(idUser,teamId));
     }
 
     @PutMapping(path = "/articles/{id}")
@@ -90,7 +106,7 @@ public class ArticleController {
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryId(id,pageable));
+            articleService.getAllArticlesByCategoryId(id,pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -99,7 +115,7 @@ public class ArticleController {
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+            articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
