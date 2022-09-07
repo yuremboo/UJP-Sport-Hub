@@ -5,6 +5,7 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -76,11 +77,11 @@ public class ArticleController {
     getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
         String email= principal.getName();
         log.info("Get articles of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
+        User user = userService.findUserByEmail(email);
+        log.info("Id user = {}",user.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticlesByTeamByUserId(idUser,teamId));
+            articleService.getArticlesByTeamByUserId(user.getId(),teamId));
     }
 
     @PutMapping(path = "/articles/{id}")
@@ -124,5 +125,13 @@ public class ArticleController {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getMostCommentedArticles());
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/admin/articles/publish/{id}")
+    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
+        log.info("Publish or unpublished article by id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.publishUnpublishedArticle(id));
     }
 }

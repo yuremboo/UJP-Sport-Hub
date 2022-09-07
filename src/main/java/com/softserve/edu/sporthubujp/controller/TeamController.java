@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
 import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.TeamService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
@@ -48,11 +49,11 @@ public class TeamController {
     getAllTeamsBySubscription(@NotNull Principal principal) {
         String email= principal.getName();
         log.info("Get all teams of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
+        User user = userService.findUserByEmail(email);
+        log.info("Id user = {}",user.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-            teamService.getAllTeamsBySubscription(idUser));
+            teamService.getAllTeamsBySubscription(user.getId()));
     }
 
     @GetMapping("/teams/search_name/{searchName}")

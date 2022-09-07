@@ -180,4 +180,16 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return mostCommentedArticleListDTOS;
     }
+
+    public ArticleDTO publishUnpublishedArticle(String id) {
+        return articleRepository.findById(id)
+            .map(article -> {
+                article.setIsActive(!article.getIsActive());
+                return articleMapper.entityToDto(articleRepository.save(article));
+            })
+            .orElseThrow(EntityNotExistsException::new);
+    }
 }
+
+
+
