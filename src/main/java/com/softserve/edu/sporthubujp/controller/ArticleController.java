@@ -5,6 +5,7 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -34,12 +36,13 @@ public class ArticleController {
         this.commentService = commentService;
         this.userService = userService;
     }
+
     @GetMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticleById(id));
+                articleService.getArticleById(id));
     }
 
     @GetMapping("/{id}/comments")
@@ -47,8 +50,9 @@ public class ArticleController {
     public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentByArticleId(id));
+                commentService.getAllCommentByArticleId(id));
     }
+
     @DeleteMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
@@ -56,40 +60,40 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
     getAllArticlesBySubscription(@NotNull Principal principal) {
-        String email= principal.getName();
+        String email = principal.getName();
         log.info("Get all articles of the user with an email under {} subscription", email);
         User user = userService.findUserByEmail(email);
-        //        String idUser = userService.findUserByEmail(email);
         log.info("Id user = {}", user.getId());
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesBySubscription(user.getId()));
+                articleService.getAllArticlesBySubscription(user.getId()));
     }
 
 
     @GetMapping("/articles/teams/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleListDTO>>
-    getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
-        String email= principal.getName();
-        log.info("Get articles of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
+    getArticlesByTeamByUserId(@NotNull Principal principal, @PathVariable("id") String teamId) {
+        String email = principal.getName();
+        log.info("Get articles of the user with an email under {} subscription", email);
+        User user = userService.findUserByEmail(email);
+        log.info("Id user = {}", user.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticlesByTeamByUserId(idUser,teamId));
+                articleService.getArticlesByTeamByUserId(user.getId(), teamId));
     }
 
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
-        @PathVariable("id") String id) {
+                                                    @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.updateArticle(newArticle, id));
+                articleService.updateArticle(newArticle, id));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -106,7 +110,7 @@ public class ArticleController {
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesByCategoryId(id,pageable));
+                articleService.getAllArticlesByCategoryId(id, pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -115,12 +119,12 @@ public class ArticleController {
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/mostcommented")
-    public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles(){
+    public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getMostCommentedArticles());
