@@ -14,7 +14,9 @@ import java.util.List;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="USERS")
+@Table(name="USERS", indexes = {
+        @Index(columnList = "email", name = "user_email_idx")
+})
 @NoArgsConstructor
 public class User {
     @Id
