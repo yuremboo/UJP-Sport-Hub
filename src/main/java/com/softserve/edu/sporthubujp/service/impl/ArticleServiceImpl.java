@@ -4,8 +4,6 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.Comment;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
@@ -102,7 +100,6 @@ public class ArticleServiceImpl implements ArticleService {
     }
     
     public List<ArticleListDTO> getAllArticles(Pageable pageable){
-//        List<Article> articles = new LinkedList<Article>();
         Page<Article> articles;
         articles = articleRepository.findAll(pageable);
         log.info("Get all article in service");
@@ -179,5 +176,23 @@ public class ArticleServiceImpl implements ArticleService {
             mostCommentedArticleListDTOS.add(new ArticleListDTO(articleDTO));
         }
         return mostCommentedArticleListDTOS;
+    }
+
+
+    @Override
+    public List<ArticleListDTO> getAllArticlesWithoutPagination() {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.findAll();
+
+        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
     }
 }

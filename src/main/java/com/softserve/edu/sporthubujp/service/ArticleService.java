@@ -26,4 +26,5 @@ public interface ArticleService {
 
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     List<ArticleListDTO> getMostCommentedArticles();
+    List<ArticleListDTO> getAllArticlesWithoutPagination();
 }

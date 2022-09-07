@@ -13,4 +13,6 @@ public interface UserService {
     User findUserByEmail(String email);
 
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
+
+    UserDTO resetUserPassword(User user, String newPassword);
 }

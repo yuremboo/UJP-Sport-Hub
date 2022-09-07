@@ -3,13 +3,12 @@ package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 @Slf4j
 @RestController
@@ -125,4 +123,13 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getMostCommentedArticles());
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/allarticles")
+    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesWithoutPagination());
+    }
+
+
 }

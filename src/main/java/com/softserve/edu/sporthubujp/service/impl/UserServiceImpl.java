@@ -2,17 +2,16 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
-import com.softserve.edu.sporthubujp.entity.User;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
-import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
-import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -101,6 +100,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.entityToDto(userRepository.save(
             userMapper.updateUser(oldUser, newUser))
         );
+    }
+
+    @Override
+    public UserDTO resetUserPassword(User user, String newPassword) {
+        String encodedPassword = passwordConfig.passwordEncoder()
+                .encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        return userMapper.entityToDto(user);
     }
 
 }
