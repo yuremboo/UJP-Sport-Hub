@@ -6,6 +6,8 @@ import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.entity.Logs;
+import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
@@ -19,7 +21,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.sql.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -29,18 +33,23 @@ public class ArticleController {
     private final ArticleService articleService;
     private final CommentService commentService;
     private final UserService userService;
+    private final LogsRepository logRepository;
 
     @Autowired
-    public ArticleController(ArticleService articleService, CommentService commentService, UserService userService) {
+    public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
+        LogsRepository logRepository) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.userService = userService;
+        this.logRepository = logRepository;
     }
 
     @GetMapping("/articles/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
+        CompletableFuture.supplyAsync(()->logRepository.save(new Logs(id)));
+        //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
     }
@@ -60,7 +69,13 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/morePopular")
+    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
+        log.info("Get more popular articles");
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getMorePopularArticles());
+    }
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
@@ -90,10 +105,10 @@ public class ArticleController {
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
-                                                    @PathVariable("id") String id) {
+        @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.updateArticle(newArticle, id));
+            articleService.updateArticle(newArticle, id));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
