@@ -129,4 +129,13 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getMostCommentedArticles());
     }
+
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/newest/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getFourNewestArticlesByCategoryId(@PathVariable("id") String categoryId, Pageable pageable) {
+        log.info("Controller: getting four newest articles by category id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+    }
 }
