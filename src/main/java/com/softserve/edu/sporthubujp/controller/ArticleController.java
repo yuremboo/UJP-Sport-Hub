@@ -37,7 +37,7 @@ public class ArticleController {
 
     @Autowired
     public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
-        LogsRepository logRepository) {
+                             LogsRepository logRepository) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.userService = userService;
@@ -48,7 +48,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
-        CompletableFuture.supplyAsync(()->logRepository.save(new Logs(id)));
+        CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
@@ -69,13 +69,15 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
-    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
+    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles() {
         log.info("Get more popular articles");
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getMorePopularArticles());
+                articleService.getMorePopularArticles());
     }
+
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
@@ -105,10 +107,10 @@ public class ArticleController {
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
-        @PathVariable("id") String id) {
+                                                    @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.updateArticle(newArticle, id));
+                articleService.updateArticle(newArticle, id));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
