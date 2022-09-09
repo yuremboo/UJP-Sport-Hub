@@ -72,12 +72,12 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
-    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles() {
+    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
         log.info("Get more popular articles");
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getMorePopularArticles());
+            articleService.getMorePopularArticles());
     }
-
+  
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
@@ -89,7 +89,6 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticlesBySubscription(user.getId()));
     }
-
 
     @GetMapping("/articles/teams/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
@@ -147,6 +146,7 @@ public class ArticleController {
                 articleService.getMostCommentedArticles());
     }
 
+
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/newest/{id}")
     public ResponseEntity<List<ArticleListDTO>>
@@ -154,5 +154,13 @@ public class ArticleController {
         log.info("Controller: getting four newest articles by category id");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/admin/articles/publish/{id}")
+    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
+        log.info("Publish or unpublished article by id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.publishUnpublishedArticle(id));
+
     }
 }

@@ -213,5 +213,17 @@ public class ArticleServiceImpl implements ArticleService {
                 .collect(Collectors.toList());
 
         return articleListDTOs;
+}
+
+    public ArticleDTO publishUnpublishedArticle(String id) {
+        return articleRepository.findById(id)
+            .map(article -> {
+                article.setIsActive(!article.getIsActive());
+                return articleMapper.entityToDto(articleRepository.save(article));
+            })
+            .orElseThrow(EntityNotExistsException::new);
     }
 }
+
+
+
