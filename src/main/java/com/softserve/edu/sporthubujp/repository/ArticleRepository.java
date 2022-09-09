@@ -34,6 +34,7 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
         + "WHERE u.id = ?1 AND t.id = ?2 "
         + "ORDER BY a.createDateTime ")
     List<Article> getArticlesByTeamId(String idUser, String teamId);
+
     Page<Article> findAll(Pageable pageable);
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 
