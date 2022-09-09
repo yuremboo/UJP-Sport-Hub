@@ -144,4 +144,12 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getMostCommentedArticles());
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PutMapping("/admin/articles/publish/{id}")
+    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
+        log.info("Publish or unpublished article by id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.publishUnpublishedArticle(id));
+    }
 }

@@ -28,4 +28,6 @@ public interface ArticleService {
 
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     List<ArticleListDTO> getMostCommentedArticles();
+
+    ArticleDTO publishUnpublishedArticle(String id);
 }
