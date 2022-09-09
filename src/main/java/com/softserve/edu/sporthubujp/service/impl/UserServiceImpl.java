@@ -37,8 +37,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.dtoToEntity(userDTO);
         boolean userExists = userRepository
-            .findByEmail(user.getEmail())
-            .isPresent();
+                .findByEmail(userDTO.getEmail())
+                .isPresent();
 
         if (userExists) {
             log.error(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()
-            .encode(user.getPassword());
+                .encode(userDTO.getPassword());
 
         user.setPassword(encodedPassword);
         user.setCreateDateTime(LocalDateTime.now());

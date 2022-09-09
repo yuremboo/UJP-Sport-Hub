@@ -2,6 +2,7 @@ package com.softserve.edu.sporthubujp.exception.handler;
 
 import javax.mail.SendFailedException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
@@ -14,10 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
@@ -170,6 +169,35 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         apiError.setDebugMessage(ex.toString());
+
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<Object> handleConstraintViolation(
+            ConstraintViolationException ex) {
+
+        ApiError apiError = new ApiError(HttpStatus.NOT_ACCEPTABLE);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.getConstraintViolations().toString());
+
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    protected ResponseEntity<Object> handleInvalidPassword(
+            InvalidPasswordException ex) {
+
+        ApiError apiError = new ApiError(HttpStatus.NOT_ACCEPTABLE);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.toString());
+
+        RegistrationRequestDTO request = ex.getRequestDTO();
+        ApiValidationError apiValidationError = new ApiValidationError(List.of(request), ex.getMessage());
+        apiValidationError.setField("password");
+        apiValidationError.setRejectedValue(request.getPassword());
+
+        apiError.setSubErrors(List.of(apiValidationError));
 
         return buildResponseEntity(apiError);
     }
