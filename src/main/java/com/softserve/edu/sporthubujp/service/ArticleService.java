@@ -20,10 +20,14 @@ public interface ArticleService {
 
     void deleteArticleById(String id);
 
+    List<ArticleListDTO> getMorePopularArticles();
+
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
 
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     List<ArticleListDTO> getMostCommentedArticles();
+
+    ArticleDTO publishUnpublishedArticle(String id);
 }

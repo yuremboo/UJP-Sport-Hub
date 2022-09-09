@@ -4,12 +4,11 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.Comment;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
+import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
@@ -30,14 +29,16 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
+    private final LogsRepository logRepository;
 
     private final CommentService commentService;
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleMapper articleMapper, CommentService commentService) {
+                              ArticleMapper articleMapper, LogsRepository logRepository, CommentService commentService) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.logRepository = logRepository;
         this.commentService = commentService;
     }
 
@@ -62,7 +63,24 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleRepository.deleteById(id);
     }
-
+    @Override
+    public List<ArticleListDTO> getMorePopularArticles() {
+        List<String> articlesId = logRepository.getMorePopularArticlesId();
+        List<Article> articles=new LinkedList<Article>();
+        for (var article : articlesId) {
+            articles.add(articleRepository.getReferenceById(article));
+        }
+        log.info("Get 3 more popular articles");
+        List<ArticleDTO> articleDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
+    }
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
         List<Article> articles = new LinkedList<Article>();
@@ -180,4 +198,16 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return mostCommentedArticleListDTOS;
     }
+
+    public ArticleDTO publishUnpublishedArticle(String id) {
+        return articleRepository.findById(id)
+            .map(article -> {
+                article.setIsActive(!article.getIsActive());
+                return articleMapper.entityToDto(articleRepository.save(article));
+            })
+            .orElseThrow(EntityNotExistsException::new);
+    }
 }
+
+
+
