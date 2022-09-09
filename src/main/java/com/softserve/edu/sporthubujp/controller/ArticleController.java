@@ -154,6 +154,7 @@ public class ArticleController {
         log.info("Controller: getting four newest articles by category id");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+    }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")
