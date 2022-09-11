@@ -42,4 +42,25 @@ public class EmailServiceImpl implements EmailSenderService {
             throw new SendFailedException(String.format(EMAIL_SENDING_FAILURE, to));
         }
     }
+    @Override
+    @Async
+    public void sendCheckEmail(String to, String email) throws SendFailedException {
+        try {
+            log.info(String.format("Service: check email to reset password to %s", to));
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper =
+                    new MimeMessageHelper(mimeMessage, "utf-8");
+
+            helper.setText(email, true);
+            helper.setTo(to);
+            helper.setFrom("sportshubsmtp@gmail.com", "Sports Hub");
+            helper.setSubject("Confirmation an email");
+
+            mailSender.send(mimeMessage);
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            log.error(String.format(EMAIL_SENDING_FAILURE, to));
+            throw new SendFailedException(String.format(EMAIL_SENDING_FAILURE, to));
+        }
+    }
 }

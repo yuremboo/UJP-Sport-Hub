@@ -38,15 +38,4 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.updateUser(user, newUser));
     }
-
-    @PutMapping(path = "/forgot/password")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<UserDTO> updatePassword(@NotNull Principal principal,
-                                                 @RequestBody String newPassword) {
-        User user = userService.findUserByEmail(principal.getName());
-        log.info(String.format("Controller: reset user password with user id %s", user.getId()));
-        return ResponseEntity.status(HttpStatus.OK).body(
-                userService.resetUserPassword(user, newPassword));
-    }
-
 }

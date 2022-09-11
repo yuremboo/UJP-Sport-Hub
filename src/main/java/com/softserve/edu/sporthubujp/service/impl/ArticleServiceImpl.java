@@ -112,6 +112,7 @@ public class ArticleServiceImpl implements ArticleService {
         for (var articleDTO : articleDTOS) {
             articleListDTOS.add(new ArticleListDTO(articleDTO));
         }
+        int total = articles.getTotalPages();
         return articleListDTOS;
     }
 

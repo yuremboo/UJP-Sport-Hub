@@ -49,4 +49,7 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     private List<Comment> comments;
+
+    @Column(name="password_reset_token")
+    private String passwordResetToken;
 }

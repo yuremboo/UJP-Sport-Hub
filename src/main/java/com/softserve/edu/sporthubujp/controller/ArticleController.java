@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -54,32 +55,32 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    @GetMapping("/articles/subscription")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<ArticleDTO>>
-    getAllArticlesBySubscription(@NotNull Principal principal) {
-        String email= principal.getName();
-        log.info("Get all articles of the user with an email under {} subscription", email);
-        User user = userService.findUserByEmail(email);
-        //        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}", user.getId());
-        return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesBySubscription(user.getId()));
-    }
-
-
-    @GetMapping("/articles/teams/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<ArticleListDTO>>
-    getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
-        String email= principal.getName();
-        log.info("Get articles of the user with an email under {} subscription",email);
-        String idUser = userService.findUserByEmail(email);
-        log.info("Id user = {}",idUser);
-
-        return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticlesByTeamByUserId(idUser,teamId));
-    }
+//    @GetMapping("/articles/subscription")
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+//    public ResponseEntity<List<ArticleDTO>>
+//    getAllArticlesBySubscription(@NotNull Principal principal) {
+//        String email= principal.getName();
+//        log.info("Get all articles of the user with an email under {} subscription", email);
+//        User user = userService.findUserByEmail(email);
+//        //        String idUser = userService.findUserByEmail(email);
+//        log.info("Id user = {}", user.getId());
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//            articleService.getAllArticlesBySubscription(user.getId()));
+//    }
+//
+//
+//    @GetMapping("/articles/teams/{id}")
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+//    public ResponseEntity<List<ArticleListDTO>>
+//    getArticlesByTeamByUserId(@NotNull Principal principal,@PathVariable("id") String teamId) {
+//        String email= principal.getName();
+//        log.info("Get articles of the user with an email under {} subscription",email);
+//        String idUser = userService.findUserByEmail(email);
+//        log.info("Id user = {}",idUser);
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//            articleService.getArticlesByTeamByUserId(idUser,teamId));
+//    }
 
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
