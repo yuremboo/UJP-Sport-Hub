@@ -1,7 +1,6 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.google.common.io.Files;
-import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.InvalidEmailException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
@@ -53,7 +52,6 @@ public class ForgotPasswordService {
         user.setPasswordResetToken(newToken);
         userRepository.save(user);
 
-//        String link = "http://localhost:3000/reset/password?token="+newToken;
 //        String link = "http://localhost:3000/reset/password";
         String link = "http://localhost:3000/reset/password/"+newToken;
         emailSender.send(
@@ -79,7 +77,7 @@ public class ForgotPasswordService {
         return email.toString();
     }
 
-    public UserDTO setNewPassword(String password, String token){
+    public Void setNewPassword(String password, String token){
         log.info(String.format("Set new password"));
         User user = userRepository
                 .findByPasswordResetToken(token)
@@ -88,6 +86,6 @@ public class ForgotPasswordService {
                 .encode(password);
         user.setPassword(encodedPassword);
         userRepository.save(user);
-        return userMapper.entityToDto(user);
+        return null;
     }
 }
