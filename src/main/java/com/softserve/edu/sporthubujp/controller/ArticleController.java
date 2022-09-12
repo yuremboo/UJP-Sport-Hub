@@ -36,7 +36,7 @@ public class ArticleController {
 
     @Autowired
     public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
-        LogsRepository logRepository) {
+                             LogsRepository logRepository) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.userService = userService;
@@ -47,7 +47,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
-        CompletableFuture.supplyAsync(()->logRepository.save(new Logs(id)));
+        CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
@@ -146,6 +146,16 @@ public class ArticleController {
                 articleService.getMostCommentedArticles());
     }
 
+
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/newest/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getFourNewestArticlesByCategoryId(@PathVariable("id") String categoryId, Pageable pageable) {
+        log.info("Controller: getting four newest articles by category id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+    }
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/allarticles")
     public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
@@ -158,5 +168,6 @@ public class ArticleController {
         log.info("Publish or unpublished article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.publishUnpublishedArticle(id));
+
     }
 }
