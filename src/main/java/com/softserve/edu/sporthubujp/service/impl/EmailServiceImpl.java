@@ -33,7 +33,7 @@ public class EmailServiceImpl implements EmailSenderService {
 
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setFrom("sportshubsmtp@gmail.com", "Sports Hub");
+            helper.setFrom("sportshub@gmail.com", "Sports Hub");
             helper.setSubject("Subscription in Sports Hub");
 
             mailSender.send(mimeMessage);

@@ -14,9 +14,11 @@ import com.softserve.edu.sporthubujp.service.CommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,11 +55,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void deleteArticleById(String id)
-    {
+    public void deleteArticleById(String id) {
         log.info("Delete article by id in service");
-        if(!articleRepository.existsById(id))
-        {
+        if (!articleRepository.existsById(id)) {
             log.error(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
             throw new ArticleServiceException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
         }
@@ -107,7 +107,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
         List<Article> articles = new LinkedList<>();
-        articles = articleRepository.getArticlesByTeamId(idUser,teamId);
+        articles = articleRepository.getArticlesByTeamId(idUser, teamId);
         log.info("Get articles by teams id subscription");
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
@@ -128,8 +128,8 @@ public class ArticleServiceImpl implements ArticleService {
                 })
                 .orElseThrow(EntityNotExistsException::new);
     }
-    
-    public List<ArticleListDTO> getAllArticles(Pageable pageable){
+
+    public List<ArticleListDTO> getAllArticles(Pageable pageable) {
 //        List<Article> articles = new LinkedList<Article>();
         Page<Article> articles;
         articles = articleRepository.findAll(pageable);
@@ -167,7 +167,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-        log.info("Get all articles by category id {} and if article.active {}", categoryId,isActive);
+        log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
@@ -208,4 +208,32 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return mostCommentedArticleListDTOS;
     }
+
+    @Override
+    public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
+        List<Article> articles = articleRepository
+                .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
+                .orElseThrow(EntityNotFoundException::new);
+
+        log.info("Service: getting four newest articles by category id");
+
+        List<ArticleListDTO> articleListDTOs = articles
+                .stream()
+                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+                .collect(Collectors.toList());
+
+        return articleListDTOs;
 }
+
+    public ArticleDTO publishUnpublishedArticle(String id) {
+        return articleRepository.findById(id)
+            .map(article -> {
+                article.setIsActive(!article.getIsActive());
+                return articleMapper.entityToDto(articleRepository.save(article));
+            })
+            .orElseThrow(EntityNotExistsException::new);
+    }
+}
+
+
+

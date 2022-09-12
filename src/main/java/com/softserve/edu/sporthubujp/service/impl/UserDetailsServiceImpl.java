@@ -18,14 +18,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG =
             "Incorrect user ID or password. Try again";
-//    private static final String EMAIL_NOT_CONFIRMED = "Service: email %s not confirmed";
     private final UserRepository userRepository;
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

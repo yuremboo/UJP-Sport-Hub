@@ -8,16 +8,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ArticleRepository extends JpaRepository<Article, String> {
     @Transactional
     @Query("SELECT a FROM Article a "
-        + "JOIN a.category c "
-        + "JOIN c.subscriptions s "
-        + "JOIN s.user u "
-        + "WHERE u.id = ?1 "
-        + "ORDER BY a.createDateTime ")
+            + "JOIN a.category c "
+            + "JOIN c.subscriptions s "
+            + "JOIN s.user u "
+            + "WHERE u.id = ?1 "
+            + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesBySubscription(String idUser);
+
 
     @Transactional
     @Query("SELECT a FROM Article a "
@@ -28,15 +30,22 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
 
     @Transactional
     @Query("SELECT a FROM Article a "
-        + "JOIN a.team t "
-        + "JOIN t.subscriptions s "
-        + "JOIN s.user u "
-        + "WHERE u.id = ?1 AND t.id = ?2 "
-        + "ORDER BY a.createDateTime ")
+            + "JOIN a.team t "
+            + "JOIN t.subscriptions s "
+            + "JOIN s.user u "
+            + "WHERE u.id = ?1 AND t.id = ?2 "
+            + "ORDER BY a.createDateTime ")
     List<Article> getArticlesByTeamId(String idUser, String teamId);
 
     Page<Article> findAll(Pageable pageable);
+
     List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 
     List<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
+
+    @Query("SELECT a FROM Article a "
+            + "JOIN a.category c "
+            + "WHERE c.id = ?1 AND a.isActive = true "
+            + "ORDER BY a.createDateTime DESC ")
+    Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 }
