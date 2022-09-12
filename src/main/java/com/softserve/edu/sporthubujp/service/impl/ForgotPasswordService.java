@@ -50,7 +50,7 @@ public class ForgotPasswordService {
             throw new InvalidEmailException();
         }
         String newToken = UUID.randomUUID().toString();
-        user.setPasswordResetToken(newToken);  // !!!
+        user.setPasswordResetToken(newToken);
         userRepository.save(user);
 
 //        String link = "http://localhost:3000/reset/password?token="+newToken;
@@ -80,11 +80,10 @@ public class ForgotPasswordService {
     }
 
     public UserDTO setNewPassword(String password, String token){
-        log.info(String.format("ForgotPasswordService: before find user"));
+        log.info(String.format("Set new password"));
         User user = userRepository
                 .findByPasswordResetToken(token)
                 .orElseThrow(() -> new InternalAuthenticationServiceException(USER_NOT_FOUND_MSG));
-        log.info(String.format("ForgotPasswordService: user with new token: %s", user));
         String encodedPassword = passwordConfig.passwordEncoder()
                 .encode(password);
         user.setPassword(encodedPassword);
