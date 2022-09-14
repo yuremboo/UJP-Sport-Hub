@@ -53,12 +53,12 @@ public class ArticleController {
             articleService.getArticleById(id));
     }
 
-    @GetMapping("/{id}/comments")
+    @GetMapping("/{id}/comments/{sortingMethod}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
+    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id, @PathVariable String sortingMethod) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentsByArticleId(id));
+            commentService.getAllCommentsByArticleId(id, sortingMethod));
     }
 
     @DeleteMapping("/articles/{id}")
@@ -131,12 +131,12 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping("/articles/categories/{categoryId}") // todo find better url naming
+    @GetMapping("/articles/{articleId}/categories/{categoryId}")
     public ResponseEntity<List<ArticleListDTO>>
-    getSixActiveArticlesByCategoryId(@PathVariable String categoryId) {
+    getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
         log.info("Get all active articles by category id {}", categoryId);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getSixActiveArticlesByCategoryId(categoryId));
+            articleService.getSixActiveArticlesByCategoryId(categoryId, articleId));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")

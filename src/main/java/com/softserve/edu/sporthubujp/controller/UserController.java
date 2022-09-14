@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.prepost.PreFilter;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,4 +44,11 @@ public class UserController {
             userService.updateUser(user, newUser));
     }
 
+    @GetMapping("/users/{id}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    public ResponseEntity<UserSaveProfileDTO> getUserById(@PathVariable String id) {
+        log.info("Get user by id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.findUserById(id));
+    }
 }

@@ -6,11 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.softserve.edu.sporthubujp.entity.Article;
 
-public interface ArticleRepository extends JpaRepository<Article, String> {
+public interface ArticleRepository extends PagingAndSortingRepository<Article, String> {
     @Transactional
     @Query("SELECT a FROM Article a "
         + "JOIN a.category c "
@@ -35,9 +36,5 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
 
     List<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
-    @Transactional
-    @Query("SELECT a FROM Article a "
-        + "WHERE a.category.id = ?1 AND a.isActive = true "
-        + "ORDER BY a.createDateTime DESC ")
-    List<Article> findAllActiveArticlesByCategoryId(String categoryId);
+    Article getArticleById(String id);
 }

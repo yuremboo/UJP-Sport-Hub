@@ -15,6 +15,10 @@ public class CommentDTO {
     private Integer dislikes;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
+    @NotNull
     private String userId;
+    @NotNull
     private String articleId;
+    @NotNull
+    private Boolean isEdited;
 }

@@ -8,7 +8,9 @@ import lombok.Data;
 public class LikeDislikeStatusSaveDTO {
     @NotNull
     private Boolean likedDisliked;
+    @NotNull
     private String commentId;
+    @NotNull
     private String userId;
 
 }

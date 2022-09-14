@@ -102,6 +102,7 @@
             <column name="dislikes" type="INTEGER"/>
             <column name="likes" type="INTEGER"/>
             <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="is_edited" type="boolean"/>
             <column name="article_id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>

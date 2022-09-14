@@ -7,12 +7,15 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
@@ -23,6 +26,7 @@ import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
+import com.softserve.edu.sporthubujp.repository.CategoryRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
@@ -33,23 +37,27 @@ import lombok.extern.slf4j.Slf4j;
 public class ArticleServiceImpl implements ArticleService {
 
     private static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
+    private static final String CATEGORY_NOT_FOUND_BY_ID = "Category not found by id: %s";
     private static final String ARTICLE_NOT_DELETE_BY_ID = "Record with provided id: %s is not found";
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
     private final ArticleMapper articleMapper;
 
     private final CommentService commentService;
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-        ArticleMapper articleMapper, CommentService commentService) {
+        ArticleMapper articleMapper, CommentService commentService,
+        CategoryRepository categoryRepository) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
         this.commentService = commentService;
+        this.categoryRepository = categoryRepository;
     }
 
     public ArticleDTO getArticleById(String id) {
-        Article article = articleRepository.getReferenceById(id);
+        Article article = articleRepository.getArticleById(id);
         log.info("Get article by id in service");
         if (!articleRepository.existsById(id)) {
             log.error(String.format(ARTICLE_NOT_FOUND_BY_ID, id));
@@ -144,14 +152,21 @@ public class ArticleServiceImpl implements ArticleService {
         return articleListDTOS;
     }
 
-    @Override public List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId) {
+    @Override
+    public List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new EntityNotExistsException(String.format(CATEGORY_NOT_FOUND_BY_ID, categoryId));
+        }
+        Pageable sortedByCreateDateTime = PageRequest.of(0, 6,
+            Sort.by("createDateTime").descending());
+
         List<Article> allActiveArticlesByCategoryId = articleRepository
-            .findAllActiveArticlesByCategoryId(categoryId);
-        log.info("Get all active articles by category id {}", categoryId);
-        return getArticleListDTOS(allActiveArticlesByCategoryId)
+            .findAllByCategoryIdAndIsActive(categoryId, true, sortedByCreateDateTime)
             .stream()
-            .limit(6)
+            .filter(article -> !Objects.equals(article.getId(), articleId))
             .collect(Collectors.toList());
+        log.info("Get all active articles by category id {}", categoryId);
+        return getArticleListDTOS(allActiveArticlesByCategoryId);
     }
 
     @Override

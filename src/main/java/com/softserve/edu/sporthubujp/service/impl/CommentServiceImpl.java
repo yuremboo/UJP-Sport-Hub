@@ -10,20 +10,23 @@ import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.InvalidEntityException;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private static final String COMMENT_NOT_FOUND_BY_ID = "Comment not found by id: %s";
     public static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
     public static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
+    public static final String COMMENT_NOT_VALID_WITH = "Comment is not valid with %s";
+    private static final String COMMENT_NOT_FOUND_BY_ID = "Comment not found by id: %s";
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final ArticleRepository articleRepository;
@@ -39,9 +42,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getAllCommentsByArticleId(String articleId) {
-        List<Comment> comments = commentRepository.findAllByArticleId(articleId);
-        log.info("Get all comments by article id {} in service", articleId);
+    public List<CommentDTO> getAllCommentsByArticleId(String articleId, String sortingMethod) {
+        List<Comment> comments;
+        if (sortingMethod.equals("oldest")) {
+            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeAsc(articleId);
+        } else if (sortingMethod.equals("newest")) {
+            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeDesc(articleId);
+        } else {
+            comments = commentRepository.findMostPopularByArticleId(articleId);
+        }
+        log.info("Get all comments by article id {} in service sorted with rule {}",
+            articleId, sortingMethod);
         List<CommentDTO> commentsDTOS = new LinkedList<>();
         for (var comment : comments) {
             commentsDTOS.add(commentMapper.entityToDto(comment));
@@ -51,7 +62,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int getNumOfCommentsByArticleId(String articleId) {
-        List<CommentDTO> commentDTOS = getAllCommentsByArticleId(articleId);
+        List<CommentDTO> commentDTOS = getAllCommentsByArticleId(articleId, "popular");
         return commentDTOS.size();
     }
 
@@ -68,9 +79,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentSaveDTO updateComment(CommentSaveDTO newComment, String id) {
         if (!articleRepository.existsById(newComment.getArticleId())) {
-            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, newComment.getArticleId()));
-        } else if (!articleRepository.existsById(newComment.getUserId())) {
-            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newComment.getUserId()));
+            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
+                newComment.getArticleId()));
+        } else if (!userRepository.existsById(newComment.getUserId())) {
+            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
+                newComment.getUserId()));
         }
         return commentRepository.findById(id)
             .map(comment -> {
@@ -83,9 +96,15 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
         if (!articleRepository.existsById(newComment.getArticleId())) {
-            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, newComment.getArticleId()));
+            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
+                newComment.getArticleId()));
         } else if (!userRepository.existsById(newComment.getUserId())) {
-            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newComment.getUserId()));
+            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
+                newComment.getUserId()));
+        } else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
+            throw new InvalidEntityException(
+                String.format(COMMENT_NOT_VALID_WITH, (newComment.getLikes() +
+                    "likes and " + newComment.getDislikes() + " dislikes")));
         }
         return commentMapper.entityToDtoSave(
             commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));

@@ -12,5 +12,7 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
+    UserSaveProfileDTO findUserById(String userId);
+
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 }

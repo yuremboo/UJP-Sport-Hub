@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +23,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT id FROM User WHERE email LIKE ?1 ")
     String findUserIdByEmail(String email);
+
+    User findUserById(String userId);
 }
