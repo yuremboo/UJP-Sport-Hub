@@ -26,8 +26,6 @@ public class Team {
     private String location;
     @Column(name = "logo", nullable = false)
     private Byte logo;
-    @Column(name = "alt", length = 255, nullable = false, unique = false)
-    private String alt;
     @Column(name = "description", length = 255, nullable = false, unique = false)
     private String description;
     @CreatedDate

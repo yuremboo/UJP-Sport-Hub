@@ -271,6 +271,16 @@
                                  deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
+    <changeSet author="Ostap Klymko" id="1662645168335-23">
+        <createTable tableName="subscriptions_email">
+            <column name="id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
     <changeSet author="Ostap Klymko" id="1659358419959-1">
         <insert tableName="users">
             <column name="id" value="40289fc882a61e440182a649d3480000"/>
