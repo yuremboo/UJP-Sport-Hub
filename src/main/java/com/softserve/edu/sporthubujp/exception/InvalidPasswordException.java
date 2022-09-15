@@ -1,7 +1,6 @@
 package com.softserve.edu.sporthubujp.exception;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
-import com.softserve.edu.sporthubujp.dto.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 

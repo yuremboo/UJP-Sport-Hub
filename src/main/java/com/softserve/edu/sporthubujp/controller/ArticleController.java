@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.sql.Date;
 import java.util.List;
@@ -77,7 +79,7 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getMorePopularArticles());
     }
-
+  
     @GetMapping("/articles/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<ArticleDTO>>
@@ -162,6 +164,13 @@ public class ArticleController {
         log.info("Controller: getting four newest articles by category id");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/allarticles")
+    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesWithoutPagination());
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
