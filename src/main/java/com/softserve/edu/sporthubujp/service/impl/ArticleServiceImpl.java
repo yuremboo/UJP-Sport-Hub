@@ -133,6 +133,7 @@ public class ArticleServiceImpl implements ArticleService {
         for (var articleDTO : articleDTOS) {
             articleListDTOS.add(new ArticleListDTO(articleDTO));
         }
+        int total = articles.getTotalPages();
         return articleListDTOS;
     }
 
@@ -200,6 +201,22 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<ArticleListDTO> getAllArticlesWithoutPagination() {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.findAll();
+
+        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
+    }
+
     public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = articleRepository
                 .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))

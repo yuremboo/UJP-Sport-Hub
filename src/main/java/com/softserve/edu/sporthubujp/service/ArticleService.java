@@ -33,5 +33,8 @@ public interface ArticleService {
     
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 
+    List<ArticleListDTO> getAllArticlesWithoutPagination();
+
     ArticleDTO publishUnpublishedArticle(String id);
+
 }
