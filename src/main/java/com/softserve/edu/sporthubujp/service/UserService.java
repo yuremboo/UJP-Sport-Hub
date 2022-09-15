@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.service;
 
+import java.util.InvalidPropertiesFormatException;
+
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
@@ -15,5 +17,5 @@ public interface UserService {
 
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 
-    UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser);
+    UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException;
 }

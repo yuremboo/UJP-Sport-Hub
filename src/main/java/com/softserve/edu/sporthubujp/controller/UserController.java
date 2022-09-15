@@ -20,6 +20,9 @@ import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import java.security.Principal;
+import java.util.InvalidPropertiesFormatException;
+
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -45,8 +48,8 @@ public class UserController {
 
     @PutMapping(path = "/change/password")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<UserDTO> updatePassword(@NotNull Principal principal,
-        @RequestBody UserSavePasswordDTO newUser) {
+    public ResponseEntity<UserDTO> updatePassword(@NotNull @Valid Principal principal,
+        @RequestBody UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException {
         User user = userService.findUserByEmail(principal.getName());
         log.info(String.format("Controller: updating password with id %s", user.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(

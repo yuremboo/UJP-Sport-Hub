@@ -6,17 +6,21 @@ import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
+import com.softserve.edu.sporthubujp.exception.InvalidPasswordException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.UserService;
+import com.softserve.edu.sporthubujp.validator.PasswordValidator;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -30,6 +34,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
     private final ConfirmationTokenService confirmationTokenService;
+    private final PasswordValidator passwordValidator;
 
     @Override
     public String signUpUser(UserDTO userDTO) {
@@ -104,10 +109,16 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) {
+    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO newPassword) throws InvalidPropertiesFormatException {
+        if(passwordValidator.test(newPassword.getPassword())){
+            newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
+        }
+        else{
+            throw new InvalidPropertiesFormatException("Service: password must contain at least 8 characters (letters and numbers)");
+        }
         return userRepository.findById(oldUser.getId())
             .map(user -> {
-                userMapper.updatePassword(user, newUser);
+                userMapper.updatePassword(user, newPassword);
                 return userMapper.entityToDto(userRepository.save(user));
             })
             .orElseThrow(EntityNotExistsException::new);

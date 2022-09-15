@@ -113,4 +113,12 @@ class UserServiceImplTest {
     void canFindUserByEmail() {
 
     }
+
+    @Test
+    void updateUser() {
+    }
+
+    @Test
+    void updatePassword() {
+    }
 }
