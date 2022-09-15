@@ -135,7 +135,9 @@ public class ArticleServiceImpl implements ArticleService {
                 return articleListMapper.dtoToEntity(articleListDTO);
             }
         });
-        log.info("Get all articles all categories in service");
+
+        log.info("Get all articles in service");
+        int total = articles.getTotalPages();
         return articleDTOPage;
     }
 
@@ -160,7 +162,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
         Page<Article> articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-        log.info("Get all articles by category id {} and if article.active is {}", categoryId, isActive);
+        log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
             protected ArticleListDTO doForward(Article article) {

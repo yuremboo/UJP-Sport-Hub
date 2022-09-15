@@ -12,16 +12,10 @@ import java.util.List;
 
 public interface ArticleService {
     ArticleDTO getArticleById(String id);
-    
-    List<ArticleListDTO> getAllArticles(Pageable pageable);
-    List<ArticleListDTO> getAllArticles2(Pageable pageable);
-    Page<ArticleListDTO> getAllArticles3(Pageable pageable);
 
-//    List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
-    Page<ArticleListDTO> getAllArticlesByCategoryId2(String categoryId, Pageable pageable);
-
-//    List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
-    Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive2(String categoryId, boolean isActive, Pageable pageable);
+    Page<ArticleListDTO> getAllArticles(Pageable pageable);
+    Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
+    Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
     void deleteArticleById(String id);
 
@@ -36,8 +30,6 @@ public interface ArticleService {
     List<ArticleListDTO> getMostCommentedArticles();
     
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
-
-//    List<ArticleListDTO> getAllArticlesWithoutPagination();
 
     ArticleDTO publishUnpublishedArticle(String id);
 

@@ -103,6 +103,7 @@ public class ArticleController {
                 articleService.getArticlesByTeamByUserId(user.getId(), teamId));
     }
 
+
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
@@ -112,10 +113,11 @@ public class ArticleController {
                 articleService.updateArticle(newArticle, id));
     }
 
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
     public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
-        log.info("Get all article");
+        log.info("Get all articles");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticles(pageable));
     }
@@ -139,7 +141,7 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping("/articles/mostcommented")
+    @GetMapping("/articles/most_commented")
     public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(
