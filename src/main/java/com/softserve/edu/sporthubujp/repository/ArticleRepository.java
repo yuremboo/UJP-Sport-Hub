@@ -31,9 +31,19 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
 
     Page<Article> findAll(Pageable pageable);
 
-    List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
+//    List<Article> findAllByCategoryId(String categoryId, Pageable pageable);
 
-    List<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
+    @Query(value = "SELECT * FROM ARTICLES a WHERE a.category_id = ?1",
+            countQuery = "SELECT count(*) FROM ARTICLES a WHERE a.category_id = ?1",
+            nativeQuery = true)
+    Page<Article> findAllByCategoryId(String categoryId, Pageable pageable);
+
+//    List<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
+
+    @Query(value = "SELECT * FROM ARTICLES a WHERE a.category_id = ?1 AND a.is_active = ?2",
+            countQuery = "SELECT count(*) FROM ARTICLES a WHERE a.category_id = ?1 AND a.is_active = ?2",
+            nativeQuery = true)
+    Page<Article> findAllByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
     @Query("SELECT a FROM Article a "
             + "JOIN a.category c "
