@@ -33,7 +33,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping()
-    public ResponseEntity<String> resetPassword(@RequestParam String email)
+    public ResponseEntity<Void> resetPassword(@RequestParam String email)
             throws IOException, SendFailedException {
         log.info(String.format("Controller: confirm user email %s", email));
         return ResponseEntity

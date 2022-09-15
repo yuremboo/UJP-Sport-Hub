@@ -43,7 +43,7 @@ public class ForgotPasswordService {
         this.emailSender = emailSender;
     }
 
-    public String resetPassword(String email) throws IOException, SendFailedException {
+    public Void resetPassword(String email) throws IOException, SendFailedException {
         User user = userService.findUserByEmail(email);
         if (user == null) {
             throw new InvalidEmailException();
@@ -57,7 +57,7 @@ public class ForgotPasswordService {
         emailSender.send(
                 EMAIL_SERVER,
                 buildEmail(link));
-        return newToken;
+        return null;
 
     }
 
