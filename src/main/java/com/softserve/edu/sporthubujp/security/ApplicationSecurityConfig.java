@@ -22,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import java.util.Arrays;
-import java.util.List;
 
 
 @Configuration
@@ -61,7 +60,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories")
+                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories",
+                        "/api/v1/forgot/password", "/api/v1/forgot/password/newpassword")
                     .permitAll()
                 .anyRequest()
                 .authenticated();

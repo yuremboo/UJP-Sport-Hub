@@ -3,16 +3,15 @@ package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.dto.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
+import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.security.Principal;
-import java.sql.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -37,7 +36,7 @@ public class ArticleController {
 
     @Autowired
     public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
-        LogsRepository logRepository) {
+                             LogsRepository logRepository) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.userService = userService;
@@ -48,7 +47,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
-        CompletableFuture.supplyAsync(()->logRepository.save(new Logs(id)));
+        CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
@@ -69,6 +68,7 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
     public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
@@ -101,6 +101,7 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticlesByTeamByUserId(user.getId(), teamId));
     }
+
 
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -145,11 +146,28 @@ public class ArticleController {
                 articleService.getMostCommentedArticles());
     }
 
+
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/newest/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getFourNewestArticlesByCategoryId(@PathVariable("id") String categoryId, Pageable pageable) {
+        log.info("Controller: getting four newest articles by category id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getNewestArticlesByCategoryId(categoryId, pageable));
+    }
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/allarticles")
+    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesWithoutPagination());
+    }
+
     @PutMapping("/admin/articles/publish/{id}")
     public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
         log.info("Publish or unpublished article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.publishUnpublishedArticle(id));
+
     }
 }
