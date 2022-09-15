@@ -103,7 +103,6 @@ public class ArticleController {
                 articleService.getArticlesByTeamByUserId(user.getId(), teamId));
     }
 
-
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
@@ -115,62 +114,28 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticles(Pageable pageable) {
+    public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
         log.info("Get all article");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticles(pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles2")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticles2(Pageable pageable) {
-        log.info("Get all article");
-        return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticles2(pageable));
-    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles3")
-    public ResponseEntity<Page<ArticleListDTO>> getAllArticles3(Pageable pageable) {
-        log.info("Get all article");
-        return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticles3(pageable));
-    }
-
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/admin/articles/category_id/{id}")
-//    public ResponseEntity<List<ArticleListDTO>>
-//    getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
-//        log.info("Get all articles by category id {}", id);
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryId(id, pageable));
-//    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id2/{id}")
+    @GetMapping("/admin/articles/category_id/{id}")
     public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryId2(id, pageable));
+                articleService.getAllArticlesByCategoryId(id, pageable));
     }
 
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/admin/articles/category_id/{id}/isactive/{isactive}")
-//    public ResponseEntity<List<ArticleListDTO>>
-//    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
-//        log.info("Get all articles by category id {} and if article is active", id);
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
-//    }
-
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/is_active2/{isactive}")
+    @GetMapping("/admin/articles/category_id/{id}/is_active/{isactive}")
     public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryIdAndIsActive2(id, isactive, pageable));
+                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
@@ -190,13 +155,6 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
     }
-
-//    @PreAuthorize("hasAnyAuthority('ADMIN')")
-//    @GetMapping("/admin/allarticles")
-//    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                articleService.getAllArticlesWithoutPagination());
-//    }
 
     @PutMapping("/admin/articles/publish/{id}")
     public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {

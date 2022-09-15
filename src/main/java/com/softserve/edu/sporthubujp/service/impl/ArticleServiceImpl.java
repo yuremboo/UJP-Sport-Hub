@@ -121,57 +121,9 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override
-    public List<ArticleListDTO> getAllArticles(Pageable pageable) {
-//        List<Article> articles = new LinkedList<Article>();
-        Page<Article> articles;
-        articles = articleRepository.findAll(pageable);
-        log.info("Get all article in service");
-        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
-        for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToDto(article));
-        }
-
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
-        }
-        int total = articles.getTotalPages();
-        return articleListDTOS;
-    }
 
     @Override
-    public List<ArticleListDTO> getAllArticles2(Pageable pageable) {
-//        List<Article> articles = new LinkedList<Article>();
-        Page<Article> articles = articleRepository.findAll(pageable);
-        Page<ArticleDTO> articleDTOPage = articles.map(new Converter<Article, ArticleDTO>() {
-            @Override
-            protected ArticleDTO doForward(Article article) {
-                return articleMapper.entityToDto(article);
-            }
-
-            @Override
-            protected Article doBackward(ArticleDTO articleDTO) {
-                return articleMapper.dtoToEntity(articleDTO);
-            }
-        });
-
-        log.info("Get all article in service");
-        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
-        for (var article : articleDTOPage) {
-            articleDTOS.add(article);
-        }
-
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
-        }
-        int total = articles.getTotalPages();
-        return articleListDTOS;
-    }
-
-    @Override
-    public Page<ArticleListDTO> getAllArticles3(Pageable pageable) {
+    public Page<ArticleListDTO> getAllArticles(Pageable pageable) {
         Page<Article> articles = articleRepository.findAll(pageable);
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
@@ -183,31 +135,12 @@ public class ArticleServiceImpl implements ArticleService {
                 return articleListMapper.dtoToEntity(articleListDTO);
             }
         });
-
-        log.info("Get all article in service");
-        int total = articles.getTotalPages();
+        log.info("Get all articles all categories in service");
         return articleDTOPage;
     }
 
-
-//    @Override
-//    public List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
-//        List<Article> articles = articleRepository.findAllByCategoryId(categoryId, pageable);
-//        log.info("Get all articles by category id in service");
-//        List<ArticleDTO> articleDTOS = new LinkedList<>();
-//        for (var article : articles) {
-//            articleDTOS.add(articleMapper.entityToDto(article));
-//        }
-//
-//        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-//        for (var articleDTO : articleDTOS) {
-//            articleListDTOS.add(new ArticleListDTO(articleDTO));
-//        }
-//        return articleListDTOS;
-//    }
-
     @Override
-    public Page<ArticleListDTO> getAllArticlesByCategoryId2(String categoryId, Pageable pageable) {
+    public Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
         Page<Article> articles = articleRepository.findAllByCategoryId(categoryId, pageable);
         log.info("Get all articles by category id in service");
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
@@ -224,27 +157,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDTOPage;
     }
 
-
-//    @Override
-//    public List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
-//        List<Article> articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-//        log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
-//        List<ArticleDTO> articleDTOS = new LinkedList<>();
-//        for (var article : articles) {
-//            articleDTOS.add(articleMapper.entityToDto(article));
-//        }
-//
-//        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-//        for (var articleDTO : articleDTOS) {
-//            articleListDTOS.add(new ArticleListDTO(articleDTO));
-//        }
-//        return articleListDTOS;
-//    }
-
     @Override
-    public Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive2(String categoryId, boolean isActive, Pageable pageable) {
+    public Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
         Page<Article> articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
-        log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
+        log.info("Get all articles by category id {} and if article.active is {}", categoryId, isActive);
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
             protected ArticleListDTO doForward(Article article) {
@@ -259,10 +175,9 @@ public class ArticleServiceImpl implements ArticleService {
         return articleDTOPage;
     }
 
-
     @Override
     public List<ArticleListDTO> getMostCommentedArticles() {
-        List<ArticleListDTO> allArticlesDTOS = getAllArticles(Pageable.unpaged());
+        List<ArticleListDTO> allArticlesDTOS = getAllArticles(Pageable.unpaged()).getContent();
         Map<String, Integer> mapArticleComments = new HashMap<>();
 
         for (var article : allArticlesDTOS) {
@@ -289,22 +204,6 @@ public class ArticleServiceImpl implements ArticleService {
         return mostCommentedArticleListDTOS;
     }
 
-//    @Override
-//    public List<ArticleListDTO> getAllArticlesWithoutPagination() {
-//        List<Article> articles = new LinkedList<Article>();
-//        articles = articleRepository.findAll();
-//
-//        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
-//        for (var article : articles) {
-//            articleDTOS.add(articleMapper.entityToDto(article));
-//        }
-//
-//        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-//        for (var articleDTO : articleDTOS) {
-//            articleListDTOS.add(new ArticleListDTO(articleDTO));
-//        }
-//        return articleListDTOS;
-//    }
 
     public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = articleRepository
