@@ -64,8 +64,9 @@ public class ArticleServiceImpl implements ArticleService {
         articleRepository.deleteById(id);
     }
     @Override
-    public List<ArticleListDTO> getMorePopularArticles() {
-        List<String> articlesId = logRepository.getMorePopularArticlesId();
+    public List<ArticleListDTO> getMorePopularArticles(Pageable pageable) {
+        List<String> articlesId = logRepository
+            .getMorePopularArticlesId( PageRequest.of(0, 3));
         List<Article> articles=new LinkedList<Article>();
         for (var article : articlesId) {
             articles.add(articleRepository.getReferenceById(article));

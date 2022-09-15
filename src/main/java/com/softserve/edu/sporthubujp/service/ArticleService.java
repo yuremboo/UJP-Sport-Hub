@@ -20,7 +20,7 @@ public interface ArticleService {
 
     void deleteArticleById(String id);
 
-    List<ArticleListDTO> getMorePopularArticles();
+    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 

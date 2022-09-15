@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.security.Principal;
 import java.sql.Date;
 import java.util.List;
@@ -74,10 +73,10 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
-    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(){
+    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(Pageable pageable){
         log.info("Get more popular articles");
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getMorePopularArticles());
+            articleService.getMorePopularArticles(pageable));
     }
   
     @GetMapping("/articles/subscription")
