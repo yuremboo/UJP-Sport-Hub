@@ -3,7 +3,6 @@ package com.softserve.edu.sporthubujp.controller;
 import com.softserve.edu.sporthubujp.service.impl.ImageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "api/v1/image")
-//@AllArgsConstructor
 @Slf4j
 @CrossOrigin
 public class ImageController {

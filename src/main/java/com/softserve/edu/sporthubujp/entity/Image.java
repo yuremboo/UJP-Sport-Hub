@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.entity;
 
+import com.softserve.edu.sporthubujp.validator.NameConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,5 +25,6 @@ public class Image {
     byte[] content;
 
     @Column(name = "name", length = 255, nullable = false, unique = true)
+    @NameConstraint
     String name;
 }
