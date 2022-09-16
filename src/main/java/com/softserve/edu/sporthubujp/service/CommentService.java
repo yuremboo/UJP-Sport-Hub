@@ -6,7 +6,7 @@ import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 
 public interface CommentService {
-    List<CommentDTO> getAllCommentsByArticleId(String articleId, String sortingOrder);
+    List<CommentDTO> getNSortedCommentsByArticleId(String articleId, String sortingOrder, Integer commentsNum);
     int getNumOfCommentsByArticleId(String articleId);
     void deleteComment(String commentId);
 

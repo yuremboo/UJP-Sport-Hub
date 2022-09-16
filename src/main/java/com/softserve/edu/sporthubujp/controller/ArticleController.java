@@ -53,12 +53,12 @@ public class ArticleController {
             articleService.getArticleById(id));
     }
 
-    @GetMapping("/{id}/comments/{sortingMethod}")
+    @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id, @PathVariable String sortingMethod) {
+    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentsByArticleId(id, sortingMethod));
+            commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
     }
 
     @DeleteMapping("/articles/{id}")

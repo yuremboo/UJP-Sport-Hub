@@ -4,6 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
@@ -42,14 +44,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<CommentDTO> getAllCommentsByArticleId(String articleId, String sortingMethod) {
+    public List<CommentDTO> getNSortedCommentsByArticleId(String articleId, String sortingMethod, Integer commentsNum) {
+
+        Pageable pageOfNComments = PageRequest.of(0, commentsNum);
+
         List<Comment> comments;
         if (sortingMethod.equals("oldest")) {
-            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeAsc(articleId);
+            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeAsc(articleId, pageOfNComments);
         } else if (sortingMethod.equals("newest")) {
-            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeDesc(articleId);
+            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeDesc(articleId, pageOfNComments);
         } else {
-            comments = commentRepository.findMostPopularByArticleId(articleId);
+            comments = commentRepository.findMostPopularByArticleId(articleId, pageOfNComments);
         }
         log.info("Get all comments by article id {} in service sorted with rule {}",
             articleId, sortingMethod);
@@ -62,8 +67,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public int getNumOfCommentsByArticleId(String articleId) {
-        List<CommentDTO> commentDTOS = getAllCommentsByArticleId(articleId, "popular");
-        return commentDTOS.size();
+        return commentRepository.countByArticleId(articleId);
     }
 
     @Override
