@@ -27,7 +27,7 @@ public class ImageController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public ResponseEntity<String> uploadImage(@RequestParam("image") MultipartFile multipartImage)
+    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile multipartImage)
             throws IOException {
 
         log.info(String.format("Controller: uploading image with a name %s", multipartImage.getName()));

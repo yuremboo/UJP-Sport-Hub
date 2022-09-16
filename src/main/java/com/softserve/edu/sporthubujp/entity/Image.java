@@ -25,6 +25,6 @@ public class Image {
     byte[] content;
 
     @Column(name = "name", length = 255, nullable = false, unique = true)
-    @NameConstraint
+//    @NameConstraint
     String name;
 }
