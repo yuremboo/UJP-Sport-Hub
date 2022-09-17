@@ -82,7 +82,7 @@ public class LikeDislikeStatusServiceImpl implements LikeDislikeStatusService {
         } else if (!userRepository.existsById(newLDStatus.getUserId())) {
             throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newLDStatus.getUserId()));
         } else if (likeDislikeStatusRepository.findByUserIdAndCommentId(newLDStatus.getUserId(), newLDStatus.getCommentId()) != null) {
-            throw new EntityAlreadyExistsException(LIKEDISLIKESTATUS_ALREADY_EXISTS_FOR_IDS);
+            throw new EntityAlreadyExistsException(String.format(LIKEDISLIKESTATUS_ALREADY_EXISTS_FOR_IDS, newLDStatus.getCommentId(), newLDStatus.getUserId()));
         }
         return likeDislikeStatusMapper.entityToDtoSave(
             likeDislikeStatusRepository.save(likeDislikeStatusMapper.dtoSaveToEntity(newLDStatus)));

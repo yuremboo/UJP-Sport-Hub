@@ -15,7 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
     List<Comment> findAllByArticleIdOrderByCreateDateTimeAsc(String articleId, Pageable pageable);
 
     @Transactional
-    @Query(value = "select * from public.comments where article_id = '1aa' order by comments.likes + comments.dislikes desc", nativeQuery = true)
+    @Query(value = "select * from public.comments where article_id = ?1 order by comments.likes + comments.dislikes desc", nativeQuery = true)
     List<Comment> findMostPopularByArticleId(String articleId, Pageable pageable);
 
     @Query("SELECT COUNT(c) FROM Comment c WHERE c.article.id=?1")
