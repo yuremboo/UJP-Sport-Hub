@@ -13,6 +13,7 @@ import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,17 +113,18 @@ public class ArticleController {
                 articleService.updateArticle(newArticle, id));
     }
 
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticles(Pageable pageable) {
-        log.info("Get all article");
+    public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
+        log.info("Get all articles");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getAllArticles(pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles/category_id/{id}")
-    public ResponseEntity<List<ArticleListDTO>>
+    public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -130,8 +132,8 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/isactive/{isactive}")
-    public ResponseEntity<List<ArticleListDTO>>
+    @GetMapping("/admin/articles/category_id/{id}/is_active/{isactive}")
+    public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -139,7 +141,7 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping("/articles/mostcommented")
+    @GetMapping("/articles/most_commented")
     public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -154,13 +156,6 @@ public class ArticleController {
         log.info("Controller: getting four newest articles by category id");
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
-    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/allarticles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesWithoutPagination());
     }
 
     @PutMapping("/admin/articles/publish/{id}")
