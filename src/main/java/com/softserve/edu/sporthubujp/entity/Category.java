@@ -14,7 +14,7 @@ import java.util.Set;
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="CATEGORIES")
+@Table(name = "CATEGORIES")
 @NoArgsConstructor
 public class Category {
 
@@ -28,28 +28,32 @@ public class Category {
     @Column(name = "is_active")
     private Boolean isActive;
     @CreatedDate
-    @Column(name="create_date_time",  nullable=false, unique=false)
+    @Column(name = "create_date_time", nullable = false, unique = false)
     private LocalDateTime createDateTime;
     @LastModifiedDate
-    @Column(name="update_date_time",  nullable=true, unique=false)
+    @Column(name = "update_date_time", nullable = true, unique = false)
     private LocalDateTime updateDateTime;
-    @ManyToOne(fetch = FetchType.LAZY, optional=true)
-    @JoinColumn(name="parent_category_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "parent_category_id")
     private Category parent;
 
-    @OneToMany(mappedBy="parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval=true)
+    @Enumerated(EnumType.STRING)
+    @Column(name="type", length=10, nullable=false, unique=false)
+    private CategoryType categoryType;
+
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @EqualsAndHashCode.Exclude
     private Set<Category> children = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     private List<Article> articles;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     private List<Team> teams;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category", cascade = CascadeType.REMOVE)
     @EqualsAndHashCode.Exclude
     private List<Subscription> subscriptions;
 }

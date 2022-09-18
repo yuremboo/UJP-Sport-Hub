@@ -32,7 +32,7 @@ public class Article {
     private String location;
     @Column(name = "picture", length = 255, nullable = false, unique = false)
     private String picture;
-    @Column(name = "is_active")
+    @Column(name = "is_active", nullable = false)
     private Boolean isActive;
     @Column(name = "comments_active")
     private Boolean commentsActive;

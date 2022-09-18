@@ -1,17 +1,21 @@
 package com.softserve.edu.sporthubujp.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class ArticleListDTO {
     private String id;
     private String title;
     private String shortText;
     private Boolean isActive;
     private CategoryDTO category;
+    private LocalDateTime createDateTime;
 
     private String getFirstSentence(String articleText){
         char[] textArray = articleText.toCharArray();
@@ -35,5 +39,6 @@ public class ArticleListDTO {
         this.isActive = articleDTO.getIsActive();
         this.shortText = getFirstSentence(articleDTO.getText());
         this.category = articleDTO.getCategory();
+        this.createDateTime = articleDTO.getCreateDateTime();
     }
 }
