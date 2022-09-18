@@ -1,12 +1,14 @@
 package com.softserve.edu.sporthubujp.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class ArticleListDTO {
     private String id;
     private String title;
