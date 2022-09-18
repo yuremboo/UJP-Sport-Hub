@@ -1,16 +1,17 @@
 package com.softserve.edu.sporthubujp.repository;
 
-import com.softserve.edu.sporthubujp.entity.Article;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.softserve.edu.sporthubujp.entity.Article;
 import java.util.Optional;
 
-public interface ArticleRepository extends JpaRepository<Article, String> {
+public interface ArticleRepository extends PagingAndSortingRepository<Article, String> {
     @Transactional
     @Query("SELECT a FROM Article a "
             + "JOIN a.category c "
@@ -46,4 +47,7 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
             + "WHERE c.id = ?1 AND a.isActive = true "
             + "ORDER BY a.createDateTime DESC ")
     Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
+
+    Article getArticleById(String id);
+
 }
