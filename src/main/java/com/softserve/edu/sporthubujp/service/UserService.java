@@ -20,4 +20,6 @@ public interface UserService {
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 
     UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException, IOException, SendFailedException;
+
+    UserDTO getUser(User user);
 }

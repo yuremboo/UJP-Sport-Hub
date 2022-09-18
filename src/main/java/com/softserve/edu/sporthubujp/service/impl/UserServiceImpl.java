@@ -1,8 +1,11 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.google.common.io.Files;
+import com.softserve.edu.sporthubujp.dto.CategoryDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Category;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
@@ -32,6 +35,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     private final static String EMAIL_ALREADY_TAKEN = "Service: email %s already taken";
     private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
+    private static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
 
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
@@ -148,4 +152,8 @@ public class UserServiceImpl implements UserService {
         return email.toString();
     }
 
+    public UserDTO getUser(User oldUser) {
+        User user = userRepository.getReferenceById(oldUser.getId());
+        return userMapper.entityToDto(user);
+    }
 }
