@@ -1,6 +1,5 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.google.common.base.Converter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,7 +10,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.NotNull;
+import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,30 +20,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Converter;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleListMapper;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
-import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.repository.CategoryRepository;
+import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -63,8 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
         ArticleMapper articleMapper, CommentService commentService,
-        CategoryRepository categoryRepository) {
-                              ArticleMapper articleMapper, ArticleListMapper articleListMapper, LogsRepository logRepository, CommentService commentService) {
+        CategoryRepository categoryRepository, ArticleListMapper articleListMapper, LogsRepository logRepository) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
         this.articleListMapper = articleListMapper;
@@ -92,12 +84,13 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleRepository.deleteById(id);
     }
+
     @Override
     public List<ArticleListDTO> getMorePopularArticles() {
         List<String> articlesId = logRepository.getMorePopularArticlesId();
-        List<Article> articles=new LinkedList<Article>();
+        List<Article> articles = new LinkedList<Article>();
         for (var article : articlesId) {
-            articles.add(articleRepository.getReferenceById(article));
+            articles.add(articleRepository.getArticleById(article));
         }
         log.info("Get 3 more popular articles");
         List<ArticleDTO> articleDTOS = new LinkedList<>();
@@ -110,6 +103,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
+
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
         List<Article> articles = new LinkedList<Article>();
@@ -121,12 +115,27 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articlesDTOS;
     }
+
     @Override
     public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.getArticlesByTeamId(idUser, teamId);
         log.info("Get articles by teams id subscription");
         return getArticleListDTOS(articles);
+    }
+
+    @NotNull
+    private List<ArticleListDTO> getArticleListDTOS(List<Article> articles) {
+        List<ArticleDTO> articleDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articleDTOS.add(articleMapper.entityToDto(article));
+        }
+
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
     }
 
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
@@ -138,15 +147,16 @@ public class ArticleServiceImpl implements ArticleService {
             .orElseThrow(EntityNotExistsException::new);
     }
 
-
     @Override
     public Page<ArticleListDTO> getAllArticles(Pageable pageable) {
         Page<Article> articles = articleRepository.findAll(pageable);
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
             @Override
             protected ArticleListDTO doForward(Article article) {
                 return articleListMapper.entityToDto(article);
             }
+
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
                 return articleListMapper.dtoToEntity(articleListDTO);
@@ -163,10 +173,12 @@ public class ArticleServiceImpl implements ArticleService {
         Page<Article> articles = articleRepository.findAllByCategoryId(categoryId, pageable);
         log.info("Get all articles by category id in service");
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
             @Override
             protected ArticleListDTO doForward(Article article) {
                 return articleListMapper.entityToDto(article);
             }
+
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
                 return articleListMapper.dtoToEntity(articleListDTO);
@@ -181,10 +193,12 @@ public class ArticleServiceImpl implements ArticleService {
         Page<Article> articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
         log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
             @Override
             protected ArticleListDTO doForward(Article article) {
                 return articleListMapper.entityToDto(article);
             }
+
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
                 return articleListMapper.dtoToEntity(articleListDTO);
@@ -240,21 +254,20 @@ public class ArticleServiceImpl implements ArticleService {
         return mostCommentedArticleListDTOS;
     }
 
-
     public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = articleRepository
-                .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
-                .orElseThrow(EntityNotFoundException::new);
+            .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
+            .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting four newest articles by category id");
 
         List<ArticleListDTO> articleListDTOs = articles
-                .stream()
-                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
-                .collect(Collectors.toList());
+            .stream()
+            .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+            .collect(Collectors.toList());
 
         return articleListDTOs;
-}
+    }
 
     public ArticleDTO publishUnpublishedArticle(String id) {
         return articleRepository.findById(id)

@@ -49,4 +49,7 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
             + "WHERE c.id = ?1 AND a.isActive = true "
             + "ORDER BY a.createDateTime DESC ")
     Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
+
+    Article getArticleById(String id);
+
 }

@@ -21,28 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
-import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
-import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
-import java.security.Principal;
-import java.util.List;
+
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
