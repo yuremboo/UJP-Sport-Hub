@@ -214,7 +214,7 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotExistsException(String.format(CATEGORY_NOT_FOUND_BY_ID, categoryId));
         }
         Pageable sortedByCreateDateTime = PageRequest.of(0, 6,
-            Sort.by("createDateTime").descending());
+            Sort.by("create_date_time").descending());
 
         List<Article> allActiveArticlesByCategoryId = articleRepository
             .findAllByCategoryIdAndIsActive(categoryId, true, sortedByCreateDateTime)

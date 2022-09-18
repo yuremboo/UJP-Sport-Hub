@@ -66,7 +66,7 @@ public class ArticleController {
 
     @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
+    public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
@@ -143,12 +143,21 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/is_active/{isactive}")
+    @GetMapping("/admin/articles/category_id/{id}/is_active/{isActive}")
     public ResponseEntity<Page<ArticleListDTO>>
-    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
+    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isActive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-                articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+            articleService.getAllArticlesByCategoryIdAndIsActive(id, isActive, pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/articles/{articleId}/categories/{categoryId}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
+        log.info("Get all active articles by category id {}", categoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getSixActiveArticlesByCategoryId(categoryId, articleId));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
