@@ -36,7 +36,6 @@ public class UserServiceImpl implements UserService {
     private final static String EMAIL_ALREADY_TAKEN = "Service: email %s already taken";
     private final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
     private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
-    private static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
 
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
