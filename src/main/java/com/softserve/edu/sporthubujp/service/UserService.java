@@ -1,6 +1,9 @@
 package com.softserve.edu.sporthubujp.service;
 
+import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
+
+import javax.mail.SendFailedException;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
@@ -15,7 +18,13 @@ public interface UserService {
 
     User findUserByEmail(String email);
 
+    UserSaveProfileDTO findUserById(String userId);
+
+    //    User findUserByPasswordResetToken(String token);
+
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 
     UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException;
+
+    UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException, IOException, SendFailedException;
 }

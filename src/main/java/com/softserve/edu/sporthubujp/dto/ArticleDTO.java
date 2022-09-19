@@ -17,6 +17,6 @@ public class ArticleDTO {
     private Boolean commentsActive;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private CategoryDTO category;
-    private TeamDTO team;
+    private String categoryId;
+    private String teamId;
 }

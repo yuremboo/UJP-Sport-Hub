@@ -1,16 +1,17 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import com.google.common.io.Files;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
-import com.softserve.edu.sporthubujp.exception.InvalidPasswordException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
+import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 
@@ -19,22 +20,33 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.InvalidPropertiesFormatException;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+
+import javax.mail.SendFailedException;
 
 @Service
 @AllArgsConstructor
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final static String EMAIL_ALREADY_TAKEN = "Service: email %s already taken";
+    private final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
+    private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
 
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
     private final ConfirmationTokenService confirmationTokenService;
     private final PasswordValidator passwordValidator;
+
+    private final EmailSenderService emailSender;
 
     @Override
     public String signUpUser(UserDTO userDTO) {
@@ -88,6 +100,20 @@ public class UserServiceImpl implements UserService {
             orElseThrow(EntityNotExistsException::new);
     }
 
+    @Override
+    public UserSaveProfileDTO findUserById(String userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new EntityNotExistsException();
+        }
+        log.info(String.format("find user with the id %s", userId));
+        return userMapper.userToUserSaveDto(userRepository.findUserById(userId));
+    }
+
+    //    @Override
+    //    public User findUserByPasswordResetToken(String token) {
+    //        return null;
+    //    }
+
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 
         boolean isPresentButMe = Objects.equals(oldUser.getEmail(), newUser.getEmail());
@@ -123,4 +149,35 @@ public class UserServiceImpl implements UserService {
             })
             .orElseThrow(EntityNotExistsException::new);
     }
+
+    @Override
+    public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
+        String link = "http://localhost:8080/api/v1/forgot/password";
+        emailSender.sendCheckEmail(
+            EMAIL_SERVER,
+            buildConfirmEmail(link));
+
+        String encodedPassword = passwordConfig.passwordEncoder()
+            .encode(newPassword);
+        user.setPassword(encodedPassword);
+        userRepository.save(user);
+        return userMapper.entityToDto(user);
+    }
+
+    String buildConfirmEmail(String link) throws IOException {
+        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL , Locale.US)
+            + " " + LocalDateTime.now().getDayOfMonth()
+            + ", " + LocalDateTime.now().getYear();
+
+        StringBuilder email = new StringBuilder(Files
+            .asCharSource(new File("src/main/resources/templates/checkEmail.html"), StandardCharsets.UTF_8)
+            .read());
+
+        email
+            .insert(email.indexOf("password") + 8, date)
+            .insert(email.indexOf("href=\"\"") + 6, link);
+
+        return email.toString();
+    }
+
 }
