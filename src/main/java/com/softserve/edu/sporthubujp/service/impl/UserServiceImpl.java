@@ -7,8 +7,13 @@ import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
+import com.softserve.edu.sporthubujp.exception.InvalidPasswordException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
@@ -17,20 +22,18 @@ import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.mail.SendFailedException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.time.format.TextStyle;
 import java.util.InvalidPropertiesFormatException;
+import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
-
-import javax.mail.SendFailedException;
 
 @Service
 @AllArgsConstructor
@@ -154,11 +157,11 @@ public class UserServiceImpl implements UserService {
     public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
         String link = "http://localhost:8080/api/v1/forgot/password";
         emailSender.sendCheckEmail(
-            EMAIL_SERVER,
-            buildConfirmEmail(link));
+                EMAIL_SERVER,
+                buildConfirmEmail(link));
 
         String encodedPassword = passwordConfig.passwordEncoder()
-            .encode(newPassword);
+                .encode(newPassword);
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return userMapper.entityToDto(user);
@@ -166,18 +169,17 @@ public class UserServiceImpl implements UserService {
 
     String buildConfirmEmail(String link) throws IOException {
         String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL , Locale.US)
-            + " " + LocalDateTime.now().getDayOfMonth()
-            + ", " + LocalDateTime.now().getYear();
+                + " " + LocalDateTime.now().getDayOfMonth()
+                + ", " + LocalDateTime.now().getYear();
 
         StringBuilder email = new StringBuilder(Files
-            .asCharSource(new File("src/main/resources/templates/checkEmail.html"), StandardCharsets.UTF_8)
-            .read());
+                .asCharSource(new File("src/main/resources/templates/checkEmail.html"), StandardCharsets.UTF_8)
+                .read());
 
         email
-            .insert(email.indexOf("password") + 8, date)
-            .insert(email.indexOf("href=\"\"") + 6, link);
+                .insert(email.indexOf("password") + 8, date)
+                .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();
     }
-
 }
