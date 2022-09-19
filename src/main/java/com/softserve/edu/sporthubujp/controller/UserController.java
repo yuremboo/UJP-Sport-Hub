@@ -37,7 +37,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping(path = "/profile/edit")
+    @PutMapping(path = "/profile")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
         @RequestBody UserSaveProfileDTO newUser) {
@@ -47,7 +47,7 @@ public class UserController {
             userService.updateUser(user, newUser));
     }
 
-    @PutMapping(path = "/change/password")
+    @PutMapping(path = "/password")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updatePassword(@NotNull @Valid Principal principal,
         @RequestBody UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException {
