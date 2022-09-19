@@ -1,9 +1,7 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
-import com.softserve.edu.sporthubujp.entity.Logs;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -34,7 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping(path = "/profile/edit")
+    @PutMapping(path = "/profile")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
         @RequestBody UserSaveProfileDTO newUser) {
@@ -42,6 +39,14 @@ public class UserController {
         log.info(String.format("Controller: updating user with id %s", user.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.updateUser(user, newUser));
+    }
+
+    @GetMapping("/users/{id}")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    public ResponseEntity<UserSaveProfileDTO> getUserById(@PathVariable String id) {
+        log.info("Get user by id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.findUserById(id));
     }
 
     @GetMapping(path = "/profile")

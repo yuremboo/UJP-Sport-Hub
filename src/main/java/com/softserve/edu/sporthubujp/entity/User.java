@@ -11,6 +11,9 @@ import com.softserve.edu.sporthubujp.validator.NameConstraint;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.softserve.edu.sporthubujp.entity.comment.Comment;
+
 @Entity
 @Data
 @EntityListeners(AuditingEntityListener.class)
