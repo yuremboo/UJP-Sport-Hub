@@ -1,51 +1,72 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
-import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
-import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
-import com.softserve.edu.sporthubujp.repository.ArticleRepository;
-import com.softserve.edu.sporthubujp.repository.LogsRepository;
-import com.softserve.edu.sporthubujp.service.ArticleService;
-import com.softserve.edu.sporthubujp.service.CommentService;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.google.common.base.Converter;
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.mapper.ArticleListMapper;
+import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
+import com.softserve.edu.sporthubujp.repository.ArticleRepository;
+import com.softserve.edu.sporthubujp.repository.CategoryRepository;
+import com.softserve.edu.sporthubujp.repository.LogsRepository;
+import com.softserve.edu.sporthubujp.service.ArticleService;
+import com.softserve.edu.sporthubujp.service.CommentService;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
     private static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
+    private static final String CATEGORY_NOT_FOUND_BY_ID = "Category not found by id: %s";
     private static final String ARTICLE_NOT_DELETE_BY_ID = "Record with provided id: %s is not found";
 
     private final ArticleRepository articleRepository;
+    private final CategoryRepository categoryRepository;
     private final ArticleMapper articleMapper;
+    private final ArticleListMapper articleListMapper;
     private final LogsRepository logRepository;
 
     private final CommentService commentService;
 
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
-                              ArticleMapper articleMapper, LogsRepository logRepository, CommentService commentService) {
+        ArticleMapper articleMapper, CommentService commentService,
+        CategoryRepository categoryRepository, ArticleListMapper articleListMapper, LogsRepository logRepository) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.articleListMapper = articleListMapper;
         this.logRepository = logRepository;
         this.commentService = commentService;
+        this.categoryRepository = categoryRepository;
     }
 
     public ArticleDTO getArticleById(String id) {
-        Article article = articleRepository.getReferenceById(id);
+        Article article = articleRepository.getArticleById(id);
         log.info("Get article by id in service");
         if (!articleRepository.existsById(id)) {
             log.error(String.format(ARTICLE_NOT_FOUND_BY_ID, id));
@@ -63,12 +84,13 @@ public class ArticleServiceImpl implements ArticleService {
         }
         articleRepository.deleteById(id);
     }
+
     @Override
     public List<ArticleListDTO> getMorePopularArticles() {
         List<String> articlesId = logRepository.getMorePopularArticlesId();
-        List<Article> articles=new LinkedList<Article>();
+        List<Article> articles = new LinkedList<Article>();
         for (var article : articlesId) {
-            articles.add(articleRepository.getReferenceById(article));
+            articles.add(articleRepository.getArticleById(article));
         }
         log.info("Get 3 more popular articles");
         List<ArticleDTO> articleDTOS = new LinkedList<>();
@@ -81,6 +103,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
+
     @Override
     public List<ArticleDTO> getAllArticlesBySubscription(String idUser) {
         List<Article> articles = new LinkedList<Article>();
@@ -93,16 +116,21 @@ public class ArticleServiceImpl implements ArticleService {
         return articlesDTOS;
     }
 
-
     @Override
     public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
         List<Article> articles = new LinkedList<>();
         articles = articleRepository.getArticlesByTeamId(idUser, teamId);
         log.info("Get articles by teams id subscription");
+        return getArticleListDTOS(articles);
+    }
+
+    @NotNull
+    private List<ArticleListDTO> getArticleListDTOS(List<Article> articles) {
         List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
             articleDTOS.add(articleMapper.entityToDto(article));
         }
+
         List<ArticleListDTO> articleListDTOS = new LinkedList<>();
         for (var articleDTO : articleDTOS) {
             articleListDTOS.add(new ArticleListDTO(articleDTO));
@@ -112,67 +140,94 @@ public class ArticleServiceImpl implements ArticleService {
 
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
-                .map(article -> {
-                    articleMapper.updateArticle(article, newArticle);
-                    return articleMapper.entityToDto(articleRepository.save(article));
-                })
-                .orElseThrow(EntityNotExistsException::new);
-    }
-
-    public List<ArticleListDTO> getAllArticles(Pageable pageable) {
-//        List<Article> articles = new LinkedList<Article>();
-        Page<Article> articles;
-        articles = articleRepository.findAll(pageable);
-        log.info("Get all article in service");
-        List<ArticleDTO> articleDTOS = new LinkedList<ArticleDTO>();
-        for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToDto(article));
-        }
-
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
-        }
-        return articleListDTOS;
+            .map(article -> {
+                articleMapper.updateArticle(article, newArticle);
+                return articleMapper.entityToDto(articleRepository.save(article));
+            })
+            .orElseThrow(EntityNotExistsException::new);
     }
 
     @Override
-    public List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
-        List<Article> articles = new LinkedList<>();
-        articles = articleRepository.findAllByCategoryId(categoryId, pageable);
+    public Page<ArticleListDTO> getAllArticles(Pageable pageable) {
+        Page<Article> articles = articleRepository.findAll(pageable);
+        Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
+            @Override
+            protected ArticleListDTO doForward(Article article) {
+                return articleListMapper.entityToDto(article);
+            }
+
+            @Override
+            protected Article doBackward(ArticleListDTO articleListDTO) {
+                return articleListMapper.dtoToEntity(articleListDTO);
+            }
+        });
+
+        log.info("Get all articles in service");
+        int total = articles.getTotalPages();
+        return articleDTOPage;
+    }
+
+    @Override
+    public Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable) {
+        Page<Article> articles = articleRepository.findAllByCategoryId(categoryId, pageable);
         log.info("Get all articles by category id in service");
-        List<ArticleDTO> articleDTOS = new LinkedList<>();
-        for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToDto(article));
-        }
+        Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
 
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
-        }
-        return articleListDTOS;
+            @Override
+            protected ArticleListDTO doForward(Article article) {
+                return articleListMapper.entityToDto(article);
+            }
+
+            @Override
+            protected Article doBackward(ArticleListDTO articleListDTO) {
+                return articleListMapper.dtoToEntity(articleListDTO);
+            }
+        });
+
+        return articleDTOPage;
     }
 
     @Override
-    public List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
-        List<Article> articles = new LinkedList<>();
-        articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
+    public Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable) {
+        Page<Article> articles = articleRepository.findAllByCategoryIdAndIsActive(categoryId, isActive, pageable);
         log.info("Get all articles by category id {} and if article.active {}", categoryId, isActive);
-        List<ArticleDTO> articleDTOS = new LinkedList<>();
-        for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToDto(article));
-        }
+        Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
 
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
+            @Override
+            protected ArticleListDTO doForward(Article article) {
+                return articleListMapper.entityToDto(article);
+            }
+
+            @Override
+            protected Article doBackward(ArticleListDTO articleListDTO) {
+                return articleListMapper.dtoToEntity(articleListDTO);
+            }
+        });
+
+        return articleDTOPage;
+    }
+
+    @Override
+    public List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
+        if (!categoryRepository.existsById(categoryId)) {
+            throw new EntityNotExistsException(String.format(CATEGORY_NOT_FOUND_BY_ID, categoryId));
         }
-        return articleListDTOS;
+        Pageable sortedByCreateDateTime = PageRequest.of(0, 6,
+            Sort.by("create_date_time").descending());
+
+        List<Article> allActiveArticlesByCategoryId = articleRepository
+            .findAllByCategoryIdAndIsActive(categoryId, true, sortedByCreateDateTime)
+            .stream()
+            .filter(article -> !Objects.equals(article.getId(), articleId))
+            .collect(Collectors.toList());
+        log.info("Get all active articles by category id {}", categoryId);
+        return getArticleListDTOS(allActiveArticlesByCategoryId);
     }
 
     @Override
     public List<ArticleListDTO> getMostCommentedArticles() {
-        List<ArticleListDTO> allArticlesDTOS = getAllArticles(Pageable.unpaged());
+        List<ArticleListDTO> allArticlesDTOS = getAllArticles(Pageable.unpaged()).getContent();
         Map<String, Integer> mapArticleComments = new HashMap<>();
 
         for (var article : allArticlesDTOS) {
@@ -180,11 +235,11 @@ public class ArticleServiceImpl implements ArticleService {
         }
 
         Map<String, Integer> sortedMap =
-                mapArticleComments.entrySet().stream()
-                        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-                        .limit(3)
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+            mapArticleComments.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .limit(3)
+                .collect(Collectors.toMap(
+                    Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
         List<ArticleDTO> mostCommentedArticleDTOS = new ArrayList<>();
 
@@ -199,21 +254,20 @@ public class ArticleServiceImpl implements ArticleService {
         return mostCommentedArticleListDTOS;
     }
 
-    @Override
     public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = articleRepository
-                .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
-                .orElseThrow(EntityNotFoundException::new);
+            .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
+            .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting four newest articles by category id");
 
         List<ArticleListDTO> articleListDTOs = articles
-                .stream()
-                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
-                .collect(Collectors.toList());
+            .stream()
+            .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+            .collect(Collectors.toList());
 
         return articleListDTOs;
-}
+    }
 
     public ArticleDTO publishUnpublishedArticle(String id) {
         return articleRepository.findById(id)

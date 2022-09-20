@@ -8,4 +8,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public interface CategoryService {
     List<CategoryDTO> getAllCategories();
+
+    CategoryDTO getCategoryById(String id);
 }
