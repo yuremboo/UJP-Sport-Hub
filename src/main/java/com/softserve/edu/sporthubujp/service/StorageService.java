@@ -6,8 +6,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface StorageService {
-    public String uploadImage(MultipartFile multipartFile, boolean isPhotoOfTheDay);
-    public void deleteImage(String id);
-    public void getImage(HttpServletResponse response, String id) throws IOException;
+     String uploadImage(MultipartFile multipartFile, boolean isPhotoOfTheDay);
+     void deleteImage(String id);
+     void getImage(HttpServletResponse response, String id) throws IOException;
 
 }
