@@ -19,7 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class TeamServiceImpl  implements TeamService {
-
     private static final String NOT_SEARCH_TEAM_BY_NAME = "Record with name team: %s is not found";
     private final TeamRepository teamRepository;
     private final SubscriptionRepository subscriptionRepository;
