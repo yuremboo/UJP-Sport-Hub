@@ -26,6 +26,7 @@ public interface ArticleService {
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
     List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
+    void selectedByAdminArticle(List<String> articleIDList);
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     
     List<ArticleListDTO> getMostCommentedArticles();
@@ -35,5 +36,4 @@ public interface ArticleService {
     List<ArticleListDTO> getAllArticlesWithoutPagination();
 
     ArticleDTO publishUnpublishedArticle(String id);
-
 }

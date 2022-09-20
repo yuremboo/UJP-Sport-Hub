@@ -99,6 +99,9 @@
             <column name="is_active" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
+            <column name="selected_by_admin" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
             <column name="location" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>

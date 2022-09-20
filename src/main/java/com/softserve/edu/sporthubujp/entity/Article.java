@@ -36,6 +36,8 @@ public class Article {
     private Boolean isActive;
     @Column(name = "comments_active")
     private Boolean commentsActive;
+    @Column(name = "selected_by_admin", nullable = false)
+    private Boolean selectedByAdmin;
     @CreatedDate
     @Column(name="create_date_time",  nullable=false, unique=false)
     private LocalDateTime createDateTime;

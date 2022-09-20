@@ -120,7 +120,16 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
-
+    public void selectedByAdminArticle(List<String> articleIDList) {
+        articleRepository.setSelectByAdmin();
+        List<Article> articlesList =new LinkedList<Article>();
+        for (var articleId : articleIDList) {
+            //articlesList.add(articleRepository.getReferenceById(articleId));
+            var article1=articleRepository.findById(articleId).orElseThrow(EntityNotExistsException::new);;
+            article1.setSelectedByAdmin(true);
+            articleRepository.save(article1);
+        }
+    }
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
                 .map(article -> {
