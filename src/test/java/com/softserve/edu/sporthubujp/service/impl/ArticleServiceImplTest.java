@@ -10,12 +10,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -54,5 +56,19 @@ class ArticleServiceImplTest {
 //                .orElseThrow(EntityNotFoundException::new);
 //
 //        assertThat(confirmationTokenTest).isEqualTo(confirmationToken);
+    }
+
+    @Test
+    void willThrowWhenGetNewestArticles() {
+
+        List<Article> articleList = spy(new ArrayList<>());
+
+        when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
+                .isInstanceOf(EntityNotFoundException.class);
+
+        verify(articleList, never()).stream();
     }
 }
