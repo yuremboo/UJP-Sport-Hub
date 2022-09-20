@@ -28,7 +28,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<Void> getImage(HttpServletResponse response, @PathVariable("id") String id)
             throws IOException {
         log.info(String.format("Controller: getting image with an id %s", id));
@@ -39,20 +39,22 @@ public class ImageController {
 
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile uploadedFileRef) {
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile uploadedFileRef,
+                                                           @RequestParam("photoOfTheDay") boolean isPhotoOfTheDay) {
         log.info(String.format("Controller: uploading image with a name %s",
                 uploadedFileRef.getOriginalFilename()));
 
         HashMap<String, String> response = new HashMap<>();
-        response.put("imageUrl", "api/v1/image/" + storageService.uploadImage(uploadedFileRef));
+        response.put("imageUrl", "api/v1/image/" +
+                storageService.uploadImage(uploadedFileRef, isPhotoOfTheDay));
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
     }
 
     @DeleteMapping(path = "{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<String> deleteImage(@PathVariable String id) {
         log.info(String.format("Controller: deleting image with an id %s", id));
         storageService.deleteImage(id);

@@ -2,7 +2,6 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.service.StorageService;
 import lombok.extern.slf4j.Slf4j;
-import net.snowflake.client.jdbc.internal.apache.commons.io.FilenameUtils;
 import net.snowflake.client.jdbc.internal.apache.commons.io.IOUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
@@ -20,11 +19,12 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-public class StorageServiceImpl implements StorageService {
+public class StorageServiceImpl implements StorageService { // TODO: except
     public static final String UPLOAD_DIRECTORY = "src/main/resources/uploads/";
+    public static final String PHOTO_OF_THE_DAY = "photo-of-the-day.jpg";
 
     @Override
-    public String uploadImage(MultipartFile multipartFile) {
+    public String uploadImage(MultipartFile multipartFile, boolean isPhotoOfTheDay) {
         log.info(String.format("Service: uploading image with a name %s",
                 multipartFile.getOriginalFilename()));
 
@@ -32,10 +32,20 @@ public class StorageServiceImpl implements StorageService {
                 || multipartFile.isEmpty()) {
             throw new ServiceException("File is not an image or is empty");
         }
-        String newImageName = UUID.randomUUID() + "."
-                + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+
+        Path pathToFile;
+        String newImageName;
+
+        if (isPhotoOfTheDay) {
+            deleteImage(PHOTO_OF_THE_DAY);
+            newImageName = PHOTO_OF_THE_DAY;
+        } else {
+            newImageName = UUID.randomUUID() + "." + "jpg";
+        }
+
         String path = UPLOAD_DIRECTORY + newImageName;
-        Path pathToFile = Paths.get(path);
+        pathToFile = Paths.get(path);
+
         try {
             Files.createDirectories(pathToFile.getParent());
             Files.write(pathToFile, multipartFile.getBytes());

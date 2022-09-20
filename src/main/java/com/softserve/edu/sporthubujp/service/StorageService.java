@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface StorageService {
-    public String uploadImage(MultipartFile multipartFile);
+    public String uploadImage(MultipartFile multipartFile, boolean isPhotoOfTheDay);
     public void deleteImage(String id);
     public void getImage(HttpServletResponse response, String id) throws IOException;
 

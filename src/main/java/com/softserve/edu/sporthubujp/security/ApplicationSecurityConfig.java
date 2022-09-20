@@ -61,14 +61,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories")
+                .antMatchers("/", "index", "/css/*", "/js/*",
+                        "/api/v*/registration/**", "/api/categories", "/api/v1/image/*")
                     .permitAll()
                 .anyRequest()
                 .authenticated();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
