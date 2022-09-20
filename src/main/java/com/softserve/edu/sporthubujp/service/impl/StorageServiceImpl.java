@@ -1,0 +1,71 @@
+package com.softserve.edu.sporthubujp.service.impl;
+
+import com.softserve.edu.sporthubujp.service.StorageService;
+import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.internal.apache.commons.io.FilenameUtils;
+import net.snowflake.client.jdbc.internal.apache.commons.io.IOUtils;
+import org.hibernate.service.spi.ServiceException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Objects;
+import java.util.UUID;
+
+@Service
+@Slf4j
+public class StorageServiceImpl implements StorageService {
+    public static final String UPLOAD_DIRECTORY = "src/main/resources/uploads/";
+
+    @Override
+    public String uploadImage(MultipartFile multipartFile) {
+        log.info(String.format("Service: uploading image with a name %s",
+                multipartFile.getOriginalFilename()));
+
+        if (!Objects.requireNonNull(multipartFile.getContentType()).startsWith("image")
+                || multipartFile.isEmpty()) {
+            throw new ServiceException("File is not an image or is empty");
+        }
+        String newImageName = UUID.randomUUID() + "."
+                + FilenameUtils.getExtension(multipartFile.getOriginalFilename());
+        String path = UPLOAD_DIRECTORY + newImageName;
+        Path pathToFile = Paths.get(path);
+        try {
+            Files.createDirectories(pathToFile.getParent());
+            Files.write(pathToFile, multipartFile.getBytes());
+        } catch (IOException e) {
+            throw new ServiceException("Failed to upload photo", e);
+        }
+        return newImageName;
+    }
+
+    @Override
+    public void deleteImage(String id) {
+        log.info(String.format("Service: deleting image with an id %s", id));
+        String path = UPLOAD_DIRECTORY + id;
+        Path fileToDeletePath = Paths.get(path);
+        try {
+            Files.deleteIfExists(fileToDeletePath);
+        } catch (IOException e) {
+            throw new ServiceException("File is not removed", e);
+        }
+    }
+
+    @Override
+    public void getImage(HttpServletResponse response, String id) throws IOException {
+        log.info(String.format("Service: getting image with an id %s", id));
+        String sPath = UPLOAD_DIRECTORY + id;
+        Path path = Paths.get(sPath);
+        System.out.println(path);
+        try (InputStream in = new FileInputStream(path.toFile())) {
+            response.setContentType(Files.probeContentType(path));
+            IOUtils.copy(in, response.getOutputStream());
+        }
+    }
+}

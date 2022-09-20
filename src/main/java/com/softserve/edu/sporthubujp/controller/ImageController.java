@@ -1,48 +1,62 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import com.softserve.edu.sporthubujp.service.impl.ImageServiceImpl;
+import com.softserve.edu.sporthubujp.service.impl.StorageServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
-@RequestMapping(path = "api/v1/image")
 @Slf4j
 @CrossOrigin
-public class ImageController {
+@RequestMapping("/api/v1/image") // TODO: branch name
 
-    private final ImageServiceImpl imageService;
+public class ImageController {
+    private final StorageServiceImpl storageService;
 
     @Autowired
-    public ImageController(ImageServiceImpl imageService) {
-        this.imageService = imageService;
+    public ImageController(StorageServiceImpl storageService) {
+        this.storageService = storageService;
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<Void> getImage(HttpServletResponse response, @PathVariable("id") String id)
+            throws IOException {
+        log.info(String.format("Controller: getting image with an id %s", id));
+
+        storageService.getImage(response, id);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public ResponseEntity<String> uploadImage(@RequestParam("file") MultipartFile multipartImage)
-            throws IOException {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<Map<String, String>> uploadImage(@RequestParam("image") MultipartFile uploadedFileRef) {
+        log.info(String.format("Controller: uploading image with a name %s",
+                uploadedFileRef.getOriginalFilename()));
 
-        log.info(String.format("Controller: uploading image with a name %s", multipartImage.getName()));
+        HashMap<String, String> response = new HashMap<>();
+        response.put("imageUrl", "api/v1/image/" + storageService.uploadImage(uploadedFileRef));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(imageService.uploadImage(multipartImage));
+                .body(response);
     }
 
-    @GetMapping("/download/{image}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
-    public ResponseEntity<Resource> downloadImage(@PathVariable("image") String imageId) {
+    @DeleteMapping(path = "{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<String> deleteImage(@PathVariable String id) {
+        log.info(String.format("Controller: deleting image with an id %s", id));
+        storageService.deleteImage(id);
 
-        log.info(String.format("Controller: downloading image with an id %s", imageId));
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(imageService.downloadImage(imageId));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
