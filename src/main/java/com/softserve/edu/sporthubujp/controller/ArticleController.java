@@ -192,13 +192,6 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/allarticles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesWithoutPagination());
-    }
-
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")
     public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
         log.info("Publish or unpublished article by id {}", id);
