@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.entity;
 import lombok.*;
+
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -8,6 +10,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.softserve.edu.sporthubujp.entity.comment.Comment;
 
 @Entity
 @Data
@@ -17,7 +20,8 @@ import java.util.List;
 public class Article {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator="system-uuid")
+    @GenericGenerator(name="system-uuid", strategy = "uuid")
     private String id;
 
     @Column(name = "title", length = 255, nullable = false, unique = false)
@@ -52,7 +56,7 @@ public class Article {
     @JoinColumn(name = "team_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_team"), insertable=false, updatable=false)
     private Team team;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article",cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "article")
     @EqualsAndHashCode.Exclude
     private List<Comment> comments;
 

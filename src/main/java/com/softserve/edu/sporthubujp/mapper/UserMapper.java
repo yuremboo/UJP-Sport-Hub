@@ -12,6 +12,10 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface UserMapper {
     User dtoToEntity(UserDTO userDTO);
     UserDTO entityToDto(User user);
+
+    UserSaveProfileDTO userToUserSaveDto(User user);
+    User userSaveDtoToUser(UserSaveProfileDTO userSaveProfileDTO);
+
     User updateUser(@MappingTarget User userFromDb,  UserSaveProfileDTO newUser);
     UserDTO dtoToSaveDto(UserSaveProfileDTO userSaveProfileDTO);
     UserSaveProfileDTO saveDtoToDto(UserDTO userDTO);

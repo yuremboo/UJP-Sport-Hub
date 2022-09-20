@@ -4,20 +4,19 @@ package com.softserve.edu.sporthubujp.service;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Optional;
 
 
 public interface ArticleService {
     ArticleDTO getArticleById(String id);
-    
-    List<ArticleListDTO> getAllArticles(Pageable pageable);
 
-    List<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
+    Page<ArticleListDTO> getAllArticles(Pageable pageable);
+    Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
+    Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
-    List<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
-
+    List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
     List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
@@ -32,8 +31,6 @@ public interface ArticleService {
     List<ArticleListDTO> getMostCommentedArticles();
     
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
-
-    List<ArticleListDTO> getAllArticlesWithoutPagination();
 
     ArticleDTO publishUnpublishedArticle(String id);
 }

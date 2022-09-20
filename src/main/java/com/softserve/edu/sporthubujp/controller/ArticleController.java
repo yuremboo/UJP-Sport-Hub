@@ -1,10 +1,27 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import java.security.Principal;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.CommentDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.entity.User;
@@ -13,18 +30,7 @@ import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
-
-import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.sql.Date;
-import java.util.List;
+import org.springframework.data.domain.Page;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -39,7 +45,7 @@ public class ArticleController {
 
     @Autowired
     public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
-        LogsRepository logRepository) {
+                             LogsRepository logRepository) {
         this.articleService = articleService;
         this.commentService = commentService;
         this.userService = userService;
@@ -56,12 +62,12 @@ public class ArticleController {
             articleService.getArticleById(id));
     }
 
-    @GetMapping("/{id}/comments")
+    @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<List<CommentDTO>> getAllCommentByArticleId(@PathVariable String id) {
+    public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getAllCommentByArticleId(id));
+            commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
     }
 
     @DeleteMapping("/articles/{id}")
@@ -71,6 +77,7 @@ public class ArticleController {
         articleService.deleteArticleById(articleId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
+
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
@@ -131,17 +138,18 @@ public class ArticleController {
             articleService.updateArticle(newArticle, id));
     }
 
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticles(Pageable pageable) {
-        log.info("Get all article");
+    public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
+        log.info("Get all articles");
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getAllArticles(pageable));
     }
 
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/articles/category_id/{id}")
-    public ResponseEntity<List<ArticleListDTO>>
+    public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -149,16 +157,25 @@ public class ArticleController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/isactive/{isactive}")
-    public ResponseEntity<List<ArticleListDTO>>
-    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isactive, Pageable pageable) {
+    @GetMapping("/admin/articles/category_id/{id}/is_active/{isActive}")
+    public ResponseEntity<Page<ArticleListDTO>>
+    getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isActive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
+            articleService.getAllArticlesByCategoryIdAndIsActive(id, isActive, pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    @GetMapping("/articles/{articleId}/categories/{categoryId}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
+        log.info("Get all active articles by category id {}", categoryId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getSixActiveArticlesByCategoryId(categoryId, articleId));
     }
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping("/articles/mostcommented")
+    @GetMapping("/articles/most_commented")
     public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(

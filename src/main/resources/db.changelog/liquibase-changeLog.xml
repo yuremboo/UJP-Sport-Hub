@@ -150,7 +150,7 @@
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="comments_pkey"/>
             </column>
-            <column name="comment" type="VARCHAR(255)">
+            <column name="comment_text" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="create_date_time" type="TIMESTAMP WITHOUT TIME ZONE">
@@ -159,6 +159,7 @@
             <column name="dislikes" type="INTEGER"/>
             <column name="likes" type="INTEGER"/>
             <column name="update_date_time" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="is_edited" type="boolean"/>
             <column name="article_id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
