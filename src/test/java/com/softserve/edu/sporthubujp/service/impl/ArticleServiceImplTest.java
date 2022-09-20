@@ -1,6 +1,7 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
@@ -42,20 +43,6 @@ class ArticleServiceImplTest {
     @Test
     @Disabled
     void getNewestArticlesByCategoryId() {
-
-//        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
-//
-//        underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
-//
-//        when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-//                .thenReturn(Optional.of(articleMapper.dtoToEntity(articleListDTOS)));
-//
-//        verify(confirmationTokenRepository).findByToken(confirmationToken.getToken());
-//
-//        ConfirmationToken confirmationTokenTest = confirmationTokenRepository.findByToken(confirmationToken.getToken())
-//                .orElseThrow(EntityNotFoundException::new);
-//
-//        assertThat(confirmationTokenTest).isEqualTo(confirmationToken);
     }
 
     @Test
