@@ -206,13 +206,10 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting four newest articles by category id");
-
-        List<ArticleListDTO> articleListDTOs = articles
+        return articles
                 .stream()
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
                 .collect(Collectors.toList());
-
-        return articleListDTOs;
 }
 
     public ArticleDTO publishUnpublishedArticle(String id) {
