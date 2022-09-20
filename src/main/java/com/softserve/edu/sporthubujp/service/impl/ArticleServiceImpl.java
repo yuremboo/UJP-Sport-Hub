@@ -128,7 +128,7 @@ public class ArticleServiceImpl implements ArticleService {
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
@@ -148,7 +148,7 @@ public class ArticleServiceImpl implements ArticleService {
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
@@ -166,7 +166,7 @@ public class ArticleServiceImpl implements ArticleService {
         Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
             @Override
             protected Article doBackward(ArticleListDTO articleListDTO) {
