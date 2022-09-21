@@ -8,8 +8,10 @@ import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 
@@ -23,7 +25,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-
+@ExtendWith(MockitoExtension.class)
 class ArticleServiceImplTest {
 
     private static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
@@ -31,18 +33,23 @@ class ArticleServiceImplTest {
 
     @Mock
     private ArticleRepository articleRepository;
-    @Mock
-    private ArticleMapper articleMapper;
-    @Mock
-    private LogsRepository logRepository;
-    @Mock
-    private CommentService commentService;
     @InjectMocks
     private ArticleServiceImpl underTest;
 
     @Test
-    @Disabled
     void getNewestArticlesByCategoryId() {
+        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
+        List<Article> articleList = spy(new ArrayList<>());
+
+        when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
+                .thenReturn(Optional.of(articleList));
+
+        List<ArticleListDTO> underTestArticles =
+                underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
+
+        verify(articleList).stream();
+
+        assertThat(underTestArticles).isEqualTo(articleListDTOS);
     }
 
     @Test

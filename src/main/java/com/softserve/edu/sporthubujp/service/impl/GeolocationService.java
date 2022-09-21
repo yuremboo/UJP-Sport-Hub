@@ -20,30 +20,30 @@ import java.net.URL;
 @Slf4j
 public class GeolocationService {
     private final DatabaseReader databaseReader;
+    private static final String CHECK_IP = "https://checkip.amazonaws.com";
+    private static final String GEO_DATABASE = "src/main/resources/GeoLite2-City.mmdb";
 
     @Autowired
     public GeolocationService() throws IOException {
-        File database = new File("src/main/resources/GeoLite2-City.mmdb");
+        File database = new File(GEO_DATABASE);
         databaseReader = new DatabaseReader.Builder(database).build();
     }
 
-    public GeolocationResponseDTO getLocation(String ip)
+    public GeolocationResponseDTO getLocation()
             throws IOException, GeoIp2Exception {
-        log.info(String.format("Service: posting geolocation by ip of %s ", ip));
-//
-        URL whatismyip = new URL("http://checkip.amazonaws.com");
-        BufferedReader in = new BufferedReader(new InputStreamReader(
-                whatismyip.openStream()));
 
-        String extIp = in.readLine(); //you get the IP as a String
-        System.out.println(extIp);
-//
-        InetAddress ipAddress = InetAddress.getByName(ip);
+        URL whatIsMyIp = new URL(CHECK_IP);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                whatIsMyIp.openStream()));
+        String actualIp = reader.readLine();
+        log.info(String.format("Service: posting geolocation by ip of %s ", actualIp));
+
+        InetAddress ipAddress = InetAddress.getByName(actualIp);
         CityResponse response = databaseReader.city(ipAddress);
         String cityName = response.getCity().getName();
         String latitude = response.getLocation().getLatitude().toString();
         String longitude = response.getLocation().getLongitude().toString();
 
-        return new GeolocationResponseDTO(ip, cityName, latitude, longitude);
+        return new GeolocationResponseDTO(actualIp, cityName, latitude, longitude);
     }
 }

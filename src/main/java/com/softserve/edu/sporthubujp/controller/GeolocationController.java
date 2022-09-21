@@ -25,11 +25,11 @@ public class GeolocationController {
 
     @PostMapping() // TODO: authorities?
     public ResponseEntity<GeolocationResponseDTO>
-    getLocation(@RequestParam(value = "ip") String ip) throws IOException, GeoIp2Exception {
-        log.info(String.format("Controller: posting geolocation by ip of %s ", ip));
+    getLocation() throws IOException, GeoIp2Exception {
+        log.info("Controller: posting your geolocation by ip");
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(locationService.getLocation(ip));
+                .body(locationService.getLocation());
     }
 }
