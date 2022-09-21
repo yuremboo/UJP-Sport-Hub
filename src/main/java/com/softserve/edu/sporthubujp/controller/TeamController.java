@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/teams") // TODO: changed routes
 public class TeamController {
     private final TeamService teamService;
 
@@ -37,14 +37,14 @@ public class TeamController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping("/teams")
+    @GetMapping()
     public ResponseEntity<List<TeamDTO>> getAllTeams() {
         log.info("Get all teams");
         return ResponseEntity.status(HttpStatus.OK).body(
                 teamService.getAllTeams());
     }
 
-    @GetMapping("/teams/subscription")
+    @GetMapping("/subscription")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<TeamSubscriptionDTO>>
     getAllTeamsBySubscription(@NotNull Principal principal) {
@@ -57,12 +57,20 @@ public class TeamController {
                 teamService.getAllTeamsBySubscription(user.getId()));
     }
 
-    @GetMapping("/teams/search_name/{searchName}")
+    @GetMapping("/search_name/{searchName}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<TeamDTO>>
     searchTeamsByName(@PathVariable String searchName) {
         log.info("Get all teams of the name {}", searchName);
         return ResponseEntity.status(HttpStatus.OK).body(
                 teamService.searchTeamsByName(searchName));
+    }
+
+    @GetMapping("/{location}")
+    public ResponseEntity<List<TeamDTO>>
+    getAllTeamsByLocation(@PathVariable("location") String location) {
+        log.info(String.format("Controller: getting all teams by %s location", location));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                teamService.getAllTeamsByLocation(location));
     }
 }

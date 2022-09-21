@@ -23,7 +23,7 @@ public class GeolocationController {
         this.locationService = locationService;
     }
 
-    @PostMapping() // TODO: authorities?
+    @GetMapping() // TODO: authorities?
     public ResponseEntity<GeolocationResponseDTO>
     getLocation() throws IOException, GeoIp2Exception {
         log.info("Controller: posting your geolocation by ip");
