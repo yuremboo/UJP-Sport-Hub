@@ -11,15 +11,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
-import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.InvalidEntityException;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.repository.CommentRepository;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
-import com.softserve.edu.sporthubujp.service.CommentService;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
@@ -35,6 +33,8 @@ import static org.mockito.Mockito.when;
 class CommentServiceImplTest {
 
     public static final String COMMENT_NOT_VALID_WITH = "Comment is not valid with %s";
+    public static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
+    public static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
     @Mock
     private CommentRepository commentRepository;
     @Mock
@@ -45,16 +45,6 @@ class CommentServiceImplTest {
     private CommentMapper commentMapper;
     @InjectMocks
     private CommentServiceImpl underTest;
-
-    @Test
-    @Disabled
-    void deleteComment() {
-    }
-
-    @Test
-    @Disabled
-    void updateComment() {
-    }
 
     @Test
     void canAddNewComment() {
@@ -79,9 +69,9 @@ class CommentServiceImplTest {
     @Test
     void cannotAddCommentWithNegativeNumberOfLikesOrDislikes() {
         CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        commentDTO.setLikes(-1);
+        commentDTO.setDislikes(-1);
         Comment comment = spy(new Comment());
-        when(commentMapper.dtoSaveToEntity(commentDTO))
-            .thenReturn(comment);
         when(articleRepository.existsById(commentDTO.getArticleId()))
             .thenReturn(true);
         when(userRepository.existsById(commentDTO.getUserId()))
@@ -91,5 +81,27 @@ class CommentServiceImplTest {
             .hasMessageContaining(String.format(COMMENT_NOT_VALID_WITH,
                 (commentDTO.getLikes() +
                 "likes and " + commentDTO.getDislikes() + " dislikes")));
+        verify(commentRepository, never()).save(any(Comment.class));
+    }
+
+    @Test
+    void cannotAddCommentWithoutArticleId() {
+        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        assertThatThrownBy(() -> underTest.addNewComment(commentDTO))
+            .isInstanceOf(EntityNotExistsException.class)
+            .hasMessageContaining(String.format(ARTICLE_NOT_FOUND_BY_ID,
+                commentDTO.getArticleId()));
+        verify(commentRepository, never()).save(any(Comment.class));
+    }
+    @Test
+    void cannotAddCommentWithoutUserId() {
+        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        when(articleRepository.existsById(commentDTO.getArticleId()))
+            .thenReturn(true);
+        assertThatThrownBy(() -> underTest.addNewComment(commentDTO))
+            .isInstanceOf(EntityNotExistsException.class)
+            .hasMessageContaining(String.format(USER_NOT_FOUND_BY_ID,
+                commentDTO.getUserId()));
+        verify(commentRepository, never()).save(any(Comment.class));
     }
 }
