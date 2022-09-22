@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,11 +64,20 @@ public class UserController {
             userService.findUserById(id));
     }
 
-//    @GetMapping("/password")
-//    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-//    public ResponseEntity<UserSavePasswordDTO> getPassword() {
-//        log.info("Get user by id {}", id);
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//            userService.getPassword(id));
-//    }
+    @GetMapping(path = "/password")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<UserSavePasswordDTO> getPassword(@NotNull Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
+        log.info(String.format("Controller: get password with id %s", user.getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.getPassword(user));
+    }
+
+    @PostMapping(path = "/old-password")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<Boolean> postOldPassword(@NotNull Principal principal, String oldPassword) {
+        String password = userService.findUserByEmail(principal.getName()).getPassword();
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.postOldPassword(oldPassword, password));
+    }
 }

@@ -27,4 +27,8 @@ public interface UserService {
     UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException;
 
     UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException;
+
+    UserSavePasswordDTO getPassword(User oldUser);
+
+    Boolean postOldPassword(String oldPassword, String password);
 }

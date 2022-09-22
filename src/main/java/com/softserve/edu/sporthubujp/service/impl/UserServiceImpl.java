@@ -182,4 +182,17 @@ public class UserServiceImpl implements UserService {
 
         return email.toString();
     }
+
+    public UserSavePasswordDTO getPassword(User oldUser) {
+        String password = userRepository.getReferenceById(oldUser.getId()).getPassword();
+        String encodedPassword = passwordConfig.passwordEncoder().encode(password);
+
+        UserSavePasswordDTO passwordDTO = new UserSavePasswordDTO();
+        passwordDTO.setPassword(password);
+        return passwordDTO;
+    }
+
+    public Boolean postOldPassword(String oldPassword,String password) {
+        return passwordConfig.passwordEncoder().matches(oldPassword, password);
+    }
 }
