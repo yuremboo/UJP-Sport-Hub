@@ -62,4 +62,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.findUserById(id));
     }
+
+//    @GetMapping("/password")
+//    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+//    public ResponseEntity<UserSavePasswordDTO> getPassword() {
+//        log.info("Get user by id {}", id);
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//            userService.getPassword(id));
+//    }
 }
