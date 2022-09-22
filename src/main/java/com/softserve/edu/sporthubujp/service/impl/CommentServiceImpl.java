@@ -89,6 +89,7 @@ public class CommentServiceImpl implements CommentService {
             throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
                 newComment.getUserId()));
         }
+        log.info("Update comment by id in service");
         return commentRepository.findById(id)
             .map(comment -> {
                 commentMapper.updateComment(comment, newComment);
@@ -110,6 +111,7 @@ public class CommentServiceImpl implements CommentService {
                 String.format(COMMENT_NOT_VALID_WITH, (newComment.getLikes() +
                     "likes and " + newComment.getDislikes() + " dislikes")));
         }
+        log.info("Add new comment in service");
         return commentMapper.entityToDtoSave(
             commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
     }

@@ -50,6 +50,7 @@ class CommentServiceImplTest {
     void canAddNewComment() {
         CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
         Comment comment = spy(new Comment());
+
         when(commentMapper.dtoSaveToEntity(commentDTO))
             .thenReturn(comment);
         when(articleRepository.existsById(commentDTO.getArticleId()))
@@ -58,6 +59,7 @@ class CommentServiceImplTest {
             .thenReturn(true);
         when(commentDTO.getLikes()).thenReturn(0);
         when(commentDTO.getDislikes()).thenReturn(0);
+
         underTest.addNewComment(commentDTO);
         ArgumentCaptor<Comment> commentArgumentCaptor =
             ArgumentCaptor.forClass(Comment.class);
@@ -71,7 +73,7 @@ class CommentServiceImplTest {
         CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
         commentDTO.setLikes(-1);
         commentDTO.setDislikes(-1);
-        Comment comment = spy(new Comment());
+
         when(articleRepository.existsById(commentDTO.getArticleId()))
             .thenReturn(true);
         when(userRepository.existsById(commentDTO.getUserId()))
@@ -103,5 +105,35 @@ class CommentServiceImplTest {
             .hasMessageContaining(String.format(USER_NOT_FOUND_BY_ID,
                 commentDTO.getUserId()));
         verify(commentRepository, never()).save(any(Comment.class));
+    }
+    @Disabled
+    @Test
+    void canUpdateComment() {
+        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        Comment comment = spy(new Comment());
+        String id = anyString();
+
+        when(commentMapper.dtoSaveToEntity(commentDTO))
+            .thenReturn(comment);
+        when(articleRepository.existsById(commentDTO.getArticleId()))
+            .thenReturn(true);
+        when(userRepository.existsById(commentDTO.getUserId()))
+            .thenReturn(true);
+        when(commentRepository.findById(id))
+            .thenReturn(Optional.of(comment));
+        when(commentDTO.getLikes()).thenReturn(0);
+        when(commentDTO.getDislikes()).thenReturn(0);
+
+        underTest.updateComment(commentDTO, id);
+        ArgumentCaptor<Comment> commentArgumentCaptor =
+            ArgumentCaptor.forClass(Comment.class);
+        verify(commentRepository).save(commentArgumentCaptor.capture());
+        Comment capturedComment = commentArgumentCaptor.getValue();
+        assertThat(capturedComment).isEqualTo(comment);
+    }
+
+    @Test
+    void canDeleteComment() {
+
     }
 }
