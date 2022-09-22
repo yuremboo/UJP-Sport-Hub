@@ -21,7 +21,7 @@ import java.net.URL;
 public class GeolocationService {
     private final DatabaseReader databaseReader;
     private static final String CHECK_IP = "https://checkip.amazonaws.com";
-    private static final String GEO_DATABASE = "src/main/resources/GeoLite2-City.mmdb";
+    private static final String GEO_DATABASE = "src/main/resources/geo.database/GeoLite2-City.mmdb";
 
     @Autowired
     public GeolocationService() throws IOException {
