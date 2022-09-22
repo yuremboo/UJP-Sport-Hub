@@ -139,7 +139,7 @@ public class ArticleController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     @GetMapping("/admin/articles")
     public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
         log.info("Get all articles");
@@ -191,12 +191,6 @@ public class ArticleController {
             articleService.getNewestArticlesByCategoryId(categoryId, pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/allarticles")
-    public ResponseEntity<List<ArticleListDTO>> getAllArticlesWithoutPagination() {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getAllArticlesWithoutPagination());
-    }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")

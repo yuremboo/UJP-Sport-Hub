@@ -1,5 +1,9 @@
 package com.softserve.edu.sporthubujp.controller;
 
+    import java.io.IOException;
+
+    import javax.mail.SendFailedException;
+
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
@@ -28,8 +32,10 @@ public class SubscriptionEmailController {
 
     @PostMapping("/newEmail")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<SubscriptionEmailSaveDTO> addNewEmailSubscription(@RequestBody SubscriptionEmailSaveDTO newEmail) {
+    public ResponseEntity<SubscriptionEmailSaveDTO> addNewEmailSubscription(@RequestBody SubscriptionEmailSaveDTO newEmail)
+        throws SendFailedException, IOException {
         log.info(String.format("Add new email to subscription %s", newEmail));
+        subscriptionEmailService.sendUpdateHome();
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionEmailService.addNewEmail(newEmail));
     }
 }

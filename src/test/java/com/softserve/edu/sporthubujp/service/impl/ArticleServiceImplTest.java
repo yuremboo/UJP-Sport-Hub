@@ -1,6 +1,12 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.UserDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
+import com.softserve.edu.sporthubujp.entity.User;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.TokenNotFoundException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
@@ -12,10 +18,13 @@ import org.mockito.Mock;
 import org.springframework.data.domain.PageRequest;
 
 import javax.persistence.EntityNotFoundException;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -55,4 +64,17 @@ class ArticleServiceImplTest {
 //
 //        assertThat(confirmationTokenTest).isEqualTo(confirmationToken);
     }
+
+    @Test
+    void willThrowTokenNotFoundException() {
+        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
+        List<Article> articleList = spy(new ArrayList<>());
+//        when(articleRepository.deleteById(anyString()))
+//            .thenReturn(true);
+        assertThatThrownBy(() -> underTest.deleteArticleById(anyString()))
+            .isInstanceOf(EntityNotExistsException.class);
+
+        verify(articleList, never()).stream();
+    }
+
 }
