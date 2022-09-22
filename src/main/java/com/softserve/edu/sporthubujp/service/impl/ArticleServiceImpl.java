@@ -221,6 +221,20 @@ public class ArticleServiceImpl implements ArticleService {
             })
             .orElseThrow(EntityNotExistsException::new);
     }
+
+    @Override
+    public List<ArticleListDTO> getAllArticlesByTeamId(String teamId) {
+        List<Article> articles = articleRepository
+                .getAllArticlesByTeamId(teamId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        log.info("Service: getting all articles by team id");
+
+        return articles
+                .stream()
+                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+                .collect(Collectors.toList());
+    }
 }
 
 

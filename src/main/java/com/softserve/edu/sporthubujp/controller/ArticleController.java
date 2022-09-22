@@ -156,6 +156,15 @@ public class ArticleController {
                 articleService.getNewestArticlesByCategoryId(categoryId, pageable));
     }
 
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/team/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getAllArticlesByTeamId(@PathVariable("id") String id) {
+        log.info("Controller: getting all articles by team id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesByTeamId(id));
+    }
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")
     public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
