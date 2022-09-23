@@ -59,7 +59,7 @@ public class ArticleController {
         CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticleById(id));
+                articleService.getArticleById(id));
     }
 
     @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
@@ -118,7 +118,7 @@ public class ArticleController {
         log.info("Id user = {}", user.getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.getArticlesByTeamByUserId(user.getId(), teamId));
+                articleService.getArticlesByTeamByUserId(user.getId(), teamId));
     }
 
     @PutMapping("/admin/articles")
@@ -132,14 +132,14 @@ public class ArticleController {
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
-        @PathVariable("id") String id) {
+                                                    @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
-            articleService.updateArticle(newArticle, id));
+                articleService.updateArticle(newArticle, id));
     }
 
 
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/admin/articles")
     public ResponseEntity<Page<ArticleListDTO>> getAllArticles(Pageable pageable) {
         log.info("Get all articles");
@@ -191,6 +191,13 @@ public class ArticleController {
             articleService.getNewestArticlesByCategoryId(categoryId, pageable));
     }
 
+    @GetMapping("/articles/team/{id}")
+    public ResponseEntity<List<ArticleListDTO>>
+    getAllArticlesByTeamId(@PathVariable("id") String id) {
+        log.info("Controller: getting all articles by team id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesByTeamId(id));
+    }
 
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")

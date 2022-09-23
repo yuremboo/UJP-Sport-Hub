@@ -50,10 +50,10 @@ public class Article {
     private LocalDateTime updateDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_category"), insertable=false, updatable=false)
+    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_category"))
     private Category category;
     @ManyToOne
-    @JoinColumn(name = "team_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_team"), insertable=false, updatable=false)
+    @JoinColumn(name = "team_id", nullable = false,foreignKey = @ForeignKey(name="fk_article_team"))
     private Team team;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "article")

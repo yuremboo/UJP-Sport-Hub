@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -26,6 +27,8 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Category;
+import com.softserve.edu.sporthubujp.entity.Team;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.ArticleListMapper;
@@ -33,6 +36,7 @@ import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
 import com.softserve.edu.sporthubujp.repository.CategoryRepository;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
+import com.softserve.edu.sporthubujp.repository.TeamRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
@@ -48,6 +52,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository articleRepository;
     private final CategoryRepository categoryRepository;
+    private final TeamRepository teamRepository;
     private final ArticleMapper articleMapper;
     private final ArticleListMapper articleListMapper;
     private final LogsRepository logRepository;
@@ -57,9 +62,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     public ArticleServiceImpl(ArticleRepository articleRepository,
         ArticleMapper articleMapper, CommentService commentService,
-        CategoryRepository categoryRepository, ArticleListMapper articleListMapper, LogsRepository logRepository) {
+        CategoryRepository categoryRepository, TeamRepository teamRepository, ArticleListMapper articleListMapper, LogsRepository logRepository) {
         this.articleRepository = articleRepository;
         this.articleMapper = articleMapper;
+        this.teamRepository = teamRepository;
         this.articleListMapper = articleListMapper;
         this.logRepository = logRepository;
         this.commentService = commentService;
@@ -163,6 +169,12 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
             .map(article -> {
+                article.setUpdateDateTime(LocalDateTime.now());
+                Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
+                Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+
+                article.setCategory(category);
+                article.setTeam(team);
                 articleMapper.updateArticle(article, newArticle);
                 return articleMapper.entityToDto(articleRepository.save(article));
             })
@@ -283,13 +295,11 @@ public class ArticleServiceImpl implements ArticleService {
 
         log.info("Service: getting four newest articles by category id");
 
-        List<ArticleListDTO> articleListDTOs = articles
-            .stream()
+        return articles.stream()
             .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
             .collect(Collectors.toList());
-
-        return articleListDTOs;
     }
+
 
     public ArticleDTO publishUnpublishedArticle(String id) {
         return articleRepository.findById(id)
@@ -298,6 +308,20 @@ public class ArticleServiceImpl implements ArticleService {
                 return articleMapper.entityToDto(articleRepository.save(article));
             })
             .orElseThrow(EntityNotExistsException::new);
+    }
+
+    @Override
+    public List<ArticleListDTO> getAllArticlesByTeamId(String teamId) {
+        List<Article> articles = articleRepository
+                .getAllArticlesByTeamId(teamId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        log.info("Service: getting all articles by team id");
+
+        return articles
+                .stream()
+                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+                .collect(Collectors.toList());
     }
 }
 

@@ -37,7 +37,7 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
             + "JOIN s.user u "
             + "WHERE u.id = ?1 AND t.id = ?2 "
             + "ORDER BY a.createDateTime ")
-    List<Article> getArticlesByTeamId(String idUser, String teamId);
+    List<Article> getArticlesByTeamIdAndUserId(String idUser, String teamId);
     @Modifying
     @Transactional
     @Query("UPDATE Article a " +
@@ -60,6 +60,8 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
             + "WHERE c.id = ?1 AND a.isActive = true "
             + "ORDER BY a.createDateTime DESC ")
     Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
+
+    Optional<List<Article>> getAllArticlesByTeamId(String teamId);
 
     Article getArticleById(String id);
 
