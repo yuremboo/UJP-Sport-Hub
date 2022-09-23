@@ -13,6 +13,6 @@ public class ArticleSaveDTO {
     private String picture;
     private Boolean isActive;
     private Boolean commentsActive;
-    private CategoryDTO category;
-    private TeamDTO team;
+    private String categoryId;
+    private String teamId;
 }
