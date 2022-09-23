@@ -18,6 +18,7 @@ public interface ArticleMapper {
 
     @Mapping(target = "createDateTime", ignore = true)
     @Mapping(target = "updateDateTime", ignore = true)
-
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "team", ignore = true)
     Article updateArticle(@MappingTarget Article articleFromDb,  ArticleSaveDTO newArticle);
 }
