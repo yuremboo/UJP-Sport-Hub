@@ -176,7 +176,7 @@ public class ArticleServiceImpl implements ArticleService {
 
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
 
             @Override
@@ -198,7 +198,7 @@ public class ArticleServiceImpl implements ArticleService {
 
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
 
             @Override
@@ -218,7 +218,7 @@ public class ArticleServiceImpl implements ArticleService {
 
             @Override
             protected ArticleListDTO doForward(Article article) {
-                return articleListMapper.entityToDto(article);
+                return new ArticleListDTO(articleMapper.entityToDto(article));
             }
 
             @Override
