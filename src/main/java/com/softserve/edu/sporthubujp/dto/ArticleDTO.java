@@ -18,6 +18,6 @@ public class ArticleDTO {
     private Boolean selectedByAdmin;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
-    private String categoryId;
-    private String teamId;
+    private CategoryDTO category;
+    private TeamDTO team;
 }

@@ -4,6 +4,7 @@ import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
 import com.softserve.edu.sporthubujp.service.impl.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +15,17 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "api/v1/registration")
-@AllArgsConstructor
+//@AllArgsConstructor
 @Slf4j
 @CrossOrigin
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+
+    @Autowired
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO request)

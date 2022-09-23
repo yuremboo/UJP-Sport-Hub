@@ -14,6 +14,6 @@ public class ArticleSaveDTO {
     private Boolean isActive;
     private Boolean commentsActive;
     private Boolean selectedByAdmin;
-    private String categoryId;
-    private String teamId;
+    private CategoryDTO category;
+    private TeamDTO team;
 }
