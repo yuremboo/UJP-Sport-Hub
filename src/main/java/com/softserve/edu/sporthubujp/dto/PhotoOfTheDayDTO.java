@@ -8,9 +8,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class PhotoOfTheDayDTO {
-    @NotNull
-    @NumberFormat
-    Integer id;
 
     @NotNull
     @NameConstraint

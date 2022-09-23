@@ -1,17 +1,21 @@
 package com.softserve.edu.sporthubujp.entity;
 
 import com.softserve.edu.sporthubujp.validator.NameConstraint;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@Entity
+@Data
+@EntityListeners(AuditingEntityListener.class)
+@Table(name="PHOTO_OF_THE_DAY")
+@NoArgsConstructor
 public class PhotoOfTheDay {
 
     @Id
-//    @GeneratedValue(generator = "system-uuid")
-//    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     private String id;
 
     @Column(name = "alt", length = 255, nullable = false, unique = false)
