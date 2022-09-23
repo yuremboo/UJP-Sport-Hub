@@ -2,7 +2,11 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.entity.Article;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
@@ -16,10 +20,11 @@ import com.softserve.edu.sporthubujp.service.TeamService;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.persistence.EntityNotFoundException;
+
 @Slf4j
 @Service
 public class TeamServiceImpl  implements TeamService {
-
     private static final String NOT_SEARCH_TEAM_BY_NAME = "Record with name team: %s is not found";
     private final TeamRepository teamRepository;
     private final SubscriptionRepository subscriptionRepository;
@@ -80,6 +85,20 @@ public class TeamServiceImpl  implements TeamService {
             teamsDTOS.add(teamMapper.entityToDto(team));
         }
         return teamsDTOS;
+    }
+
+    @Override
+    public List<TeamDTO> getAllTeamsByLocation(String location){
+        log.info(String.format("Service: getting all teams by %s location", location));
+
+        List<Team> teams = teamRepository
+                .getAllTeamsByLocation(location)
+                .orElseThrow(EntityNotFoundException::new);
+
+        return teams
+                .stream()
+                .map(teamMapper::entityToDto)
+                .collect(Collectors.toList());
     }
 
 }
