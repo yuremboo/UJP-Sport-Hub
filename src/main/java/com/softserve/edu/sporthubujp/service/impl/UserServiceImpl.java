@@ -2,13 +2,7 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.google.common.io.Files;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
-import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
-import com.softserve.edu.sporthubujp.entity.User;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
-import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
-import com.softserve.edu.sporthubujp.exception.InvalidPasswordException;
-import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
@@ -18,8 +12,6 @@ import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
-import com.softserve.edu.sporthubujp.validator.PasswordValidator;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.InvalidPropertiesFormatException;
 import java.time.format.TextStyle;
 import java.util.Locale;
 import java.util.Objects;
@@ -112,10 +103,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserSaveDto(userRepository.findUserById(userId));
     }
 
-    //    @Override
-    //    public User findUserByPasswordResetToken(String token) {
-    //        return null;
-    //    }
+//    @Override
+//    public User findUserByPasswordResetToken(String token) {
+//        return null;
+//    }
 
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 
@@ -182,5 +173,10 @@ public class UserServiceImpl implements UserService {
                 .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();
+    }
+
+    public UserDTO getUser(User oldUser) {
+        User user = userRepository.getReferenceById(oldUser.getId());
+        return userMapper.entityToDto(user);
     }
 }

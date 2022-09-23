@@ -63,4 +63,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.findUserById(id));
     }
+
+    @GetMapping(path = "/profile")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<UserDTO> getUser(@NotNull Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
+        log.info(String.format("Controller: get user with id %s", user.getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.getUser(user));
+    }
 }

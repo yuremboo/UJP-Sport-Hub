@@ -12,4 +12,6 @@ public interface TeamService {
 
     List<TeamDTO> searchTeamsByName(String nameTeam);
 
+    List<TeamDTO> getAllTeamsByLocation(String location);
+
 }

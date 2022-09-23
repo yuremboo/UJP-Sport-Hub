@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.dto;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,4 +16,5 @@ public class UserSaveProfileDTO {
     private String lastName;
     private String email;
     private String photo;
+    private LocalDateTime updateDateTime;
 }
