@@ -2,6 +2,7 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.google.common.io.Files;
 import com.softserve.edu.sporthubujp.dto.UserDTO;
+import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.entity.User;
@@ -12,16 +13,21 @@ import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
+import com.softserve.edu.sporthubujp.validator.PasswordValidator;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.stereotype.Service;
 
 import javax.mail.SendFailedException;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.TextStyle;
+import java.util.InvalidPropertiesFormatException;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
@@ -49,8 +55,8 @@ public class UserServiceImpl implements UserService {
 
         User user = userMapper.dtoToEntity(userDTO);
         boolean userExists = userRepository
-                .findByEmail(userDTO.getEmail())
-                .isPresent();
+            .findByEmail(userDTO.getEmail())
+            .isPresent();
 
         if (userExists) {
             log.error(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
@@ -58,7 +64,7 @@ public class UserServiceImpl implements UserService {
         }
 
         String encodedPassword = passwordConfig.passwordEncoder()
-                .encode(userDTO.getPassword());
+            .encode(userDTO.getPassword());
 
         user.setPassword(encodedPassword);
         user.setCreateDateTime(LocalDateTime.now());
@@ -103,10 +109,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.userToUserSaveDto(userRepository.findUserById(userId));
     }
 
-//    @Override
-//    public User findUserByPasswordResetToken(String token) {
-//        return null;
-//    }
+    //    @Override
+    //    public User findUserByPasswordResetToken(String token) {
+    //        return null;
+    //    }
 
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 
@@ -128,18 +134,20 @@ public class UserServiceImpl implements UserService {
             userMapper.updateUser(oldUser, newUser))
         );
     }
-
-    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO newPassword) throws InvalidPropertiesFormatException {
-        boolean check = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), newPassword.getNewPassword());
-        if(passwordValidator.test(newPassword.getNewPassword()) && check){
-            newPassword.setNewPassword(passwordConfig.passwordEncoder().encode(newPassword.getNewPassword()));
-        }
-        else{
-            throw new InvalidPropertiesFormatException("Service: password must contain at least 8 characters (letters and numbers)");
+    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO passwords) throws InvalidPropertiesFormatException {
+        boolean checkPasswords = passwordConfig.passwordEncoder().matches(passwords.getOldPassword(), oldUser.getPassword());
+        if (checkPasswords) {
+            if (passwordValidator.test(passwords.getPassword())) {
+                passwords.setPassword(passwordConfig.passwordEncoder().encode(passwords.getPassword()));
+            } else {
+                throw new InvalidPropertiesFormatException("Service: password must contain at least 8 characters (letters and numbers)");
+            }
+        } else {
+            throw new InvalidPropertiesFormatException("Service: old password not matches with entered password ");
         }
         return userRepository.findById(oldUser.getId())
             .map(user -> {
-                userMapper.updatePassword(user, newPassword);
+                userMapper.updatePassword(user, passwords);
                 return userMapper.entityToDto(userRepository.save(user));
             })
             .orElseThrow(EntityNotExistsException::new);
@@ -149,28 +157,28 @@ public class UserServiceImpl implements UserService {
     public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
         String link = "http://localhost:8080/api/v1/forgot/password";
         emailSender.sendCheckEmail(
-                EMAIL_SERVER,
-                buildConfirmEmail(link));
+            EMAIL_SERVER,
+            buildConfirmEmail(link));
 
         String encodedPassword = passwordConfig.passwordEncoder()
-                .encode(newPassword);
+            .encode(newPassword);
         user.setPassword(encodedPassword);
         userRepository.save(user);
         return userMapper.entityToDto(user);
     }
 
     String buildConfirmEmail(String link) throws IOException {
-        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL , Locale.US)
-                + " " + LocalDateTime.now().getDayOfMonth()
-                + ", " + LocalDateTime.now().getYear();
+        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US)
+            + " " + LocalDateTime.now().getDayOfMonth()
+            + ", " + LocalDateTime.now().getYear();
 
         StringBuilder email = new StringBuilder(Files
-                .asCharSource(new File("src/main/resources/templates/checkEmail.html"), StandardCharsets.UTF_8)
-                .read());
+            .asCharSource(new File("src/main/resources/templates/checkEmail.html"), StandardCharsets.UTF_8)
+            .read());
 
         email
-                .insert(email.indexOf("password") + 8, date)
-                .insert(email.indexOf("href=\"\"") + 6, link);
+            .insert(email.indexOf("password") + 8, date)
+            .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();
     }

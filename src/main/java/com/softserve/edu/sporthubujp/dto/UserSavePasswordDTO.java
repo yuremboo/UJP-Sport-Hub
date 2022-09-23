@@ -16,6 +16,6 @@ import lombok.Setter;
 public class UserSavePasswordDTO {
     @NotNull
     @PasswordConstraint
-    private String newPassword;
+    private String password;
     private String oldPassword;
 }
