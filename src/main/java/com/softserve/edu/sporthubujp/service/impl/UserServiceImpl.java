@@ -139,8 +139,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDTO updatePassword(User oldUser, UserSavePasswordDTO newPassword) throws InvalidPropertiesFormatException {
-        if(passwordValidator.test(newPassword.getPassword())){
-            newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
+        boolean check = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), newPassword.getNewPassword());
+        if(passwordValidator.test(newPassword.getNewPassword()) && check){
+            newPassword.setNewPassword(passwordConfig.passwordEncoder().encode(newPassword.getNewPassword()));
         }
         else{
             throw new InvalidPropertiesFormatException("Service: password must contain at least 8 characters (letters and numbers)");
@@ -181,18 +182,5 @@ public class UserServiceImpl implements UserService {
                 .insert(email.indexOf("href=\"\"") + 6, link);
 
         return email.toString();
-    }
-
-    public UserSavePasswordDTO getPassword(User oldUser) {
-        String password = userRepository.getReferenceById(oldUser.getId()).getPassword();
-        String encodedPassword = passwordConfig.passwordEncoder().encode(password);
-
-        UserSavePasswordDTO passwordDTO = new UserSavePasswordDTO();
-        passwordDTO.setPassword(password);
-        return passwordDTO;
-    }
-
-    public Boolean postOldPassword(String oldPassword,String password) {
-        return passwordConfig.passwordEncoder().matches(oldPassword, password);
     }
 }

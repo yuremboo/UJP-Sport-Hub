@@ -63,21 +63,4 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.findUserById(id));
     }
-
-    @GetMapping(path = "/password")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<UserSavePasswordDTO> getPassword(@NotNull Principal principal) {
-        User user = userService.findUserByEmail(principal.getName());
-        log.info(String.format("Controller: get password with id %s", user.getId()));
-        return ResponseEntity.status(HttpStatus.OK).body(
-            userService.getPassword(user));
-    }
-
-    @PostMapping(path = "/old-password")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<Boolean> postOldPassword(@NotNull Principal principal, String oldPassword) {
-        String password = userService.findUserByEmail(principal.getName()).getPassword();
-        return ResponseEntity.status(HttpStatus.OK).body(
-            userService.postOldPassword(oldPassword, password));
-    }
 }
