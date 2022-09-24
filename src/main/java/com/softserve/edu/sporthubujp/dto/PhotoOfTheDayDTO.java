@@ -25,6 +25,4 @@ public class PhotoOfTheDayDTO {
     @NameConstraint
     String shortDescription;
 
-    @NotNull
-    String picture;
 }

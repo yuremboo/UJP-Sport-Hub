@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @Slf4j
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/v1/image")
 
 public class ImageController {
@@ -36,6 +36,7 @@ public class ImageController {
 
 
     @PostMapping
+    // TODO: admin
     public ResponseEntity<Map<String, String>> uploadImage(
             @RequestParam("image") @Valid MultipartFile uploadedFileRef,
             @RequestParam("photoOfTheDay") boolean isPhotoOfTheDay) {

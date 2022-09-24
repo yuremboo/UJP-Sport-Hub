@@ -34,6 +34,10 @@ public class StorageServiceImpl implements StorageService {
                 || multipartFile.isEmpty()) {
             throw new ServiceException("File is not an image or is empty");
         }
+        System.out.println(multipartFile.getContentType());
+        System.out.println(multipartFile.getOriginalFilename());
+        System.out.println(multipartFile.isEmpty());
+        System.out.println(multipartFile.getName());
 
         String newImageName;
 

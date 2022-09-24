@@ -34,7 +34,4 @@ public class PhotoOfTheDay {
     @NameConstraint
     private String shortDescription;
 
-    @Column(name = "picture", length = 255, nullable = false, unique = false)
-    private String picture;
-
 }

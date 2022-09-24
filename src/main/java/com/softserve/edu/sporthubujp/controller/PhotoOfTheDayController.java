@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/photoOFTheDay")
+@RequestMapping("/api/v1/photoOfTheDay")
 @CrossOrigin(origins = "*")
 public class PhotoOfTheDayController {
     private final PhotoOfTheDayServiceImpl photoOfTheDayService;
@@ -33,5 +33,15 @@ public class PhotoOfTheDayController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(photoOfTheDayService.addPhotoOfTheDay(photoOfTheDayDTO));
+    }
+
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+    public ResponseEntity<PhotoOfTheDayDTO> getPhotoOfTheDay() {
+        log.info("Controller: getting photo of the day");
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(photoOfTheDayService.getPhotoTheDay());
     }
 }
