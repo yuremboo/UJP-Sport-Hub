@@ -36,4 +36,5 @@ public interface ArticleService {
 
     ArticleDTO publishUnpublishedArticle(String id);
 
+    ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 }
