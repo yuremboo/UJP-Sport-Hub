@@ -99,7 +99,7 @@ public class CommentServiceImpl implements CommentService {
         } else if (!userRepository.existsById(newComment.getUserId())) {
             throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
                 newComment.getUserId()));
-        }else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
+        } else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
             throw new InvalidEntityException(
                 String.format(COMMENT_NOT_VALID_WITH, (newComment.getLikes() +
                     "likes and " + newComment.getDislikes() + " dislikes")));
