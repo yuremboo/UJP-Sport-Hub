@@ -1,7 +1,6 @@
 package com.softserve.edu.sporthubujp.exception.handler;
 
 import javax.mail.SendFailedException;
-import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
@@ -31,9 +30,9 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFound(
-            EntityNotFoundException ex) {
+    @ExceptionHandler(EntityNotExistsException.class)
+    protected ResponseEntity<Object> handleEntityNotExists(
+        EntityNotExistsException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage(ex.getMessage());
         return buildResponseEntity(apiError);

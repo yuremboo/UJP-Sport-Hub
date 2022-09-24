@@ -24,6 +24,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -34,6 +35,7 @@ class CommentServiceImplTest {
 
     public static final String COMMENT_NOT_VALID_WITH = "Comment is not valid with %s";
     public static final String ARTICLE_NOT_FOUND_BY_ID = "Article not found by id: %s";
+    private static final String COMMENT_NOT_FOUND_BY_ID = "Comment not found by id: %s";
     public static final String USER_NOT_FOUND_BY_ID = "User not found by id: %s";
     @Mock
     private CommentRepository commentRepository;
@@ -119,10 +121,11 @@ class CommentServiceImplTest {
             .thenReturn(true);
         when(userRepository.existsById(commentDTO.getUserId()))
             .thenReturn(true);
-        when(commentRepository.findById(id))
-            .thenReturn(Optional.of(comment));
         when(commentDTO.getLikes()).thenReturn(0);
         when(commentDTO.getDislikes()).thenReturn(0);
+        when(commentRepository.findById(id))
+            .thenReturn(Optional.of(comment));
+        //doNothing().when(commentMapper).updateComment(isA(Comment.class), isA(CommentSaveDTO.class));
 
         underTest.updateComment(commentDTO, id);
         ArgumentCaptor<Comment> commentArgumentCaptor =
@@ -133,7 +136,14 @@ class CommentServiceImplTest {
     }
 
     @Test
-    void canDeleteComment() {
-
+    void cannotDeleteNotExistingComment() {
+        String id = anyString();
+        when(commentRepository.existsById(id))
+            .thenReturn(false);
+        assertThatThrownBy(() -> underTest.deleteComment(id))
+            .isInstanceOf(EntityNotExistsException.class)
+            .hasMessageContaining(String.format(COMMENT_NOT_FOUND_BY_ID,
+                id));
+        verify(commentRepository, never()).delete(any(Comment.class));
     }
 }

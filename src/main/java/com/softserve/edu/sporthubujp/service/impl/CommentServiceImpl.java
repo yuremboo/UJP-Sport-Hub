@@ -82,13 +82,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentSaveDTO updateComment(CommentSaveDTO newComment, String id) {
-        if (!articleRepository.existsById(newComment.getArticleId())) {
-            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
-                newComment.getArticleId()));
-        } else if (!userRepository.existsById(newComment.getUserId())) {
-            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
-                newComment.getUserId()));
-        }
+        validateComment(newComment);
         log.info("Update comment by id in service");
         return commentRepository.findById(id)
             .map(comment -> {
@@ -98,19 +92,23 @@ public class CommentServiceImpl implements CommentService {
             .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override
-    public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+    private void validateComment(CommentSaveDTO newComment) {
         if (!articleRepository.existsById(newComment.getArticleId())) {
             throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
                 newComment.getArticleId()));
         } else if (!userRepository.existsById(newComment.getUserId())) {
             throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
                 newComment.getUserId()));
-        } else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
+        }else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
             throw new InvalidEntityException(
                 String.format(COMMENT_NOT_VALID_WITH, (newComment.getLikes() +
                     "likes and " + newComment.getDislikes() + " dislikes")));
         }
+    }
+
+    @Override
+    public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+        validateComment(newComment);
         log.info("Add new comment in service");
         return commentMapper.entityToDtoSave(
             commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
