@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreFilter;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,7 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping(path = "/profile/edit")
+    @PutMapping(path = "/profile")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
         @RequestBody UserSaveProfileDTO newUser) {
@@ -48,5 +47,14 @@ public class UserController {
         log.info("Get user by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             userService.findUserById(id));
+    }
+
+    @GetMapping(path = "/profile")
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    public ResponseEntity<UserDTO> getUser(@NotNull Principal principal) {
+        User user = userService.findUserByEmail(principal.getName());
+        log.info(String.format("Controller: get user with id %s", user.getId()));
+        return ResponseEntity.status(HttpStatus.OK).body(
+            userService.getUser(user));
     }
 }

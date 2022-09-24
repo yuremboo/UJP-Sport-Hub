@@ -200,4 +200,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 
         return buildResponseEntity(apiError);
     }
+
+    @ExceptionHandler(ImageException.class)
+    protected ResponseEntity<Object> handleImage(
+            ImageException ex) {
+
+        ApiError apiError = new ApiError(HttpStatus.BAD_GATEWAY);
+        apiError.setMessage(ex.getMessage());
+        apiError.setDebugMessage(ex.getLocalizedMessage());
+
+        return buildResponseEntity(apiError);
+    }
 }
