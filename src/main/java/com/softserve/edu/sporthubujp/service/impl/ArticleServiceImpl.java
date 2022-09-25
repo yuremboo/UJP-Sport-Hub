@@ -138,7 +138,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
         List<Article> articles = new LinkedList<>();
-        articles = articleRepository.getArticlesByTeamId(idUser, teamId);
+        articles = articleRepository.getArticlesByTeamIdAndUserId(idUser, teamId);
         log.info("Get articles by teams id subscription");
         return getArticleListDTOS(articles);
     }
