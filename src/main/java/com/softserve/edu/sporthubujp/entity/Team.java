@@ -20,12 +20,12 @@ public class Team {
     private String id;
     @Column(name = "name", length = 255, nullable = false, unique = true)
     private String name;
+    @Column(name = "alt", length = 255, nullable = false, unique = false)
+    private String alt;
     @Column(name = "location", length = 255, nullable = false, unique = false)
     private String location;
     @Column(name = "logo", nullable = false)
     private Byte logo;
-    @Column(name = "alt", length = 255, nullable = false, unique = false)
-    private String alt;
     @Column(name = "description", length = 255, nullable = false, unique = false)
     private String description;
     @CreatedDate

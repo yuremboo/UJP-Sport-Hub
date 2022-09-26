@@ -6,7 +6,6 @@ import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 
 
@@ -20,12 +19,13 @@ public interface ArticleService {
     List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
-    List<ArticleListDTO> getMorePopularArticles();
+    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
-
+    List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
+    void selectedByAdminArticle(List<String> articleIDList);
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     
     List<ArticleListDTO> getMostCommentedArticles();
