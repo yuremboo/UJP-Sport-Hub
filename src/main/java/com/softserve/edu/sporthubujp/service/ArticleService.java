@@ -35,4 +35,6 @@ public interface ArticleService {
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
     ArticleDTO publishUnpublishedArticle(String id);
+
+    ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 }

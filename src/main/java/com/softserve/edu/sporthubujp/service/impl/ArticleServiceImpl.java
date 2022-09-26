@@ -323,6 +323,17 @@ public class ArticleServiceImpl implements ArticleService {
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
                 .collect(Collectors.toList());
     }
+
+    public ArticleSaveDTO postArticle(ArticleSaveDTO newArticle){
+        Article article = articleMapper.saveDtoToEntity(newArticle);
+        article.setCreateDateTime(LocalDateTime.now());
+        Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
+        Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+
+        article.setCategory(category);
+        article.setTeam(team);
+        return articleMapper.entityToSaveDto(articleRepository.save(article));
+    }
 }
 
 
