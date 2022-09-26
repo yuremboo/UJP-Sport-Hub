@@ -18,7 +18,15 @@ public interface ArticleMapper {
 
     @Mapping(target = "createDateTime", ignore = true)
     @Mapping(target = "updateDateTime", ignore = true)
-    @Mapping(target = "category", ignore = true)
-    @Mapping(target = "team", ignore = true)
+    @Mapping(target = "category.id", ignore = true)
+    @Mapping(target = "team.id", ignore = true)
     Article updateArticle(@MappingTarget Article articleFromDb,  ArticleSaveDTO newArticle);
+
+    @Mapping(target = "category.id", source = "categoryId")
+    @Mapping(target = "team.id", source = "teamId")
+    Article saveDtoToEntity(ArticleSaveDTO articleDTO);
+
+    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "teamId", source = "team.id")
+    ArticleSaveDTO entityToSaveDto(Article article);
 }
