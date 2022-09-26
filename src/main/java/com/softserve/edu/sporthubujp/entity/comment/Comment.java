@@ -24,6 +24,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.User;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,4 +68,14 @@ public class Comment {
     @EqualsAndHashCode.Exclude
     private List<LikeDislikeStatus> likeDislikeStatuses;
 
+    public Comment(String id, String commentText, LocalDateTime createDateTime,
+        Integer likes, Integer dislikes, User user, Article article) {
+        this.id = id;
+        this.commentText = commentText;
+        this.createDateTime = createDateTime;
+        this.likes = likes;
+        this.dislikes = dislikes;
+        this.user = user;
+        this.article = article;
+    }
 }
