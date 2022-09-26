@@ -210,6 +210,7 @@ public class ArticleServiceImpl implements ArticleService {
                 .stream()
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
                 .collect(Collectors.toList());
+
 }
 
     public ArticleDTO publishUnpublishedArticle(String id) {
@@ -219,6 +220,20 @@ public class ArticleServiceImpl implements ArticleService {
                 return articleMapper.entityToDto(articleRepository.save(article));
             })
             .orElseThrow(EntityNotExistsException::new);
+    }
+
+    @Override
+    public List<ArticleListDTO> getAllArticlesByTeamId(String teamId) {
+        List<Article> articles = articleRepository
+                .getAllArticlesByTeamId(teamId)
+                .orElseThrow(EntityNotFoundException::new);
+
+        log.info("Service: getting all articles by team id");
+
+        return articles
+                .stream()
+                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+                .collect(Collectors.toList());
     }
 }
 

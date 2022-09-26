@@ -27,7 +27,7 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
             + "JOIN s.user u "
             + "WHERE u.id = ?1 AND t.id = ?2 "
             + "ORDER BY a.createDateTime ")
-    List<Article> getArticlesByTeamId(String idUser, String teamId);
+    List<Article> getArticlesByTeamId(String idUser, String teamId); // TODO: rename
 
     Page<Article> findAll(Pageable pageable);
 
@@ -40,4 +40,6 @@ public interface ArticleRepository extends JpaRepository<Article, String> {
             + "WHERE c.id = ?1 AND a.isActive = true "
             + "ORDER BY a.createDateTime DESC ")
     Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
+
+    Optional<List<Article>> getAllArticlesByTeamId(String teamId);
 }

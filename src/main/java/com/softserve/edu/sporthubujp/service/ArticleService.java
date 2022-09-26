@@ -40,5 +40,7 @@ public interface ArticleService {
      */
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 
+    List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
+
     ArticleDTO publishUnpublishedArticle(String id);
 }
