@@ -26,6 +26,12 @@ public interface ArticleService {
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
 
+    /**
+     * The method allows to edit an existing article
+     * @param newArticle an {@link ArticleSaveDTO} instance that contains new article values
+     * @param id represents id of current article
+     * @return instance of {@link ArticleDTO}
+     */
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     
     List<ArticleListDTO> getMostCommentedArticles();
@@ -34,6 +40,11 @@ public interface ArticleService {
 
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
+    /**
+     * The method allows to publish or unpublished article
+     * @param id represents id of current article
+     * @return instance of {@link ArticleDTO}
+     */
     ArticleDTO publishUnpublishedArticle(String id);
 
 }
