@@ -6,6 +6,8 @@ import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.internal.google.protobuf.ServiceException;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,11 +51,11 @@ public class UserController {
     @PutMapping(path = "/password")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updatePassword(@NotNull @Valid Principal principal,
-        @RequestBody UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException {
+        @RequestBody UserSavePasswordDTO newPassword) throws ServiceException {
         User user = userService.findUserByEmail(principal.getName());
         log.info(String.format("Controller: updating password with id %s", user.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(
-            userService.updatePassword(user, newUser));
+            userService.updatePassword(user, newPassword));
     }
 
     @GetMapping("/users/{id}")

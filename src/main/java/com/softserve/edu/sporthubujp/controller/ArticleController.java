@@ -22,7 +22,7 @@ import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
-//import com.softserve.edu.sporthubujp.entity.Logs;
+import com.softserve.edu.sporthubujp.entity.Logs;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.ArticleService;
@@ -58,7 +58,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
-//        CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
+        CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));

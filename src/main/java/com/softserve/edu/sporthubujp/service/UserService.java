@@ -8,6 +8,8 @@ import javax.mail.SendFailedException;
 import java.io.IOException;
 import java.util.InvalidPropertiesFormatException;
 
+import net.snowflake.client.jdbc.internal.google.protobuf.ServiceException;
+
 public interface UserService {
 
     String signUpUser(UserDTO userDTO);
@@ -22,7 +24,7 @@ public interface UserService {
 
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 
-    UserDTO updatePassword(User oldUser, UserSavePasswordDTO newUser) throws InvalidPropertiesFormatException;
+    UserDTO updatePassword(User oldPassword, UserSavePasswordDTO newPassword) throws ServiceException;
 
     UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException, IOException, SendFailedException;
 

@@ -17,6 +17,7 @@ import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.internal.google.protobuf.ServiceException;
 
 import org.springframework.stereotype.Service;
 
@@ -134,20 +135,21 @@ public class UserServiceImpl implements UserService {
             userMapper.updateUser(oldUser, newUser))
         );
     }
-    public UserDTO updatePassword(User oldUser, UserSavePasswordDTO passwords) throws InvalidPropertiesFormatException {
-        boolean checkPasswords = passwordConfig.passwordEncoder().matches(passwords.getOldPassword(), oldUser.getPassword());
+    public UserDTO updatePassword(User oldPassword, UserSavePasswordDTO newPassword)
+        throws ServiceException {
+        boolean checkPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
         if (checkPasswords) {
-            if (passwordValidator.test(passwords.getPassword())) {
-                passwords.setPassword(passwordConfig.passwordEncoder().encode(passwords.getPassword()));
+            if (passwordValidator.test(newPassword.getPassword())) {
+                newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
             } else {
-                throw new InvalidPropertiesFormatException("Service: password must contain at least 8 characters (letters and numbers)");
+                throw new ServiceException("Service: password must contain at least 8 characters (letters and numbers)");
             }
         } else {
-            throw new InvalidPropertiesFormatException("Service: old password not matches with entered password ");
+            throw new ServiceException("Service: old password not matches with entered password ");
         }
-        return userRepository.findById(oldUser.getId())
+        return userRepository.findById(oldPassword.getId())
             .map(user -> {
-                userMapper.updatePassword(user, passwords);
+                userMapper.updatePassword(user, newPassword);
                 return userMapper.entityToDto(userRepository.save(user));
             })
             .orElseThrow(EntityNotExistsException::new);
