@@ -147,8 +147,8 @@ public class ArticleController {
             articleService.getAllArticles(pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    @GetMapping("/articles/category_id/{id}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/articles/category_id/{id}")
     public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryId(@PathVariable String id, Pageable pageable) {
         log.info("Get all articles by category id {}", id);
@@ -156,8 +156,7 @@ public class ArticleController {
             articleService.getAllArticlesByCategoryId(id, pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    @GetMapping("/admin/articles/category_id/{id}/is_active/{isActive}")
+    @GetMapping("/articles/category_id/{id}/is_active/{isActive}")
     public ResponseEntity<Page<ArticleListDTO>>
     getAllArticlesByCategoryIdAndIsActive(@PathVariable String id, @PathVariable boolean isActive, Pageable pageable) {
         log.info("Get all articles by category id {} and if article is active", id);
