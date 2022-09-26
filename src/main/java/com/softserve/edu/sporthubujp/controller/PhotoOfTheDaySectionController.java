@@ -13,7 +13,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/photoOfTheDay") // TODO: section
+@RequestMapping("/api/v1/photoOfTheDay")
 @CrossOrigin(origins = "*")
 public class PhotoOfTheDaySectionController {
     private final PhotoOfTheDaySectionServiceImpl photoOfTheDayService;

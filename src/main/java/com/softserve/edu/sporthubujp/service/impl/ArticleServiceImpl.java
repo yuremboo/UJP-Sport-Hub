@@ -229,7 +229,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting all articles by team id");
-
         return articles
                 .stream()
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))

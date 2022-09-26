@@ -40,6 +40,12 @@ public interface ArticleService {
      */
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 
+    /**
+     * Method to get all articles by team id {@link com.softserve.edu.sporthubujp.entity.Team}
+     *
+     * @param teamId - actual team id
+     * @return a list of {@link ArticleListDTO} articles
+     */
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
     ArticleDTO publishUnpublishedArticle(String id);

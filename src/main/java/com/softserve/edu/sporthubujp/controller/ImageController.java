@@ -38,7 +38,6 @@ public class ImageController {
 
     @PostMapping
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    // TODO: admin
     public ResponseEntity<Map<String, String>> uploadImage(
             @RequestParam("image") @Valid MultipartFile uploadedFileRef,
             @RequestParam("photoOfTheDay") boolean isPhotoOfTheDay) {

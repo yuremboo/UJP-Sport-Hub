@@ -24,7 +24,7 @@ class ConfirmationTokenServiceImplTest {
     @Mock
     private ConfirmationTokenRepository confirmationTokenRepository;
     @InjectMocks
-    private ConfirmationTokenService underTest;
+    private ConfirmationTokenServiceImpl underTest;
 
     @Test
     void canSaveConfirmationToken() {
