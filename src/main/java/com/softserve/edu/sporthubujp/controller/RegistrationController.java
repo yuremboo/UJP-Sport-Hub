@@ -1,8 +1,8 @@
 package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
-import com.softserve.edu.sporthubujp.service.impl.RegistrationService;
-import lombok.AllArgsConstructor;
+import com.softserve.edu.sporthubujp.service.RegistrationService;
+import com.softserve.edu.sporthubujp.service.impl.RegistrationServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,11 @@ import java.io.IOException;
 @CrossOrigin
 public class RegistrationController {
 
-    private final RegistrationService registrationService;
+    private final RegistrationService registrationServiceImpl;
 
     @Autowired
-    public RegistrationController(RegistrationService registrationService) {
-        this.registrationService = registrationService;
+    public RegistrationController(RegistrationService registrationServiceImpl) {
+        this.registrationServiceImpl = registrationServiceImpl;
     }
 
     @PostMapping
@@ -33,7 +33,7 @@ public class RegistrationController {
         log.info(String.format("Controller: registering user with email %s", request.getEmail()));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(registrationService.register(request));
+                .body(registrationServiceImpl.register(request));
     }
 
     @GetMapping(path = "confirm")
@@ -41,7 +41,7 @@ public class RegistrationController {
         log.info(String.format("Controller: confirming token %s", token));
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(registrationService.confirmToken(token));
+                .body(registrationServiceImpl.confirmToken(token));
     }
 
 }

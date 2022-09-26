@@ -1,7 +1,7 @@
 package com.softserve.edu.sporthubujp.controller;
 
-import com.softserve.edu.sporthubujp.dto.PhotoOfTheDayDTO;
-import com.softserve.edu.sporthubujp.service.impl.PhotoOfTheDayServiceImpl;
+import com.softserve.edu.sporthubujp.dto.PhotoOfTheDaySectionDTO;
+import com.softserve.edu.sporthubujp.service.impl.PhotoOfTheDaySectionServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,31 +13,31 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/photoOfTheDay")
+@RequestMapping("/api/v1/photoOfTheDay") // TODO: section
 @CrossOrigin(origins = "*")
-public class PhotoOfTheDayController {
-    private final PhotoOfTheDayServiceImpl photoOfTheDayService;
+public class PhotoOfTheDaySectionController {
+    private final PhotoOfTheDaySectionServiceImpl photoOfTheDayService;
 
     @Autowired
-    public PhotoOfTheDayController(PhotoOfTheDayServiceImpl photoOfTheDayService) {
+    public PhotoOfTheDaySectionController(PhotoOfTheDaySectionServiceImpl photoOfTheDayService) {
         this.photoOfTheDayService = photoOfTheDayService;
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<PhotoOfTheDayDTO> addPhotoOfTheDay(
-            @RequestBody @Valid PhotoOfTheDayDTO photoOfTheDayDTO) {
+    public ResponseEntity<PhotoOfTheDaySectionDTO> addPhotoOfTheDay(
+            @RequestBody @Valid PhotoOfTheDaySectionDTO photoOfTheDaySectionDTO) {
         log.info(String.format("Controller: posting photo of the day with an author %s",
-                photoOfTheDayDTO.getAuthor()));
+                photoOfTheDaySectionDTO.getAuthor()));
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(photoOfTheDayService.addPhotoOfTheDay(photoOfTheDayDTO));
+                .body(photoOfTheDayService.addPhotoOfTheDay(photoOfTheDaySectionDTO));
     }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    public ResponseEntity<PhotoOfTheDayDTO> getPhotoOfTheDay() {
+    public ResponseEntity<PhotoOfTheDaySectionDTO> getPhotoOfTheDay() {
         log.info("Controller: getting photo of the day");
 
         return ResponseEntity

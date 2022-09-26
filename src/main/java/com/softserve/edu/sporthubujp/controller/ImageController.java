@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +28,7 @@ public class ImageController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Void> getImage(HttpServletResponse response, @PathVariable("id") String id){
+    public ResponseEntity<Void> getImage(HttpServletResponse response, @PathVariable("id") String id) {
         log.info(String.format("Controller: getting image with an id %s", id));
 
         storageService.getImage(response, id);
@@ -36,6 +37,7 @@ public class ImageController {
 
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     // TODO: admin
     public ResponseEntity<Map<String, String>> uploadImage(
             @RequestParam("image") @Valid MultipartFile uploadedFileRef,

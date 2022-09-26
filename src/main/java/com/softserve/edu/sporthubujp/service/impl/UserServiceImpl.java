@@ -9,10 +9,10 @@ import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
-    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenService confirmationTokenServiceImpl;
 
     @Override
     public String signUpUser(UserDTO userDTO) {
@@ -63,16 +63,16 @@ public class UserServiceImpl implements UserService {
             user
         );
 
-        confirmationTokenService.saveConfirmationToken(
+        confirmationTokenServiceImpl.saveConfirmationToken(
             confirmationToken);
 
         return token;
     }
 
     @Override
-    public int enableUser(String email) {
+    public void enableUser(String email) {
         log.debug(String.format("enabling user with the email %s", email));
-        return userRepository.enableUser(email);
+        userRepository.enableUser(email);
     }
 
     @Override
