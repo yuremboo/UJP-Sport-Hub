@@ -11,6 +11,7 @@ import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordConfig passwordConfig;
     private final UserMapper userMapper;
+
     private final ConfirmationTokenService confirmationTokenService;
     private final PasswordValidator passwordValidator;
 
@@ -89,9 +91,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int enableUser(String email) {
+    public void enableUser(String email) {
         log.debug(String.format("enabling user with the email %s", email));
-        return userRepository.enableUser(email);
+        userRepository.enableUser(email);
     }
 
     @Override
@@ -109,11 +111,6 @@ public class UserServiceImpl implements UserService {
         log.info(String.format("find user with the id %s", userId));
         return userMapper.userToUserSaveDto(userRepository.findUserById(userId));
     }
-
-    //    @Override
-    //    public User findUserByPasswordResetToken(String token) {
-    //        return null;
-    //    }
 
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 

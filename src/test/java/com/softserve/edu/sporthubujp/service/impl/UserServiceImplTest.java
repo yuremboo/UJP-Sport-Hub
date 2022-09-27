@@ -14,6 +14,7 @@ import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 
 import org.assertj.core.api.Assertions;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +49,7 @@ class UserServiceImplTest {
     @Mock
     private UserMapper userMapper;
     @Mock
-    private ConfirmationTokenService confirmationTokenService;
+    private ConfirmationTokenService confirmationTokenServiceImpl;
     @InjectMocks
     private UserServiceImpl underTest;
 
@@ -61,16 +62,16 @@ class UserServiceImplTest {
         BCryptPasswordEncoder bCryptPasswordEncoder = spy(new BCryptPasswordEncoder());
 
         when(userMapper.dtoToEntity(userDTO))
-            .thenReturn(user);
+                .thenReturn(user);
 
         when(passwordConfig.passwordEncoder()).thenReturn(bCryptPasswordEncoder);
 
         given(userRepository.findByEmail(userDTO.getEmail()))
-            .willReturn(Optional.of(user));
+                .willReturn(Optional.of(user));
 
         assertThatThrownBy(() -> underTest.signUpUser(userDTO))
-            .isInstanceOf(EmailAlreadyTakenException.class)
-            .hasMessageContaining(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
+                .isInstanceOf(EmailAlreadyTakenException.class)
+                .hasMessageContaining(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
 
         verify(passwordConfig.passwordEncoder(), never()).encode(anyString());
     }
@@ -84,22 +85,22 @@ class UserServiceImplTest {
         BCryptPasswordEncoder bCryptPasswordEncoder = spy(new BCryptPasswordEncoder());
 
         when(userMapper.dtoToEntity(userDTO))
-            .thenReturn(user);
+                .thenReturn(user);
 
         when(passwordConfig.passwordEncoder()).thenReturn(bCryptPasswordEncoder);
 
         given(userRepository.findByEmail(userDTO.getEmail()))
-            .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
         when(userDTO.getPassword()).thenReturn("nonEmptyPassword");
 
         underTest.signUpUser(userDTO);
 
         ArgumentCaptor<User> userArgumentCaptor =
-            ArgumentCaptor.forClass(User.class);
+                ArgumentCaptor.forClass(User.class);
 
         verify(userRepository)
-            .save(userArgumentCaptor.capture());
+                .save(userArgumentCaptor.capture());
 
         User capturedUser = userArgumentCaptor.getValue();
 
@@ -110,8 +111,8 @@ class UserServiceImplTest {
         verify(user).setPassword(anyString());
         verify(user).setCreateDateTime(any(LocalDateTime.class));
 
-        verify(confirmationTokenService)
-            .saveConfirmationToken(any(ConfirmationToken.class));
+        verify(confirmationTokenServiceImpl)
+                .saveConfirmationToken(any(ConfirmationToken.class));
     }
 
     @Test

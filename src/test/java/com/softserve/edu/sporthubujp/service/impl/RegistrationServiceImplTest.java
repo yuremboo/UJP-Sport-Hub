@@ -1,14 +1,13 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
-import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.*;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,14 +21,13 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.never;
 
 @ExtendWith(MockitoExtension.class)
-class RegistrationServiceTest {
+class RegistrationServiceImplTest {
 
     private static String TOKEN_NOT_FOUND = "Service: token %s not found";
     private static String TOKEN_ALREADY_CONFIRMED = "Service: token %s is already confirmed";
@@ -40,13 +38,13 @@ class RegistrationServiceTest {
     @Mock
     private UserService userService;
     @Mock
-    private ConfirmationTokenService confirmationTokenService;
+    private ConfirmationTokenService confirmationTokenServiceImpl;
     @Mock
     private EmailSenderService emailSender;
     @Mock
     private PasswordValidator passwordValidator;
     @InjectMocks
-    private RegistrationService underTest;
+    private RegistrationServiceImpl underTest;
 
     @Test
     void willThrowInvalidPasswordException() {
@@ -95,7 +93,7 @@ class RegistrationServiceTest {
                 any(User.class)
         );
 
-        lenient().when(confirmationTokenService.getToken(confirmationToken.getToken()))
+        lenient().when(confirmationTokenServiceImpl.getToken(confirmationToken.getToken()))
                 .thenThrow(new TokenNotFoundException());
 
         assertThatThrownBy(() -> underTest.confirmToken(confirmationToken.getToken()))
@@ -111,7 +109,7 @@ class RegistrationServiceTest {
 
         ConfirmationToken confirmationToken = spy(new ConfirmationToken());
 
-        given(confirmationTokenService.getToken(confirmationToken.getToken()))
+        given(confirmationTokenServiceImpl.getToken(confirmationToken.getToken()))
                 .willReturn(Optional.of(confirmationToken));
 
         when(confirmationToken.getConfirmedAt()).thenReturn(LocalDateTime.now());
@@ -129,7 +127,7 @@ class RegistrationServiceTest {
 
         ConfirmationToken confirmationToken = spy(new ConfirmationToken());
 
-        given(confirmationTokenService.getToken(confirmationToken.getToken()))
+        given(confirmationTokenServiceImpl.getToken(confirmationToken.getToken()))
                 .willReturn(Optional.of(confirmationToken));
 
         when(confirmationToken.getConfirmedAt()).thenReturn(null);
@@ -149,7 +147,7 @@ class RegistrationServiceTest {
         ConfirmationToken confirmationToken = spy(new ConfirmationToken());
         User user = spy(new User());
 
-        given(confirmationTokenService.getToken(confirmationToken.getToken()))
+        given(confirmationTokenServiceImpl.getToken(confirmationToken.getToken()))
                 .willReturn(Optional.of(confirmationToken));
 
         when(confirmationToken.getConfirmedAt()).thenReturn(null);
@@ -158,7 +156,7 @@ class RegistrationServiceTest {
 
         underTest.confirmToken(confirmationToken.getToken());
 
-        verify(confirmationTokenService).setConfirmedAt(confirmationToken.getToken());
+        verify(confirmationTokenServiceImpl).setConfirmedAt(confirmationToken.getToken());
         verify(userService).enableUser(user.getEmail());
 
     }

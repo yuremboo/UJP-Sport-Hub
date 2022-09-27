@@ -39,12 +39,6 @@ public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
 
     @Override
     public SubscriptionEmailSaveDTO addNewEmail(SubscriptionEmailSaveDTO newEmail) {
-//        if (!articleRepository.existsById(newComment.getArticleId())) {
-//            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, newComment.getArticleId()));
-//        } else if (!userRepository.existsById(newComment.getUserId())) {
-//            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID, newComment.getUserId()));
-//        }
-
         return subscriptionEmailMapper.entityToDtoSave(
             subscriptionEmailRepository.save(subscriptionEmailMapper.dtoSaveToEntity(newEmail)));
     }
