@@ -2,11 +2,8 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
-import com.softserve.edu.sporthubujp.repository.LogsRepository;
-import com.softserve.edu.sporthubujp.service.CommentService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,10 +40,10 @@ class ArticleServiceImplTest {
         List<Article> articleList = spy(new ArrayList<>());
 
         when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .thenReturn(Optional.of(articleList));
+            .thenReturn(Optional.of(articleList));
 
         List<ArticleListDTO> underTestArticles =
-                underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
+            underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
 
         verify(articleList).stream();
 
@@ -58,10 +56,22 @@ class ArticleServiceImplTest {
         List<Article> articleList = spy(new ArrayList<>());
 
         when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
+
+        verify(articleList, never()).stream();
+    }
+
+    @Test
+    void willThrowTokenNotFoundException() {
+        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
+        List<Article> articleList = spy(new ArrayList<>());
+        //        when(articleRepository.deleteById(anyString()))
+        //            .thenReturn(true);
+        assertThatThrownBy(() -> underTest.deleteArticleById(anyString()))
+            .isInstanceOf(EntityNotExistsException.class);
 
         verify(articleList, never()).stream();
     }

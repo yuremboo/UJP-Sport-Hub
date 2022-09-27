@@ -16,12 +16,17 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping(path = "api/v1/registration")
-@AllArgsConstructor
+//@AllArgsConstructor
 @Slf4j
 @CrossOrigin
 public class RegistrationController {
 
     private final RegistrationService registrationService;
+
+    @Autowired
+    public RegistrationController(RegistrationService registrationService) {
+        this.registrationService = registrationService;
+    }
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody @Valid RegistrationRequestDTO request)

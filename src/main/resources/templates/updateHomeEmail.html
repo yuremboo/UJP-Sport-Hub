@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>subscription email</title>
+
+  <!-- Roboto 700 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
+  <!-- Open Sans 600 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@600&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body style="margin: 0%;">
+
+<div class="email-wrapper" style=" background-color: #F9F9FB;
+    background-size: cover;
+    width: 100vw;
+    font-family: Open Sans, sans-serif;
+    font-weight: 600;">
+
+  <div class="email-letter" style="text-align: center;
+        padding-top: 2%;
+        height: 100vh;">
+    <p class="email-letter__title" style=" font-size: 24px;
+            color: black;
+            padding-bottom: 2%;
+            line-height: 33px;
+            white-space: pre-line;">You have requested to reset your password</p>
+    <div class="email-letter-info" style=" background-color: white;
+            position: relative;
+            padding-top: 2.5%;
+            max-width: 37%;
+            height: 28%;
+            margin: auto;">
+
+      <p class="email-letter-info__paragraph" style=" color: #596377;
+                font-size: 12px;
+                line-height: 16px;">
+        To reset your password, click the following link and follow the instructions.
+      </p>
+
+      <a href="">
+        <button class="email-letter-info__button" type="button"
+                onmouseover="this.style.backgroundColor='#E02232'"
+                onmouseout="this.style.backgroundColor='#D72130'"
+                onclick="this.style.backgroundColor='#C80515'"
+                style=" margin-top: 3%;
+                background-color: #D72130;
+                width: 80%;
+                height: 19%;
+                border: none;
+                color: white;
+                text-decoration: none;
+                font-size: 12px;
+                font-weight: 700;
+                font-family: Roboto, sans-serif;
+                letter-spacing: 0.8px;
+                text-transform: uppercase;
+                display: inline-block;">RESET PASSWORD</button>
+      </a>
+
+      <h3 style="font-size: 18px; font-weight: bold;">
+        Why do I have to reset my password?</h3>
+      <p class="email-letter-info__paragraph" style=" color: #596377;
+                font-size: 12px;
+                line-height: 16px;">
+        As a security best practise, Sports Hub does not store your password.
+        As such, we cannot simply send you your old password.
+        A unique link to reset your password has been generated for you.
+      </p>
+      <a class="article-link" href="#">
+        <div class="medium-article" style="display: flex;
+             flex-direction: column;
+             border: 1px solid #ededed;
+             width: 390px;
+             height: 295px;
+             position: relative;">
+          <div class="category" style="position: absolute;
+    top: 0;
+    left: 0;
+    width: 134px;
+    height: 39px;
+    background: #2F2F2F;
+    display: flex;
+    justify-content: center;
+    align-items: center;">
+            <p class="category__text" style="margin-bottom: 0;
+               font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 19px;
+            color: #FFFFFF;">mediumArticle.category</p>
+          </div>
+          <img class="medium-article-img" src={mediumArticlePhoto} alt="article-img" />
+          <div class="medium-article-text">
+            <span class="heading">mediumArticle.title</span>
+          </div>
+          <div class="breakdown-arrow">
+            <img src={arrow} alt="arrow"/>
+          </div>
+        </div>
+      </a>
+      <p class="email-letter-info__paragraph" style=" color: #596377;
+                font-size: 12px;
+                line-height: 16px;">
+        Please ignore this message if you haven't requested reseting password.
+      </p>
+      <h2 class="email-letter-info__title" style=" color: #D72130;
+                font-size: 22px;
+                line-height: 28px;
+                margin-top: 50px;">Sports Hub</h2>
+    </div>
+  </div>
+
+</div>
+</body>
+
+</html>
