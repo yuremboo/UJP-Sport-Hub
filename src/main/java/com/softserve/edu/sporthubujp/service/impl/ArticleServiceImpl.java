@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,10 +22,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Converter;
-import com.google.common.base.Converter;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Category;
@@ -86,20 +83,20 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-     public List<ArticlePreviewDTO> getAllArticlesSelectedByAdmin() {
+     public List<ArticleListDTO> getAllArticlesSelectedByAdmin() {
         log.info("Get all articles selected by admin in service");
         List<Article> selectedArticles = articleRepository
             .findAllBySelectedByAdminIsTrue();
-        return getArticlePreviewDTOS(selectedArticles);
+        return convertToArticleListDTOS(selectedArticles);
     }
 
     @NotNull
-    private List<ArticlePreviewDTO> getArticlePreviewDTOS(List<Article> articles) {
-        List<ArticlePreviewDTO> articlePreviewDTOS = new LinkedList<>();
+    private List<ArticleListDTO> convertToArticleListDTOS(List<Article> articles) {
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
         for (var article : articles) {
-            articlePreviewDTOS.add(articleMapper.entityToPreviewDTO(article));
+            articleListDTOS.add(new ArticleListDTO(articleMapper.entityToDto(article)));
         }
-        return articlePreviewDTOS;
+        return articleListDTOS;
     }
 
     @Override
@@ -113,7 +110,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticlePreviewDTO> getMorePopularArticles(Pageable pageable) {
+    public List<ArticleListDTO> getMorePopularArticles(Pageable pageable) {
         List<String> articlesId = logRepository
             .getMorePopularArticlesId( PageRequest.of(0, 3));
         List<Article> articles=new LinkedList<Article>();
@@ -121,11 +118,15 @@ public class ArticleServiceImpl implements ArticleService {
             articles.add(articleRepository.getArticleById(article));
         }
         log.info("Get 3 more popular articles");
-        List<ArticlePreviewDTO> articleDTOS = new LinkedList<>();
+        List<ArticleDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToPreviewDTO(article));
+            articleDTOS.add(articleMapper.entityToDto(article));
         }
-        return articleDTOS;
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var articleDTO : articleDTOS) {
+            articleListDTOS.add(new ArticleListDTO(articleDTO));
+        }
+        return articleListDTOS;
     }
 
     @Override
@@ -173,7 +174,7 @@ public class ArticleServiceImpl implements ArticleService {
         return articleListDTOS;
     }
 
-    public void selectedByAdminArticle(List<String> articleIDList) {
+    public void selectArticleByAdmin(List<String> articleIDList) {
         articleRepository.setSelectByAdmin();
         List<Article> articlesList =new LinkedList<Article>();
         for (var articleId : articleIDList) {
@@ -215,7 +216,6 @@ public class ArticleServiceImpl implements ArticleService {
         });
 
         log.info("Get all articles in service");
-        int total = articles.getTotalPages();
         return articleDTOPage;
     }
 
@@ -260,7 +260,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticlePreviewDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
+    public List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new EntityNotExistsException(String.format(CATEGORY_NOT_FOUND_BY_ID, categoryId));
         }
@@ -272,8 +272,8 @@ public class ArticleServiceImpl implements ArticleService {
             .stream()
             .filter(article -> !Objects.equals(article.getId(), articleId))
             .collect(Collectors.toList());
-        log.info("Get all active articles by category id {}", categoryId);
-        return getArticlePreviewDTOS(allActiveArticlesByCategoryId);
+        log.info("Get 6 active articles by category id {}", categoryId);
+        return convertToArticleListDTOS(allActiveArticlesByCategoryId);
     }
 
     @Override

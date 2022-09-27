@@ -3,7 +3,6 @@ package com.softserve.edu.sporthubujp.service;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,16 +17,16 @@ public interface ArticleService {
     Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
     Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
-    List<ArticlePreviewDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
+    List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
-    List<ArticlePreviewDTO> getMorePopularArticles(Pageable pageable);
+    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
     List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
-    void selectedByAdminArticle(List<String> articleIDList);
+    void selectArticleByAdmin(List<String> articleIDList);
 
     /**
      * The method allows to edit an existing article
@@ -70,5 +69,5 @@ public interface ArticleService {
      */
     ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 
-    List<ArticlePreviewDTO> getAllArticlesSelectedByAdmin();
+    List<ArticleListDTO> getAllArticlesSelectedByAdmin();
 }

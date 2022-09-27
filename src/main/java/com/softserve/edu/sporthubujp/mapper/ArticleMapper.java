@@ -1,7 +1,7 @@
 package com.softserve.edu.sporthubujp.mapper;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
-import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import org.mapstruct.Builder;
@@ -17,7 +17,7 @@ public interface ArticleMapper {
 
     ArticleDTO entityToDto(Article article);
 
-    ArticlePreviewDTO entityToPreviewDTO(Article article);
+    ArticleListDTO entityToListDTO(Article article);
 
     @Mapping(target = "createDateTime", ignore = true)
     @Mapping(target = "updateDateTime", ignore = true)
