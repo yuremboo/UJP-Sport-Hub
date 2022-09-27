@@ -31,7 +31,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -77,7 +76,7 @@ class CommentServiceImplTest {
 
     @Test
     void cannotAddCommentWithNegativeNumberOfLikesOrDislikes() {
-        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        CommentSaveDTO commentDTO = new CommentSaveDTO();
         commentDTO.setLikes(-1);
         commentDTO.setDislikes(-1);
 
@@ -95,7 +94,7 @@ class CommentServiceImplTest {
 
     @Test
     void cannotAddCommentToNotExistingArticle() {
-        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        CommentSaveDTO commentDTO = new CommentSaveDTO();
         assertThatThrownBy(() -> underTest.addNewComment(commentDTO))
             .isInstanceOf(EntityNotExistsException.class)
             .hasMessageContaining(String.format(ARTICLE_NOT_FOUND_BY_ID,
@@ -104,7 +103,7 @@ class CommentServiceImplTest {
     }
     @Test
     void cannotAddCommentByNotExistingUser() {
-        CommentSaveDTO commentDTO = spy(new CommentSaveDTO());
+        CommentSaveDTO commentDTO = new CommentSaveDTO();
         when(articleRepository.existsById(commentDTO.getArticleId()))
             .thenReturn(true);
         assertThatThrownBy(() -> underTest.addNewComment(commentDTO))
