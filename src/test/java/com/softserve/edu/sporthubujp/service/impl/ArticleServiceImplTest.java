@@ -1,11 +1,22 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
+import com.softserve.edu.sporthubujp.entity.Category;
+import com.softserve.edu.sporthubujp.entity.Team;
+import com.softserve.edu.sporthubujp.exception.CategoryNotFoundException;
+import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.TeamNotFoundException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
+import com.softserve.edu.sporthubujp.repository.CategoryRepository;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
+import com.softserve.edu.sporthubujp.repository.TeamRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +27,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 
 import javax.persistence.EntityNotFoundException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +36,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceImplTest {
 
@@ -48,10 +62,10 @@ class ArticleServiceImplTest {
         List<Article> articleList = spy(new ArrayList<>());
 
         when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .thenReturn(Optional.of(articleList));
+            .thenReturn(Optional.of(articleList));
 
         List<ArticleListDTO> underTestArticles =
-                underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
+            underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class));
 
         verify(articleList).stream();
 
@@ -64,10 +78,10 @@ class ArticleServiceImplTest {
         List<Article> articleList = spy(new ArrayList<>());
 
         when(articleRepository.findNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .thenReturn(Optional.empty());
+            .thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
-                .isInstanceOf(EntityNotFoundException.class);
+            .isInstanceOf(EntityNotFoundException.class);
 
         verify(articleList, never()).stream();
     }
