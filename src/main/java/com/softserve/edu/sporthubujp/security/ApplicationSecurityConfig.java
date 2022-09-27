@@ -22,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.SecretKey;
 import java.util.Arrays;
-import java.util.List;
 
 
 @Configuration
@@ -61,15 +60,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**", "/api/categories",
-                        "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*", "/api/v1/image/*")
+                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**",
+                        "/api/categories", "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*",   
+                             "/api/v*/comments/**", "/api/v*/articles/categories/**",
+                    "/api/v1/forgot/password", "/api/v1/forgot/password/newpassword", "/api/v1/image/*")
                     .permitAll()
                 .anyRequest()
                 .authenticated();
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

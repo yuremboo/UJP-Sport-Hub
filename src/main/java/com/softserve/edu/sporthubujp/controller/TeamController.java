@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
 import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
-import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.TeamService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
