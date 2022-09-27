@@ -21,6 +21,7 @@ import com.softserve.edu.sporthubujp.entity.comment.Comment;
         @Index(columnList = "email", name = "user_email_idx")
 })
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(generator="system-uuid")
