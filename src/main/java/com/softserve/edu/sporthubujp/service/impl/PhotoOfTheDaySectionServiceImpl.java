@@ -16,7 +16,7 @@ import javax.persistence.EntityNotFoundException;
 public class PhotoOfTheDaySectionServiceImpl implements PhotoOfTheDaySectionService {
     private final PhotoOfTheDayRepository photoOfTheDayRepository;
     private final PhotoOfTheDayMapper photoOfTheDayMapper;
-    private final String PHOTO_OF_THE_DAY_ID = "1";
+    private final String PHOTO_OF_THE_DAY_ID = "12195536-0328-447c-b2da-d4b126b8b3d0";
 
     @Autowired
     public PhotoOfTheDaySectionServiceImpl(PhotoOfTheDayRepository photoOfTheDayRepository, PhotoOfTheDayMapper photoOfTheDayMapper) {
