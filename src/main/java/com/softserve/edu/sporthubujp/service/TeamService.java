@@ -12,6 +12,12 @@ public interface TeamService {
 
     List<TeamDTO> searchTeamsByName(String nameTeam);
 
+    /**
+     * Method to get all teams by a location(city)
+     *
+     * @param location - an actual location(city name)
+     * @return a list of {@link TeamDTO} teams
+     */
     List<TeamDTO> getAllTeamsByLocation(String location);
 
 }

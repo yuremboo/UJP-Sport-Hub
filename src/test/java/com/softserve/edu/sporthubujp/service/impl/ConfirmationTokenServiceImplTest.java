@@ -2,8 +2,8 @@ package com.softserve.edu.sporthubujp.service.impl;
 
 import com.softserve.edu.sporthubujp.entity.ConfirmationToken;
 import com.softserve.edu.sporthubujp.entity.User;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.repository.ConfirmationTokenRepository;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -20,11 +20,11 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ConfirmationTokenServiceTest {
+class ConfirmationTokenServiceImplTest {
     @Mock
     private ConfirmationTokenRepository confirmationTokenRepository;
     @InjectMocks
-    private ConfirmationTokenService underTest;
+    private ConfirmationTokenServiceImpl underTest;
 
     @Test
     void canSaveConfirmationToken() {

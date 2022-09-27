@@ -9,7 +9,9 @@ import com.softserve.edu.sporthubujp.exception.InvalidPasswordException;
 import com.softserve.edu.sporthubujp.exception.TokenAlreadyConfirmedException;
 import com.softserve.edu.sporthubujp.exception.TokenExpiredException;
 import com.softserve.edu.sporthubujp.exception.TokenNotFoundException;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
+import com.softserve.edu.sporthubujp.service.RegistrationService;
 import com.softserve.edu.sporthubujp.service.UserService;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,7 @@ import java.util.Locale;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class RegistrationService {
+public class RegistrationServiceImpl implements RegistrationService {
     private final static String TOKEN_NOT_FOUND = "Service: token %s not found";
     private final static String TOKEN_ALREADY_CONFIRMED = "Service: token %s is already confirmed";
     private final static String TOKEN_EXPIRED = "Service: token %s expired";
@@ -39,10 +41,11 @@ public class RegistrationService {
     private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
 
     private final UserService userService;
-    private final ConfirmationTokenService confirmationTokenService;
+    private final ConfirmationTokenService confirmationTokenServiceImpl;
     private final EmailSenderService emailSender;
     private final PasswordValidator passwordValidator;
 
+    @Override
     public String register(RegistrationRequestDTO request)
             throws IOException, SendFailedException {
 
@@ -75,9 +78,10 @@ public class RegistrationService {
     }
 
     @Transactional
+    @Override
     public String confirmToken(String token) {
         log.info(String.format("Service: confirming token %s", token));
-        ConfirmationToken confirmationToken = confirmationTokenService
+        ConfirmationToken confirmationToken = confirmationTokenServiceImpl
                 .getToken(token)
                 .orElseThrow(() ->
                         new TokenNotFoundException(String.format(TOKEN_NOT_FOUND, token)));
@@ -94,7 +98,7 @@ public class RegistrationService {
             throw new TokenExpiredException(String.format(TOKEN_EXPIRED, token), confirmationToken);
         }
 
-        confirmationTokenService.setConfirmedAt(token);
+        confirmationTokenServiceImpl.setConfirmedAt(token);
         userService.enableUser(
                 confirmationToken.getUser().getEmail());
 
@@ -102,7 +106,7 @@ public class RegistrationService {
     }
 
     private String buildEmail(String link) throws IOException {
-        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL , Locale.US)
+        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US)
                 + " " + LocalDateTime.now().getDayOfMonth()
                 + ", " + LocalDateTime.now().getYear();
 

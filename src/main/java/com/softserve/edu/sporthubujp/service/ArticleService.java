@@ -37,9 +37,22 @@ public interface ArticleService {
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     
     List<ArticleListDTO> getMostCommentedArticles();
-    
+
+    /**
+     * Method for getting four newest {@link ArticleDTO} articles by category id
+     *
+     * @param categoryId - id of a category {@link com.softserve.edu.sporthubujp.entity.Category}
+     * @param pageable - pageable object to set an article number
+     * @return a list of {@link ArticleListDTO} articles
+     */
     List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 
+    /**
+     * Method to get all articles by team id {@link com.softserve.edu.sporthubujp.entity.Team}
+     *
+     * @param teamId - actual team id
+     * @return a list of {@link ArticleListDTO} articles
+     */
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
     /**

@@ -1,7 +1,8 @@
 package com.softserve.edu.sporthubujp.controller;
 
 import com.softserve.edu.sporthubujp.dto.RegistrationRequestDTO;
-import com.softserve.edu.sporthubujp.service.impl.RegistrationService;
+import com.softserve.edu.sporthubujp.service.RegistrationService;
+import com.softserve.edu.sporthubujp.service.impl.RegistrationServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
