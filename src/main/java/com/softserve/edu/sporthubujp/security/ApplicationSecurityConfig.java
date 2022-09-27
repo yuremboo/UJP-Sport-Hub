@@ -63,8 +63,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "index", "/css/*", "/js/*", "/api/v*/registration/**",
                         "/api/v*/categories", "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*",
                         "/api/v*/comments/**", "/api/v*/articles/categories/**",
-                        "/api/v1/forgot/password", "/api/v1/forgot/password/newpassword", "/api/v*/image/*", "/api/v*/articles/most_commented",
-                        "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*")
+                        "/api/v*/forgot/password", "/api/v*/forgot/password/newpassword", "/api/v*/image/*",
+                        "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

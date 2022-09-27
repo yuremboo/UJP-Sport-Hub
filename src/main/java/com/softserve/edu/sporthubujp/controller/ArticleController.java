@@ -71,8 +71,8 @@ public class ArticleController {
             commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
     }
 
-    @DeleteMapping("/articles/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/admin/articles/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
         log.info("Delete article by id {}", articleId);
         articleService.deleteArticleById(articleId);
@@ -198,9 +198,9 @@ public class ArticleController {
                 articleService.getAllArticlesByTeamId(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")
-    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
+    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable("id") String id) {
         log.info("Publish or unpublished article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.publishUnpublishedArticle(id));

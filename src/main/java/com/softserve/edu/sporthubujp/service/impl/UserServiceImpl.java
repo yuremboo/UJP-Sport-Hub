@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             user
         );
 
-        confirmationTokenServiceImpl.saveConfirmationToken(
+        confirmationTokenService.saveConfirmationToken(
             confirmationToken);
 
         return token;
@@ -111,11 +111,6 @@ public class UserServiceImpl implements UserService {
         log.info(String.format("find user with the id %s", userId));
         return userMapper.userToUserSaveDto(userRepository.findUserById(userId));
     }
-
-    //    @Override
-    //    public User findUserByPasswordResetToken(String token) {
-    //        return null;
-    //    }
 
     public UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser) {
 
