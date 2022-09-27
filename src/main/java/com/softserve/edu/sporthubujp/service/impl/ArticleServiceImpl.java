@@ -29,7 +29,9 @@ import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Category;
 import com.softserve.edu.sporthubujp.entity.Team;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.CategoryNotFoundException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.TeamNotFoundException;
 import com.softserve.edu.sporthubujp.mapper.ArticleListMapper;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
@@ -148,8 +150,8 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findById(id)
             .map(article -> {
                 article.setUpdateDateTime(LocalDateTime.now());
-                Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
-                Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+                Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+                Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(TeamNotFoundException::new);
 
                 article.setCategory(category);
                 article.setTeam(team);
@@ -305,8 +307,8 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleSaveDTO postArticle(ArticleSaveDTO newArticle){
         Article article = articleMapper.saveDtoToEntity(newArticle);
         article.setCreateDateTime(LocalDateTime.now());
-        Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
-        Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+        Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+        Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(TeamNotFoundException::new);
 
         article.setCategory(category);
         article.setTeam(team);
