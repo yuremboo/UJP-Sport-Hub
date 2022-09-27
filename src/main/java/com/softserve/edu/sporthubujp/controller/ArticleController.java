@@ -54,7 +54,6 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
         CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
@@ -64,7 +63,6 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -80,7 +78,6 @@ public class ArticleController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
     public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(Pageable pageable) {
         log.info("Get more popular articles");
