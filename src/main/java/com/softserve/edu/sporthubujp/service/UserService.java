@@ -32,6 +32,13 @@ public interface UserService {
      */
     UserDTO updateUser(User oldUser, UserSaveProfileDTO newUser);
 
+    /**
+     *
+     * @param oldPassword represents password of current user
+     * @param newPassword an {@link UserSavePasswordDTO} instance that contains new password for user
+     * @return instance of {@link UserDTO}
+     * @throws ServiceException
+     */
     UserDTO updatePassword(User oldPassword, UserSavePasswordDTO newPassword) throws ServiceException;
 
     UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException, IOException, SendFailedException;

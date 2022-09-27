@@ -49,5 +49,10 @@ public interface ArticleService {
      */
     ArticleDTO publishUnpublishedArticle(String id);
 
+    /**
+     * The method allows to create an article
+     * @param newArticle an {@link ArticleSaveDTO} instance that contains article values
+     * @return instance of {@link ArticleSaveDTO}
+     */
     ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 }
