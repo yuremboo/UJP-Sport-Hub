@@ -39,7 +39,6 @@ import static org.mockito.Mockito.*;
 class UserServiceImplTest {
 
     private final static String EMAIL_ALREADY_TAKEN = "Service: email %s already taken";
-    BCryptPasswordEncoder bCryptPasswordEncoder = Mockito.mock(BCryptPasswordEncoder.class, RETURNS_DEEP_STUBS);
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -62,16 +61,16 @@ class UserServiceImplTest {
         BCryptPasswordEncoder bCryptPasswordEncoder = spy(new BCryptPasswordEncoder());
 
         when(userMapper.dtoToEntity(userDTO))
-                .thenReturn(user);
+            .thenReturn(user);
 
         when(passwordConfig.passwordEncoder()).thenReturn(bCryptPasswordEncoder);
 
         given(userRepository.findByEmail(userDTO.getEmail()))
-                .willReturn(Optional.of(user));
+            .willReturn(Optional.of(user));
 
         assertThatThrownBy(() -> underTest.signUpUser(userDTO))
-                .isInstanceOf(EmailAlreadyTakenException.class)
-                .hasMessageContaining(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
+            .isInstanceOf(EmailAlreadyTakenException.class)
+            .hasMessageContaining(String.format(EMAIL_ALREADY_TAKEN, userDTO.getEmail()));
 
         verify(passwordConfig.passwordEncoder(), never()).encode(anyString());
     }
@@ -85,22 +84,22 @@ class UserServiceImplTest {
         BCryptPasswordEncoder bCryptPasswordEncoder = spy(new BCryptPasswordEncoder());
 
         when(userMapper.dtoToEntity(userDTO))
-                .thenReturn(user);
+            .thenReturn(user);
 
         when(passwordConfig.passwordEncoder()).thenReturn(bCryptPasswordEncoder);
 
         given(userRepository.findByEmail(userDTO.getEmail()))
-                .willReturn(Optional.empty());
+            .willReturn(Optional.empty());
 
         when(userDTO.getPassword()).thenReturn("nonEmptyPassword");
 
         underTest.signUpUser(userDTO);
 
         ArgumentCaptor<User> userArgumentCaptor =
-                ArgumentCaptor.forClass(User.class);
+            ArgumentCaptor.forClass(User.class);
 
         verify(userRepository)
-                .save(userArgumentCaptor.capture());
+            .save(userArgumentCaptor.capture());
 
         User capturedUser = userArgumentCaptor.getValue();
 
@@ -112,7 +111,7 @@ class UserServiceImplTest {
         verify(user).setCreateDateTime(any(LocalDateTime.class));
 
         verify(confirmationTokenService)
-                .saveConfirmationToken(any(ConfirmationToken.class));
+            .saveConfirmationToken(any(ConfirmationToken.class));
     }
 
     @Test
