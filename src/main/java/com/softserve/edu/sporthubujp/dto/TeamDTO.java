@@ -8,6 +8,7 @@ import lombok.Data;
 public class TeamDTO {
     private String id;
     private String name;
+    private String alt;
     private String location;
     private Byte logo;
     private String description;

@@ -30,12 +30,20 @@ public interface ArticleService {
     List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
-    List<ArticleListDTO> getMorePopularArticles();
+    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
+    List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
+    void selectedByAdminArticle(List<String> articleIDList);
 
+    /**
+     * The method allows to edit an existing article
+     * @param newArticle an {@link ArticleSaveDTO} instance that contains new article values
+     * @param id represents id of current article
+     * @return instance of {@link ArticleDTO}
+     */
     ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id);
     
     List<ArticleListDTO> getMostCommentedArticles();
@@ -44,6 +52,17 @@ public interface ArticleService {
 
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
+    /**
+     * The method allows to publish or unpublished article
+     * @param id represents id of current article
+     * @return instance of {@link ArticleDTO}
+     */
     ArticleDTO publishUnpublishedArticle(String id);
 
+    /**
+     * The method allows to create an article
+     * @param newArticle an {@link ArticleSaveDTO} instance that contains article values
+     * @return instance of {@link ArticleSaveDTO}
+     */
+    ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 }

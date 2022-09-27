@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,14 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
             + "ORDER BY a.createDateTime ")
     List<Article> getAllArticlesBySubscription(String idUser);
 
+
+    @Transactional
+    @Query("SELECT a FROM Article a "
+        + "JOIN a.category c "
+        + "WHERE c.name = ?1 "
+        + "ORDER BY a.createDateTime ")
+    List<Article> getAllArticlesByCategoryName(String nameCategory);
+
     @Transactional
     @Query("SELECT a FROM Article a "
             + "JOIN a.team t "
@@ -28,8 +37,12 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
             + "JOIN s.user u "
             + "WHERE u.id = ?1 AND t.id = ?2 "
             + "ORDER BY a.createDateTime ")
-    List<Article> getArticlesByTeamId(String idUser, String teamId); // TODO: rename
-
+    List<Article> getArticlesByTeamIdAndUserId(String idUser, String teamId);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Article a " +
+        "SET a.selectedByAdmin = FALSE ")
+    void setSelectByAdmin();
     Page<Article> findAll(Pageable pageable);
 
     @Query(value = "SELECT * FROM ARTICLES a WHERE a.category_id = ?1",
