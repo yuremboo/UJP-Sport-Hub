@@ -1,37 +1,21 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
-import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
-import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
-import com.softserve.edu.sporthubujp.entity.Category;
-import com.softserve.edu.sporthubujp.entity.Team;
-import com.softserve.edu.sporthubujp.entity.User;
-import com.softserve.edu.sporthubujp.exception.CategoryNotFoundException;
-import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
-import com.softserve.edu.sporthubujp.exception.TeamNotFoundException;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
-import com.softserve.edu.sporthubujp.repository.CategoryRepository;
-import com.softserve.edu.sporthubujp.repository.TeamRepository;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
-
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 
 import javax.persistence.EntityNotFoundException;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +24,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.verify;
-
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceImplTest {
 
@@ -87,6 +68,18 @@ class ArticleServiceImplTest {
 
         assertThatThrownBy(() -> underTest.getNewestArticlesByCategoryId(anyString(), any(PageRequest.class)))
                 .isInstanceOf(EntityNotFoundException.class);
+
+        verify(articleList, never()).stream();
+    }
+
+    @Test
+    void willThrowTokenNotFoundException() {
+        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
+        List<Article> articleList = spy(new ArrayList<>());
+        //        when(articleRepository.deleteById(anyString()))
+        //            .thenReturn(true);
+        assertThatThrownBy(() -> underTest.deleteArticleById(anyString()))
+            .isInstanceOf(EntityNotExistsException.class);
 
         verify(articleList, never()).stream();
     }

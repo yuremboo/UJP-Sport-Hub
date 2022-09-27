@@ -1,6 +1,7 @@
 package com.softserve.edu.sporthubujp.mapper;
 
 import com.softserve.edu.sporthubujp.dto.UserDTO;
+import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
 import com.softserve.edu.sporthubujp.entity.User;
 import org.mapstruct.Builder;
@@ -19,4 +20,5 @@ public interface UserMapper {
     User updateUser(@MappingTarget User userFromDb,  UserSaveProfileDTO newUser);
     UserDTO dtoToSaveDto(UserSaveProfileDTO userSaveProfileDTO);
     UserSaveProfileDTO saveDtoToDto(UserDTO userDTO);
+    User updatePassword(@MappingTarget User userFromDb,  UserSavePasswordDTO newUser);
 }

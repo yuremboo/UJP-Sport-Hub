@@ -15,6 +15,7 @@ public class ArticleDTO {
     private String picture;
     private Boolean isActive;
     private Boolean commentsActive;
+    private Boolean selectedByAdmin;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;
     private CategoryDTO category;

@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Converter;
+import com.google.common.base.Converter;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
@@ -94,9 +95,10 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListDTO> getMorePopularArticles() {
-        List<String> articlesId = logRepository.getMorePopularArticlesId();
-        List<Article> articles = new LinkedList<Article>();
+    public List<ArticleListDTO> getMorePopularArticles(Pageable pageable) {
+        List<String> articlesId = logRepository
+            .getMorePopularArticlesId( PageRequest.of(0, 3));
+        List<Article> articles=new LinkedList<Article>();
         for (var article : articlesId) {
             articles.add(articleRepository.getArticleById(article));
         }
@@ -123,11 +125,22 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articlesDTOS;
     }
+    @Override
+    public List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory) {
+        List<Article> articles = new LinkedList<Article>();
+        articles = articleRepository.getAllArticlesByCategoryName(nameCategory);
+        log.info("Get all articles by category name: {}", nameCategory);
+        List<ArticleDTO> articlesDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articlesDTOS.add(articleMapper.entityToDto(article));
+        }
+        return articlesDTOS;
+    }
 
     @Override
     public List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId) {
         List<Article> articles = new LinkedList<>();
-        articles = articleRepository.getArticlesByTeamId(idUser, teamId);
+        articles = articleRepository.getArticlesByTeamIdAndUserId(idUser, teamId);
         log.info("Get articles by teams id subscription");
         return getArticleListDTOS(articles);
     }
@@ -145,7 +158,16 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
-
+    public void selectedByAdminArticle(List<String> articleIDList) {
+        articleRepository.setSelectByAdmin();
+        List<Article> articlesList =new LinkedList<Article>();
+        for (var articleId : articleIDList) {
+            //articlesList.add(articleRepository.getReferenceById(articleId));
+            var article1=articleRepository.findById(articleId).orElseThrow(EntityNotExistsException::new);;
+            article1.setSelectedByAdmin(true);
+            articleRepository.save(article1);
+        }
+    }
     public ArticleDTO updateArticle(ArticleSaveDTO newArticle, String id) {
         return articleRepository.findById(id)
             .map(article -> {
