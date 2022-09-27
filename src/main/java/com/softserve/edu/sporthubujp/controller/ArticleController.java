@@ -90,7 +90,7 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
-    public ResponseEntity<List<ArticleListDTO>> getMorePopularArticles(Pageable pageable) {
+    public ResponseEntity<List<ArticlePreviewDTO>> getMorePopularArticles(Pageable pageable) {
         log.info("Get more popular articles");
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getMorePopularArticles(pageable));
@@ -175,7 +175,7 @@ public class ArticleController {
 
     @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/articles/{articleId}/categories/{categoryId}")
-    public ResponseEntity<List<ArticleListDTO>>
+    public ResponseEntity<List<ArticlePreviewDTO>>
     getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
         log.info("Get all active articles by category id {}", categoryId);
         return ResponseEntity.status(HttpStatus.OK).body(

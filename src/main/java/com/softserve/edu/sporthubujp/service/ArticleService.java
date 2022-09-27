@@ -18,10 +18,10 @@ public interface ArticleService {
     Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
     Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
-    List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
+    List<ArticlePreviewDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
-    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
+    List<ArticlePreviewDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 

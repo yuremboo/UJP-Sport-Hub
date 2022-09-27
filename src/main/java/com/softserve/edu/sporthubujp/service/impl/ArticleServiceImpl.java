@@ -113,7 +113,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListDTO> getMorePopularArticles(Pageable pageable) {
+    public List<ArticlePreviewDTO> getMorePopularArticles(Pageable pageable) {
         List<String> articlesId = logRepository
             .getMorePopularArticlesId( PageRequest.of(0, 3));
         List<Article> articles=new LinkedList<Article>();
@@ -121,15 +121,11 @@ public class ArticleServiceImpl implements ArticleService {
             articles.add(articleRepository.getArticleById(article));
         }
         log.info("Get 3 more popular articles");
-        List<ArticleDTO> articleDTOS = new LinkedList<>();
+        List<ArticlePreviewDTO> articleDTOS = new LinkedList<>();
         for (var article : articles) {
-            articleDTOS.add(articleMapper.entityToDto(article));
+            articleDTOS.add(articleMapper.entityToPreviewDTO(article));
         }
-        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
-        for (var articleDTO : articleDTOS) {
-            articleListDTOS.add(new ArticleListDTO(articleDTO));
-        }
-        return articleListDTOS;
+        return articleDTOS;
     }
 
     @Override
@@ -264,7 +260,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
+    public List<ArticlePreviewDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId) {
         if (!categoryRepository.existsById(categoryId)) {
             throw new EntityNotExistsException(String.format(CATEGORY_NOT_FOUND_BY_ID, categoryId));
         }
@@ -277,7 +273,7 @@ public class ArticleServiceImpl implements ArticleService {
             .filter(article -> !Objects.equals(article.getId(), articleId))
             .collect(Collectors.toList());
         log.info("Get all active articles by category id {}", categoryId);
-        return getArticleListDTOS(allActiveArticlesByCategoryId);
+        return getArticlePreviewDTOS(allActiveArticlesByCategoryId);
     }
 
     @Override
