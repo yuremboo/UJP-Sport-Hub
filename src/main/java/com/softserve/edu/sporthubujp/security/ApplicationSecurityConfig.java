@@ -66,7 +66,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v*/forgot/password", "/api/v*/forgot/password/newpassword", "/api/v*/image/*",
                         "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*",
                         "/api/v*/articles/*", "/api/v*/*/comments/*/*",
-                        "/api/v*/*/comments/popular/*", "/api/v*/articles/*/comments-num", "/api/v*/newEmail")
+                        "/api/v*/*/comments/popular/*", "/api/v*/articles/*/comments-num", "/api/v*/newEmail",
+                        "/api/v*/users/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

@@ -59,7 +59,6 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
     public ResponseEntity<UserSaveProfileDTO> getUserById(@PathVariable String id) {
         log.info("Get user by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
