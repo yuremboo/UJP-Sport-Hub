@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
@@ -25,6 +26,7 @@ import com.google.common.base.Converter;
 import com.google.common.base.Converter;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Category;
@@ -72,6 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Override
     public ArticleDTO getArticleById(String id) {
         Article article = articleRepository.getArticleById(id);
         log.info("Get article by id in service");
@@ -80,6 +83,23 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, id));
         }
         return articleMapper.entityToDto(article);
+    }
+
+    @Override
+     public List<ArticlePreviewDTO> getAllArticlesSelectedByAdmin() {
+        log.info("Get all articles selected by admin in service");
+        List<Article> selectedArticles = articleRepository
+            .findAllBySelectedByAdminIsTrue();
+        return getArticlePreviewDTOS(selectedArticles);
+    }
+
+    @NotNull
+    private List<ArticlePreviewDTO> getArticlePreviewDTOS(List<Article> articles) {
+        List<ArticlePreviewDTO> articlePreviewDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articlePreviewDTOS.add(articleMapper.entityToPreviewDTO(article));
+        }
+        return articlePreviewDTOS;
     }
 
     @Override
@@ -156,6 +176,7 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
+
     public void selectedByAdminArticle(List<String> articleIDList) {
         articleRepository.setSelectByAdmin();
         List<Article> articlesList =new LinkedList<Article>();

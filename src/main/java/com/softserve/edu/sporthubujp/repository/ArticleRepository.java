@@ -65,4 +65,6 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
 
     Article getArticleById(String id);
 
+    List<Article> findAllBySelectedByAdminIsTrue();
+
 }

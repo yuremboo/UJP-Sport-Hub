@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.service;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -55,4 +56,6 @@ public interface ArticleService {
      * @return instance of {@link ArticleSaveDTO}
      */
     ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
+
+    List<ArticlePreviewDTO> getAllArticlesSelectedByAdmin();
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.ArticlePreviewDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
@@ -61,6 +62,13 @@ public class ArticleController {
         //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
+    }
+
+    @GetMapping("/selected-articles")
+    public ResponseEntity<List<ArticlePreviewDTO>> getAllArticlesSelectedByAdmin() {
+        log.info("Get all articles selected by admin");
+        return ResponseEntity.status(HttpStatus.OK).body(
+            articleService.getAllArticlesSelectedByAdmin());
     }
 
     @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
