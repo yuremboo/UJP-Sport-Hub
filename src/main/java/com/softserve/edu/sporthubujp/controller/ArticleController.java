@@ -138,8 +138,8 @@ public class ArticleController {
                 articleService.getAllArticlesByCategoryIdAndIsActive(id, isactive, pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    @GetMapping("/articles/mostcommented")
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+    @GetMapping("/articles/most_commented")
     public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -147,7 +147,7 @@ public class ArticleController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+//    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/newest/{id}")
     public ResponseEntity<List<ArticleListDTO>>
     getFourNewestArticlesByCategoryId(@PathVariable("id") String categoryId, Pageable pageable) {

@@ -34,7 +34,7 @@ public class PhotoOfTheDaySectionController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
+//    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     public ResponseEntity<PhotoOfTheDaySectionDTO> getPhotoOfTheDay() {
         log.info("Controller: getting photo of the day");
 
