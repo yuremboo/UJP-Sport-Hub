@@ -20,11 +20,13 @@ public interface ArticleService {
     List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
-    List<ArticleListDTO> getMorePopularArticles();
+    List<ArticleListDTO> getMorePopularArticles(Pageable pageable);
 
     List<ArticleDTO> getAllArticlesBySubscription(String idUser);
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
+    List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
+    void selectedByAdminArticle(List<String> articleIDList);
 
     /**
      * The method allows to edit an existing article
@@ -47,4 +49,5 @@ public interface ArticleService {
      */
     ArticleDTO publishUnpublishedArticle(String id);
 
+    ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
 }

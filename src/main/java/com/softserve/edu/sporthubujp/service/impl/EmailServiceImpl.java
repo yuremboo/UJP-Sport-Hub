@@ -44,6 +44,27 @@ public class EmailServiceImpl implements EmailSenderService {
     }
     @Override
     @Async
+    public void sendUpdateHome(String to, String email) throws SendFailedException {
+        try {
+            log.info(String.format("Service: sending email when update home page by admin to %s", to));
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+            MimeMessageHelper helper =
+                new MimeMessageHelper(mimeMessage, "utf-8");
+
+            helper.setText(email, true);
+            helper.setTo(to);
+            helper.setFrom("sportshub@gmail.com", "Sports Hub");
+            helper.setSubject("UPDATE HOME in Sports Hub");
+
+            mailSender.send(mimeMessage);
+        } catch (UnsupportedEncodingException | MessagingException e) {
+            log.error(String.format(EMAIL_SENDING_FAILURE, to));
+            throw new SendFailedException(String.format(EMAIL_SENDING_FAILURE, to));
+        }
+    }
+    @Override
+    @Async
     public void sendCheckEmail(String to, String email) throws SendFailedException {
         try {
             log.info(String.format("Service: check email to reset password to %s", to));

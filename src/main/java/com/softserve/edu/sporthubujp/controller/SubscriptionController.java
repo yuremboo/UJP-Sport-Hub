@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1")
 public class SubscriptionController {
     private final SubscriptionService subscriptionService;
     public SubscriptionController(SubscriptionService subscriptionService) {
