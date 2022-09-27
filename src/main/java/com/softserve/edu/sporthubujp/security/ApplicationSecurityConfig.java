@@ -60,11 +60,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey, userRepository))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/", "index", "/css/*", "/js/*","/api/v*/registration/**",
-                        "/api/categories", "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*",   
-                             "/api/v*/comments/**", "/api/v*/articles/categories/**",
-                    "/api/v*/forgot/password", "/api/v*/forgot/password/newpassword", "/api/v*/image/*","/api/v*/selected-articles")
-                    .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*", "/api/v*/registration/**",
+                        "/api/v*/categories", "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*",
+                        "/api/v*/comments/**", "/api/v*/articles/categories/**",
+                        "/api/v*/forgot/password", "/api/v*/forgot/password/newpassword", "/api/v*/image/*",
+                        "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*",
+                        "/api/v*/articles/*", "/api/v*/*/comments/*/*",
+                        "/api/v*/*/comments/popular/*", "/api/v*/articles/*/comments-num", "/api/v*/newEmail",
+                        "/api/v*/users/*", "/api/v*/selected-articles")
+                .permitAll()
                 .anyRequest()
                 .authenticated();
     }

@@ -13,6 +13,6 @@ public class NameValidator implements ConstraintValidator<NameConstraint, String
 
     @Override
     public boolean isValid(String nameField, ConstraintValidatorContext constraintValidatorContext) {
-        return nameField.matches("^[A-Za-z]{1,32}$");
+        return nameField.matches("^[A-Za-z]{1,255}$");
     }
 }

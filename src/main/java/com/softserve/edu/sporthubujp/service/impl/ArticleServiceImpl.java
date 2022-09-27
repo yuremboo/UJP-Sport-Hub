@@ -305,17 +305,19 @@ public class ArticleServiceImpl implements ArticleService {
         return mostCommentedArticleListDTOS;
     }
 
+    @Override
     public List<ArticleListDTO> getNewestArticlesByCategoryId(String categoryId, Pageable pageable) {
         List<Article> articles = articleRepository
-            .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
-            .orElseThrow(EntityNotFoundException::new);
+                .findNewestArticlesByCategoryId(categoryId, PageRequest.of(0, 4))
+                .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting four newest articles by category id");
+        return articles
+                .stream()
+                .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
+                .collect(Collectors.toList());
 
-        return articles.stream()
-            .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
-            .collect(Collectors.toList());
-    }
+}
 
 
     public ArticleDTO publishUnpublishedArticle(String id) {
@@ -334,7 +336,6 @@ public class ArticleServiceImpl implements ArticleService {
                 .orElseThrow(EntityNotFoundException::new);
 
         log.info("Service: getting all articles by team id");
-
         return articles
                 .stream()
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))

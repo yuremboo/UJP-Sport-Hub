@@ -55,7 +55,6 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
         CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
@@ -72,15 +71,14 @@ public class ArticleController {
     }
 
     @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
         log.info("Get all comments by article id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
     }
 
-    @DeleteMapping("/articles/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/admin/articles/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Void> deleteArticle(@PathVariable("id") String articleId) {
         log.info("Delete article by id {}", articleId);
         articleService.deleteArticleById(articleId);
@@ -88,7 +86,6 @@ public class ArticleController {
     }
 
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/morePopular")
     public ResponseEntity<List<ArticlePreviewDTO>> getMorePopularArticles(Pageable pageable) {
         log.info("Get more popular articles");
@@ -182,7 +179,6 @@ public class ArticleController {
             articleService.getSixActiveArticlesByCategoryId(categoryId, articleId));
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     @GetMapping("/articles/most_commented")
     public ResponseEntity<List<ArticleListDTO>> getMostCommentedArticles() {
         log.info("Get most commented articles");
@@ -190,7 +186,7 @@ public class ArticleController {
             articleService.getMostCommentedArticles());
     }
 
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
+
     @GetMapping("/articles/newest/{id}")
     public ResponseEntity<List<ArticleListDTO>>
     getFourNewestArticlesByCategoryId(@PathVariable("id") String categoryId, Pageable pageable) {
@@ -207,9 +203,9 @@ public class ArticleController {
                 articleService.getAllArticlesByTeamId(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/admin/articles/publish/{id}")
-    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable String id) {
+    public ResponseEntity<ArticleDTO> publishUnpublishedArticle(@PathVariable("id") String id) {
         log.info("Publish or unpublished article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.publishUnpublishedArticle(id));
