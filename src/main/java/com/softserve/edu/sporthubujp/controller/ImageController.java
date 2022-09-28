@@ -47,8 +47,8 @@ public class ImageController {
                 uploadedFileRef.getOriginalFilename()));
 
         HashMap<String, String> response = new HashMap<>();
-        response.put("imageUrl", "api/v1/image/" +
-                storageService.uploadImage(uploadedFileRef, isPhotoOfTheDay));
+        response.put("imageUrl",
+            storageService.uploadImage(uploadedFileRef, isPhotoOfTheDay));
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);

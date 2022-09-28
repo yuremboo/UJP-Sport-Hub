@@ -28,11 +28,11 @@ public class Subscription {
     private LocalDateTime updateDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false,foreignKey = @ForeignKey(name="fk_subscriptions_user"), insertable=false, updatable=false)
+    @JoinColumn(name = "user_id", nullable = false,foreignKey = @ForeignKey(name="fk_subscriptions_user"), updatable=false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "team_id",foreignKey = @ForeignKey(name="fk_subscriptions_team"), insertable=false, updatable=false)
+    @JoinColumn(name = "team_id",foreignKey = @ForeignKey(name="fk_subscriptions_team"), updatable=false)
     private Team team;
 
     @ManyToOne

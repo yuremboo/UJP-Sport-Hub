@@ -87,18 +87,6 @@ class ArticleServiceImplTest {
     }
 
     @Test
-    void willThrowTokenNotFoundException() {
-        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
-        List<Article> articleList = spy(new ArrayList<>());
-        //        when(articleRepository.deleteById(anyString()))
-        //            .thenReturn(true);
-        assertThatThrownBy(() -> underTest.deleteArticleById(anyString()))
-            .isInstanceOf(EntityNotExistsException.class);
-
-        verify(articleList, never()).stream();
-    }
-
-    @Test
     void canUpdateArticle() {
         ArticleDTO articleDTO = spy(new ArticleDTO());
         ArticleSaveDTO articleSaveDTO = spy(new ArticleSaveDTO());
