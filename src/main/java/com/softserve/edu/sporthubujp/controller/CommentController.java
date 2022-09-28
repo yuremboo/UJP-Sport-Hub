@@ -1,5 +1,7 @@
 package com.softserve.edu.sporthubujp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
@@ -44,6 +47,13 @@ public class CommentController {
         log.info("Delete comment by id {}", commentId);
         commentService.deleteComment(commentId);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
+    public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
+        log.info("Get all comments by article id {}", id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
     }
 
     @PutMapping("/comments/{id}")

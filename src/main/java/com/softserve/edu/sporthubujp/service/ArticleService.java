@@ -36,7 +36,7 @@ public interface ArticleService {
 
     List<ArticleListDTO> getArticlesByTeamByUserId(String idUser, String teamId);
     List<ArticleDTO> getAllArticlesByCategoryName(String nameCategory);
-    void selectedByAdminArticle(List<String> articleIDList);
+    void selectArticleByAdmin(List<String> articleIDList);
 
     /**
      * The method allows to edit an existing article
@@ -78,4 +78,6 @@ public interface ArticleService {
      * @return instance of {@link ArticleSaveDTO}
      */
     ArticleSaveDTO postArticle(ArticleSaveDTO newArticle);
+
+    List<ArticleListDTO> getAllArticlesSelectedByAdmin();
 }

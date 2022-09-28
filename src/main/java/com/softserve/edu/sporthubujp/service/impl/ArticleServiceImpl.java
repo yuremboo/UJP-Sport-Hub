@@ -22,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Converter;
-import com.google.common.base.Converter;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
@@ -30,7 +29,9 @@ import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Category;
 import com.softserve.edu.sporthubujp.entity.Team;
 import com.softserve.edu.sporthubujp.exception.ArticleServiceException;
+import com.softserve.edu.sporthubujp.exception.CategoryNotFoundException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
+import com.softserve.edu.sporthubujp.exception.TeamNotFoundException;
 import com.softserve.edu.sporthubujp.mapper.ArticleListMapper;
 import com.softserve.edu.sporthubujp.mapper.ArticleMapper;
 import com.softserve.edu.sporthubujp.repository.ArticleRepository;
@@ -72,6 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
         this.categoryRepository = categoryRepository;
     }
 
+    @Override
     public ArticleDTO getArticleById(String id) {
         Article article = articleRepository.getArticleById(id);
         log.info("Get article by id in service");
@@ -80,6 +82,23 @@ public class ArticleServiceImpl implements ArticleService {
             throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID, id));
         }
         return articleMapper.entityToDto(article);
+    }
+
+    @Override
+     public List<ArticleListDTO> getAllArticlesSelectedByAdmin() {
+        log.info("Get all articles selected by admin in service");
+        List<Article> selectedArticles = articleRepository
+            .findAllBySelectedByAdminIsTrue();
+        return convertToArticleListDTOS(selectedArticles);
+    }
+
+    @NotNull
+    private List<ArticleListDTO> convertToArticleListDTOS(List<Article> articles) {
+        List<ArticleListDTO> articleListDTOS = new LinkedList<>();
+        for (var article : articles) {
+            articleListDTOS.add(new ArticleListDTO(articleMapper.entityToDto(article)));
+        }
+        return articleListDTOS;
     }
 
     @Override
@@ -156,7 +175,8 @@ public class ArticleServiceImpl implements ArticleService {
         }
         return articleListDTOS;
     }
-    public void selectedByAdminArticle(List<String> articleIDList) {
+
+    public void selectArticleByAdmin(List<String> articleIDList) {
         articleRepository.setSelectByAdmin();
         List<Article> articlesList =new LinkedList<Article>();
         for (var articleId : articleIDList) {
@@ -170,8 +190,8 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findById(id)
             .map(article -> {
                 article.setUpdateDateTime(LocalDateTime.now());
-                Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
-                Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+                Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+                Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(TeamNotFoundException::new);
 
                 article.setCategory(category);
                 article.setTeam(team);
@@ -198,7 +218,6 @@ public class ArticleServiceImpl implements ArticleService {
         });
 
         log.info("Get all articles in service");
-        int total = articles.getTotalPages();
         return articleDTOPage;
     }
 
@@ -255,8 +274,8 @@ public class ArticleServiceImpl implements ArticleService {
             .stream()
             .filter(article -> !Objects.equals(article.getId(), articleId))
             .collect(Collectors.toList());
-        log.info("Get all active articles by category id {}", categoryId);
-        return getArticleListDTOS(allActiveArticlesByCategoryId);
+        log.info("Get 6 active articles by category id {}", categoryId);
+        return convertToArticleListDTOS(allActiveArticlesByCategoryId);
     }
 
     @Override
@@ -328,8 +347,8 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleSaveDTO postArticle(ArticleSaveDTO newArticle){
         Article article = articleMapper.saveDtoToEntity(newArticle);
         article.setCreateDateTime(LocalDateTime.now());
-        Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(EntityNotExistsException::new);
-        Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(EntityNotExistsException::new);
+        Category category = categoryRepository.findById(newArticle.getCategoryId()).orElseThrow(CategoryNotFoundException::new);
+        Team team = teamRepository.findById(newArticle.getTeamId()).orElseThrow(TeamNotFoundException::new);
 
         article.setCategory(category);
         article.setTeam(team);
