@@ -67,7 +67,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*",
                         "/api/v*/articles/*", "/api/v*/*/comments/*/*",
                         "/api/v*/*/comments/popular/*", "/api/v*/articles/*/comments-num", "/api/v*/newEmail",
-                        "/api/v*/users/*")
+                        "/api/v*/users/*", "/api/v*/selected-articles", "/api/v*/articles/*/categories/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
