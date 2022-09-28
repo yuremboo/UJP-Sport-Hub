@@ -44,7 +44,8 @@ public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
     }
     @Override
     public void sendUpdateHome() throws IOException, SendFailedException {
-        String link = "http://localhost:3000";
+        String link = "https://ujp-sports-hub-ui.herokuapp.com/";
+//        String link = "http://localhost:3000";
         emailSender.sendUpdateHome(
             EMAIL_SERVER,
             buildEmail(link));
