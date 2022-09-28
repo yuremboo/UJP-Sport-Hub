@@ -29,25 +29,16 @@
   <div class="email-letter" style="text-align: center;
         padding-top: 2%;
         height: 100vh;">
-    <p class="email-letter__title" style=" font-size: 24px;
-            color: black;
-            padding-bottom: 2%;
-            line-height: 33px;
-            white-space: pre-line;">You have requested to reset your password</p>
     <div class="email-letter-info" style=" background-color: white;
             position: relative;
             padding-top: 2.5%;
             max-width: 37%;
             height: 28%;
             margin: auto;">
-
-      <p class="email-letter-info__paragraph" style=" color: #596377;
-                font-size: 12px;
-                line-height: 16px;">
-        To reset your password, click the following link and follow the instructions.
-      </p>
-
-      <a href="">
+      <div id="client_logos">
+        <img style="display: inline; margin: 0 5px;" title="heartica_logo" src="http://localhost:8080/api/v1/image/EmailUpdateHome.jpg" alt="" width="840" height="650" />
+        <img style="display: inline; margin: 0 5px;" title="heartica_logo" src="http://localhost:8080/api/v1/image/EmailUpdateHome2.jpg" alt="" width="840" height="650" />
+      </div>
         <button class="email-letter-info__button" type="button"
                 onmouseover="this.style.backgroundColor='#E02232'"
                 onmouseout="this.style.backgroundColor='#D72130'"
@@ -64,60 +55,8 @@
                 font-family: Roboto, sans-serif;
                 letter-spacing: 0.8px;
                 text-transform: uppercase;
-                display: inline-block;">RESET PASSWORD</button>
-      </a>
+                display: inline-block;">GO TO WEBSITE</button>
 
-      <h3 style="font-size: 18px; font-weight: bold;">
-        Why do I have to reset my password?</h3>
-      <p class="email-letter-info__paragraph" style=" color: #596377;
-                font-size: 12px;
-                line-height: 16px;">
-        As a security best practise, Sports Hub does not store your password.
-        As such, we cannot simply send you your old password.
-        A unique link to reset your password has been generated for you.
-      </p>
-      <a class="article-link" href="#">
-        <div class="medium-article" style="display: flex;
-             flex-direction: column;
-             border: 1px solid #ededed;
-             width: 390px;
-             height: 295px;
-             position: relative;">
-          <div class="category" style="position: absolute;
-    top: 0;
-    left: 0;
-    width: 134px;
-    height: 39px;
-    background: #2F2F2F;
-    display: flex;
-    justify-content: center;
-    align-items: center;">
-            <p class="category__text" style="margin-bottom: 0;
-               font-family: 'Open Sans';
-            font-style: normal;
-            font-weight: 700;
-            font-size: 14px;
-            line-height: 19px;
-            color: #FFFFFF;">mediumArticle.category</p>
-          </div>
-          <img class="medium-article-img" src={mediumArticlePhoto} alt="article-img" />
-          <div class="medium-article-text">
-            <span class="heading">mediumArticle.title</span>
-          </div>
-          <div class="breakdown-arrow">
-            <img src={arrow} alt="arrow"/>
-          </div>
-        </div>
-      </a>
-      <p class="email-letter-info__paragraph" style=" color: #596377;
-                font-size: 12px;
-                line-height: 16px;">
-        Please ignore this message if you haven't requested reseting password.
-      </p>
-      <h2 class="email-letter-info__title" style=" color: #D72130;
-                font-size: 22px;
-                line-height: 28px;
-                margin-top: 50px;">Sports Hub</h2>
     </div>
   </div>
 

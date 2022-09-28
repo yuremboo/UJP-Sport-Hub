@@ -1,5 +1,6 @@
 package com.softserve.edu.sporthubujp.service.impl;
 
+import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
@@ -63,7 +64,30 @@ class ArticleServiceImplTest {
 
         verify(articleList, never()).stream();
     }
-
+//    @Test
+//    void should_find_and_return_one_student() {
+//        // Arrange
+//        final var expectedStudent = ArticleDTO.builder().name("Jimmy Olsen").age(28).build();
+//        when(articleRepository.findById(anyString())).thenReturn(Optional.of(expectedStudent));
+//
+//        // Act
+//        final var actual = underTest.getArticleById(anyString());
+//
+//        // Assert
+//        assertThat(actual).usingRecursiveComparison().isEqualTo(expectedStudent);
+//        verify(articleRepository, times(1)).findById(anyString());
+//        verifyNoMoreInteractions(articleRepository);
+//    }
+//    @Test
+//    void should_delete_one_student() {
+//        // Arrange
+//        doNothing().when(articleRepository).deleteById(anyString());
+//
+//        // Act & Assert
+//        underTest.deleteArticleById("4");
+//        verify(articleRepository, times(1)).deleteById(anyString());
+//        verifyNoMoreInteractions(articleRepository);
+//    }
     @Test
     void willThrowTokenNotFoundException() {
         List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());

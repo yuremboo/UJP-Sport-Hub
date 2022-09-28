@@ -166,7 +166,7 @@ public class ArticleController {
     @GetMapping("/articles/{articleId}/categories/{categoryId}")
     public ResponseEntity<List<ArticleListDTO>>
     getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
-        log.info("Get all active articles by category id {}", categoryId);
+        log.info("Get 6 active articles by category id {}", categoryId);
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.getSixActiveArticlesByCategoryId(categoryId, articleId));
     }
