@@ -22,12 +22,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softserve.edu.sporthubujp.dto.ArticleDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
 import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
-import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.entity.Logs;
 import com.softserve.edu.sporthubujp.repository.LogsRepository;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.service.ArticleService;
-import com.softserve.edu.sporthubujp.service.CommentService;
 import com.softserve.edu.sporthubujp.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -40,15 +38,13 @@ import java.util.concurrent.CompletableFuture;
 @CrossOrigin(origins = "*")
 public class ArticleController {
     private final ArticleService articleService;
-    private final CommentService commentService;
     private final UserService userService;
     private final LogsRepository logRepository;
 
     @Autowired
-    public ArticleController(ArticleService articleService, CommentService commentService, UserService userService,
+    public ArticleController(ArticleService articleService, UserService userService,
                              LogsRepository logRepository) {
         this.articleService = articleService;
-        this.commentService = commentService;
         this.userService = userService;
         this.logRepository = logRepository;
     }
@@ -62,11 +58,11 @@ public class ArticleController {
                 articleService.getArticleById(id));
     }
 
-    @GetMapping("/{id}/comments/{sortingMethod}/{commentsNum}")
-    public ResponseEntity<List<CommentDTO>> getNSortedCommentsByArticleId(@PathVariable String id, @PathVariable String sortingMethod, @PathVariable Integer commentsNum) {
-        log.info("Get all comments by article id {}", id);
+    @GetMapping("/selected-articles")
+    public ResponseEntity<List<ArticleListDTO>> getAllArticlesSelectedByAdmin() {
+        log.info("Get all articles selected by admin");
         return ResponseEntity.status(HttpStatus.OK).body(
-            commentService.getNSortedCommentsByArticleId(id, sortingMethod, commentsNum));
+            articleService.getAllArticlesSelectedByAdmin());
     }
 
     @DeleteMapping("/admin/articles/{id}")
@@ -123,7 +119,7 @@ public class ArticleController {
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ArticleDTO> selectedByAdmin(@RequestBody List<String> articleIDList) {
         log.info("Set in articles flag that  selectedByAdmin");
-        articleService.selectedByAdminArticle(articleIDList);
+        articleService.selectArticleByAdmin(articleIDList);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
@@ -162,7 +158,6 @@ public class ArticleController {
             articleService.getAllArticlesByCategoryIdAndIsActive(id, isActive, pageable));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
     @GetMapping("/articles/{articleId}/categories/{categoryId}")
     public ResponseEntity<List<ArticleListDTO>>
     getSixActiveArticlesByCategoryId(@PathVariable String categoryId, @PathVariable String articleId) {
