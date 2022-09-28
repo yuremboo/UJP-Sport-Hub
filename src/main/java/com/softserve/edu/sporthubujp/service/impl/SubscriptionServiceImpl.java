@@ -47,13 +47,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public SubscriptionSaveDTO postSubscription(SubscriptionSaveDTO newSubscription) {
         Subscription subscription = subscriptionMapper.saveDtoToEntity(newSubscription);
-        //subscription.setCreateDateTime(LocalDateTime.now());
-//        User user = userRepository.findById(newSubscription.getUserId()).orElseThrow(EntityNotExistsException::new);
-//        Team team = teamRepository.findById(newSubscription.getTeamId()).orElseThrow(EntityNotExistsException::new);
-//
-//        subscription.setUser(user);
-//        subscription.setTeam(team);
-        //return subscriptionMapper.entityToSaveDto(subscriptionRepository.save(subscription));
         return subscriptionMapper.entityToDtoSave(
             subscriptionRepository.save(subscription));
     }
