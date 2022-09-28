@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,7 +58,7 @@ public class CommentController {
 
     @PutMapping("/comments/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody CommentSaveDTO newComment,
+    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody @Validated CommentSaveDTO newComment,
         @PathVariable("id") String id) {
         log.info("Update comment by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -66,7 +67,7 @@ public class CommentController {
 
     @PostMapping("/comments")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody CommentSaveDTO newComment) {
+    public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody @Validated CommentSaveDTO newComment) {
         log.info(String.format("Add new comment to article %s", newComment));
         return ResponseEntity.status(HttpStatus.OK).body(commentService.addNewComment(newComment));
     }

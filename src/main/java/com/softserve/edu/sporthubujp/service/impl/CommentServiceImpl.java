@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.softserve.edu.sporthubujp.dto.comment.CommentDTO;
 import com.softserve.edu.sporthubujp.dto.comment.CommentSaveDTO;
 import com.softserve.edu.sporthubujp.entity.comment.Comment;
+import com.softserve.edu.sporthubujp.exception.CommentServiceException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.InvalidEntityException;
 import com.softserve.edu.sporthubujp.mapper.CommentMapper;
@@ -45,16 +46,22 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentDTO> getNSortedCommentsByArticleId(String articleId, String sortingMethod, Integer commentsNum) {
+        if (commentsNum <= 0) {
+            throw new CommentServiceException("Number of comments should be > 0");
+        }
 
         Pageable pageOfNComments = PageRequest.of(0, commentsNum);
 
         List<Comment> comments;
         if (sortingMethod.equals("oldest")) {
-            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeAsc(articleId, pageOfNComments);
+            comments = commentRepository
+                .findAllByArticleIdOrderByCreateDateTimeAsc(articleId, pageOfNComments);
         } else if (sortingMethod.equals("newest")) {
-            comments = commentRepository.findAllByArticleIdOrderByCreateDateTimeDesc(articleId, pageOfNComments);
+            comments = commentRepository
+                .findAllByArticleIdOrderByCreateDateTimeDesc(articleId, pageOfNComments);
         } else {
-            comments = commentRepository.findMostPopularByArticleId(articleId, pageOfNComments);
+            comments = commentRepository
+                .findMostPopularByArticleId(articleId, pageOfNComments);
         }
         log.info("Get all comments by article id {} in service sorted with rule {}",
             articleId, sortingMethod);
@@ -79,26 +86,20 @@ public class CommentServiceImpl implements CommentService {
         }
         commentRepository.deleteById(id);
     }
-
     @Override
     public CommentSaveDTO updateComment(CommentSaveDTO newComment, String id) {
-        if (!articleRepository.existsById(newComment.getArticleId())) {
-            throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
-                newComment.getArticleId()));
-        } else if (!userRepository.existsById(newComment.getUserId())) {
-            throw new EntityNotExistsException(String.format(USER_NOT_FOUND_BY_ID,
-                newComment.getUserId()));
-        }
+        validateComment(newComment);
+        log.info("Update comment by id in service");
         return commentRepository.findById(id)
             .map(comment -> {
                 commentMapper.updateComment(comment, newComment);
-                return commentMapper.entityToDtoSave(commentRepository.save(comment));
+                return commentMapper.entityToDtoSave(commentRepository
+                    .save(comment));
             })
             .orElseThrow(EntityNotExistsException::new);
     }
 
-    @Override
-    public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+    private void validateComment(CommentSaveDTO newComment) {
         if (!articleRepository.existsById(newComment.getArticleId())) {
             throw new EntityNotExistsException(String.format(ARTICLE_NOT_FOUND_BY_ID,
                 newComment.getArticleId()));
@@ -108,8 +109,14 @@ public class CommentServiceImpl implements CommentService {
         } else if (newComment.getLikes() < 0 || newComment.getDislikes() < 0) {
             throw new InvalidEntityException(
                 String.format(COMMENT_NOT_VALID_WITH, (newComment.getLikes() +
-                    "likes and " + newComment.getDislikes() + " dislikes")));
+                    " likes and " + newComment.getDislikes() + " dislikes")));
         }
+    }
+
+    @Override
+    public CommentSaveDTO addNewComment(CommentSaveDTO newComment) {
+        validateComment(newComment);
+        log.info("Add new comment in service");
         return commentMapper.entityToDtoSave(
             commentRepository.save(commentMapper.dtoSaveToEntity(newComment)));
     }

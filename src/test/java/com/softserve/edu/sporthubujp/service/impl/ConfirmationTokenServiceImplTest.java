@@ -51,7 +51,6 @@ class ConfirmationTokenServiceImplTest {
 
     @Test
     void canGetToken() {
-
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 "42d81fba-7832-42d5-a387-8ef7988a240b",
                 LocalDateTime.now(),

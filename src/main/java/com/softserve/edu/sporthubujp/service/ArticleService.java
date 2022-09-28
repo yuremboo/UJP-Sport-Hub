@@ -11,12 +11,22 @@ import java.util.List;
 
 
 public interface ArticleService {
+
     ArticleDTO getArticleById(String id);
 
     Page<ArticleListDTO> getAllArticles(Pageable pageable);
     Page<ArticleListDTO> getAllArticlesByCategoryId(String categoryId, Pageable pageable);
     Page<ArticleListDTO> getAllArticlesByCategoryIdAndIsActive(String categoryId, boolean isActive, Pageable pageable);
 
+    /**
+     * Method for getting six most recent active articles of the same category as
+     * the current article.
+     *
+     * @param categoryId is id for category of the current article
+     * @param articleId represents the current article id that should be excluded
+     *                  from the list
+     * @return list of {@link ArticleListDTO}
+     */
     List<ArticleListDTO> getSixActiveArticlesByCategoryId(String categoryId, String articleId);
     void deleteArticleById(String id);
 
