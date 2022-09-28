@@ -52,10 +52,9 @@ public class ForgotPasswordService {
         user.setPasswordResetToken(newToken);
         userRepository.save(user);
 
-//        String link = "http://localhost:3000/reset/password";
         String link = "http://localhost:3000/reset/password/"+newToken;
         emailSender.send(
-                EMAIL_SERVER,
+                user.getEmail(),
                 buildEmail(link));
         return null;
 

@@ -156,7 +156,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
         String link = "http://localhost:8080/api/v1/forgot/password";
         emailSender.sendCheckEmail(
-            EMAIL_SERVER,
+            user.getEmail(),
             buildConfirmEmail(link));
 
         String encodedPassword = passwordConfig.passwordEncoder()
