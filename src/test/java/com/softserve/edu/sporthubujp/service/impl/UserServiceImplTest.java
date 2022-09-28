@@ -7,6 +7,7 @@ import com.softserve.edu.sporthubujp.exception.EmailAlreadyTakenException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
+import com.softserve.edu.sporthubujp.service.ConfirmationTokenService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,7 @@ class UserServiceImplTest {
     @Mock
     private UserMapper userMapper;
     @Mock
-    private ConfirmationTokenService confirmationTokenService;
+    private ConfirmationTokenService confirmationTokenServiceImpl;
     @InjectMocks
     private UserServiceImpl underTest;
 
@@ -96,7 +97,7 @@ class UserServiceImplTest {
         verify(user).setPassword(anyString());
         verify(user).setCreateDateTime(any(LocalDateTime.class));
 
-        verify(confirmationTokenService)
+        verify(confirmationTokenServiceImpl)
                 .saveConfirmationToken(any(ConfirmationToken.class));
     }
 

@@ -31,8 +31,8 @@ public class SubscriptionEmailController {
     }
 
     @PostMapping("/newEmail")
-    @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<SubscriptionEmailSaveDTO> addNewEmailSubscription(@RequestBody SubscriptionEmailSaveDTO newEmail)
+    public ResponseEntity<SubscriptionEmailSaveDTO> addNewEmailSubscription(
+            @RequestBody SubscriptionEmailSaveDTO newEmail)
         throws SendFailedException, IOException {
         log.info(String.format("Add new email to subscription %s", newEmail));
         subscriptionEmailService.sendUpdateHome();

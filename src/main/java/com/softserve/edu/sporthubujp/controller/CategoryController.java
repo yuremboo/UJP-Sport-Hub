@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/categories")
+@RequestMapping("/api/v1/categories")
 @CrossOrigin(origins = "*")
 public class CategoryController {
     private final CategoryService categoryService;
@@ -23,8 +23,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'USER')")
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<List<CategoryDTO>> getAllCategories() {
         log.info("Get all categories");
         return ResponseEntity.status(HttpStatus.OK).body(

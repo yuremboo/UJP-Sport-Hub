@@ -32,7 +32,6 @@ public class CommentController {
     }
 
     @GetMapping("/articles/{articleId}/comments-num")
-    @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Integer> getNumOfComments(@PathVariable String articleId) {
         log.info("Get num of comments by article id {}", articleId);
         return ResponseEntity.status(HttpStatus.OK).body(
