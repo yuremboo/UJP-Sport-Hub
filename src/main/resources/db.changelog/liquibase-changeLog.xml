@@ -87,13 +87,13 @@
         <addUniqueConstraint columnNames="email" constraintName="uk_email" tableName="users"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664295567121-7">
-        <addUniqueConstraint columnNames="email" constraintName="uk_email" tableName="subscription_email"/>
+        <addUniqueConstraint columnNames="email" constraintName="uk_subscription_email" tableName="subscription_email"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664295567121-8">
         <addUniqueConstraint columnNames="name" constraintName="uk_name" tableName="teams"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664295567121-9">
-        <addUniqueConstraint columnNames="name" constraintName="uk_name" tableName="images"/>
+        <addUniqueConstraint columnNames="name" constraintName="uk_image_name" tableName="images"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664295567121-10">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
