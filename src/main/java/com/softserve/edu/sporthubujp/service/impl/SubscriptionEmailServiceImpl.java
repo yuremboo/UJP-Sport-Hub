@@ -44,7 +44,7 @@ public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
     }
     @Override
     public void sendUpdateHome() throws IOException, SendFailedException {
-        String link = "http://localhost:8080/api/v1/teams/";
+        String link = "http://localhost:3000";
         emailSender.sendUpdateHome(
             EMAIL_SERVER,
             buildEmail(link));
