@@ -65,6 +65,11 @@ public interface ArticleService {
      */
     List<ArticleListDTO> getAllArticlesByTeamId(String teamId);
 
+    Page<ArticleListDTO> getAllArticlesByCategoryIdAndTeamId(String categoryId, String teamId, Pageable pageable);
+
+    Page<ArticleListDTO> getAllArticlesByCategoryIdAndTeamIdAndIsActive
+            (String categoryId, String teamId, boolean isActive, Pageable pageable);
+
     /**
      * The method allows to publish or unpublished article
      * @param id represents id of current article
