@@ -85,41 +85,6 @@ class ArticleServiceImplTest {
 
         verify(articleList, never()).stream();
     }
-//    @Test
-//    void should_find_and_return_one_student() {
-//        // Arrange
-//        final var expectedStudent = ArticleDTO.builder().name("Jimmy Olsen").age(28).build();
-//        when(articleRepository.findById(anyString())).thenReturn(Optional.of(expectedStudent));
-//
-//        // Act
-//        final var actual = underTest.getArticleById(anyString());
-//
-//        // Assert
-//        assertThat(actual).usingRecursiveComparison().isEqualTo(expectedStudent);
-//        verify(articleRepository, times(1)).findById(anyString());
-//        verifyNoMoreInteractions(articleRepository);
-//    }
-//    @Test
-//    void should_delete_one_student() {
-//        // Arrange
-//        doNothing().when(articleRepository).deleteById(anyString());
-//
-//        // Act & Assert
-//        underTest.deleteArticleById("4");
-//        verify(articleRepository, times(1)).deleteById(anyString());
-//        verifyNoMoreInteractions(articleRepository);
-//    }
-    @Test
-    void willThrowTokenNotFoundException() {
-        List<ArticleListDTO> articleListDTOS = spy(new ArrayList<>());
-        List<Article> articleList = spy(new ArrayList<>());
-        //        when(articleRepository.deleteById(anyString()))
-        //            .thenReturn(true);
-        assertThatThrownBy(() -> underTest.deleteArticleById(anyString()))
-            .isInstanceOf(EntityNotExistsException.class);
-
-        verify(articleList, never()).stream();
-    }
 
     @Test
     void canUpdateArticle() {

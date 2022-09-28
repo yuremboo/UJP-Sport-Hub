@@ -33,7 +33,7 @@ public class SubscriptionController {
         this.userService = userService;
     }
 
-    @DeleteMapping("/subscription/{id}/team")
+    @DeleteMapping("/{id}/team")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<Void> deleteTeamByIdSubscription(@PathVariable("id") String subscriptionId) {
         log.info("Delete subscription by id {}", subscriptionId);
