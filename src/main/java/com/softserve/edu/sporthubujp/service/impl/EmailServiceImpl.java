@@ -34,7 +34,7 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setFrom("sportshub@gmail.com", "Sports Hub");
-            helper.setSubject("Subscription in Sports Hub");
+            helper.setSubject("Welcome to Sports Hub");
 
             mailSender.send(mimeMessage);
         } catch (UnsupportedEncodingException | MessagingException e) {
@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setFrom("sportshub@gmail.com", "Sports Hub");
-            helper.setSubject("UPDATE HOME in Sports Hub");
+            helper.setSubject("Welcome to Sports Hub");
 
             mailSender.send(mimeMessage);
         } catch (UnsupportedEncodingException | MessagingException e) {
@@ -76,7 +76,7 @@ public class EmailServiceImpl implements EmailSenderService {
             helper.setText(email, true);
             helper.setTo(to);
             helper.setFrom("sportshubsmtp@gmail.com", "Sports Hub");
-            helper.setSubject("Confirmation an email");
+            helper.setSubject("Welcome to Sports Hub");
 
             mailSender.send(mimeMessage);
         } catch (UnsupportedEncodingException | MessagingException e) {
