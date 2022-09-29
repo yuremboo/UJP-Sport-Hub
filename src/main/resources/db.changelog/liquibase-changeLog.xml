@@ -363,6 +363,19 @@
             <column name="update_date_time"/>
         </insert>
     </changeSet>
+    <changeSet author="Ostap Klymko" id="1659358419959-2">
+        <insert tableName="users">
+            <column name="id" value="ce633966-7fa1-4367-88ed-44e7e33bf738"/>
+            <column name="create_date_time" valueDate="2022-08-16 13:53:52.306598"/>
+            <column name="email" value="maxstone@gmail.com"/>
+            <column name="first_name" value="Max"/>
+            <column name="is_active" value="true"/>
+            <column name="last_name" value="Stone"/>
+            <column name="password" value="$2a$10$EjB1xRZhP8un91aAGJgBZ.2ntXPxGtoQgO1K9jhGux1zD9R/vPKBC"/>
+            <column name="role" value="ADMIN"/>
+            <column name="update_date_time"/>
+        </insert>
+    </changeSet>
 
     <changeSet author="Ostap Klymko" id="1659358419960-1">
         <insert tableName="categories">
