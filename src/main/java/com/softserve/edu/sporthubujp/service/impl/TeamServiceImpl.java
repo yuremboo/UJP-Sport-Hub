@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.softserve.edu.sporthubujp.dto.ArticleListDTO;
+import com.softserve.edu.sporthubujp.dto.TeamSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
 import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
+import com.softserve.edu.sporthubujp.entity.Subscription;
 import com.softserve.edu.sporthubujp.entity.Team;
 import com.softserve.edu.sporthubujp.mapper.SubscriptionMapper;
 import com.softserve.edu.sporthubujp.mapper.TeamMapper;
@@ -50,6 +52,11 @@ public class TeamServiceImpl  implements TeamService {
         return teamsDTOS;
     }
 
+    @Override public TeamSaveDTO postTeam(TeamSaveDTO newTeam) {
+        Team team = teamMapper.saveDtoToEntity(newTeam);
+        return teamMapper.entityToDtoSave(
+            teamRepository.save(team));
+    }
     @Override
     public List<TeamSubscriptionDTO> getAllTeamsBySubscription(String idUser) {
         List<Team> teams = new LinkedList<Team>();
@@ -100,5 +107,4 @@ public class TeamServiceImpl  implements TeamService {
                 .map(teamMapper::entityToDto)
                 .collect(Collectors.toList());
     }
-
 }
