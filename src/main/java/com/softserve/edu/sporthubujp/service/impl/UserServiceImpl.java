@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
         throws ServiceException {
         boolean matchOldPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
         boolean matchNewPasswords = passwordConfig.passwordEncoder().matches(newPassword.getPassword(), oldPassword.getPassword());
-        if (matchOldPasswords && matchNewPasswords) {
+        if (matchOldPasswords && !matchNewPasswords) {
             if (passwordValidator.test(newPassword.getPassword())) {
                 newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
             } else {

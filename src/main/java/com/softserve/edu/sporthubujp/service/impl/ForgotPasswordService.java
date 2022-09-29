@@ -55,7 +55,7 @@ public class ForgotPasswordService {
         user.setPasswordResetToken(newToken);
         userRepository.save(user);
 
-        String link = "https://ujp-sports-hub-ui.herokuapp.com/reset/password/"+newToken;
+        String link = "https://ujp-sports-hub-ui.herokuapp.com/reset/password/" + newToken;
         emailSender.send(
                 user.getEmail(),
                 buildEmail(link));
@@ -64,7 +64,7 @@ public class ForgotPasswordService {
     }
 
     private String buildEmail(String link) throws IOException {
-        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL , Locale.US)
+        String date = "\n" + LocalDateTime.now().getMonth().getDisplayName(TextStyle.FULL, Locale.US)
                 + " " + LocalDateTime.now().getDayOfMonth()
                 + ", " + LocalDateTime.now().getYear();
 
@@ -86,11 +86,7 @@ public class ForgotPasswordService {
                 .orElseThrow(() -> new InternalAuthenticationServiceException(USER_NOT_FOUND_MSG));
         String encodedPassword = passwordConfig.passwordEncoder()
                 .encode(password);
-        if (passwordValidator.test(encodedPassword)) {
-            user.setPassword(encodedPassword);
-        } else {
-            throw new ServiceException("Service: password must contain at least 8 characters (letters and numbers)");
-        }
+        user.setPassword(encodedPassword);
         userRepository.save(user);
         return null;
     }
