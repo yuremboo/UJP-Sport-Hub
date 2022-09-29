@@ -2,6 +2,8 @@ package com.softserve.edu.sporthubujp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class LikeDislikeStatusController {
 
     @PutMapping("/like-dislike-statuses/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<LikeDislikeStatusSaveDTO> updateLikeDislikeStatus(@RequestBody LikeDislikeStatusSaveDTO newLikeDislikeStatus,
+    public ResponseEntity<LikeDislikeStatusSaveDTO> updateLikeDislikeStatus(@RequestBody @Valid LikeDislikeStatusSaveDTO newLikeDislikeStatus,
         @PathVariable("id") String id) {
         log.info("Update like-dislike status by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -51,7 +53,7 @@ public class LikeDislikeStatusController {
 
     @PostMapping("/like-dislike-statuses")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<LikeDislikeStatusSaveDTO> addNewLikeDislikeStatus(@RequestBody LikeDislikeStatusSaveDTO newLikeDislikeStatus) {
+    public ResponseEntity<LikeDislikeStatusSaveDTO> addNewLikeDislikeStatus(@RequestBody @Valid LikeDislikeStatusSaveDTO newLikeDislikeStatus) {
         log.info("Add new user's like-dislike status to comment" + newLikeDislikeStatus.toString());
         return ResponseEntity.status(HttpStatus.OK).body(
             likeDislikeStatusService.addNewLikeDislikeStatus(newLikeDislikeStatus));

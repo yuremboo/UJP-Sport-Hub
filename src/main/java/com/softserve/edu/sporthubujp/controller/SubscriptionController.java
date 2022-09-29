@@ -2,6 +2,8 @@ package com.softserve.edu.sporthubujp.controller;
 
 import java.security.Principal;
 
+import javax.validation.Valid;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +44,7 @@ public class SubscriptionController {
     }
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<SubscriptionSaveDTO> postSubscription(@RequestBody SubscriptionSaveDTO newSubscription) {
+    public ResponseEntity<SubscriptionSaveDTO> postSubscription(@RequestBody @Valid SubscriptionSaveDTO newSubscription) {
 
         log.info("Post subscription");
         return ResponseEntity.status(HttpStatus.OK).body(

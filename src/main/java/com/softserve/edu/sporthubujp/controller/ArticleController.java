@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import java.util.concurrent.CompletableFuture;
 
+import javax.validation.Valid;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1")
@@ -53,7 +56,6 @@ public class ArticleController {
     public ResponseEntity<ArticleDTO> getArticleById(@PathVariable String id) {
         log.info("Get article by id {}", id);
         CompletableFuture.supplyAsync(() -> logRepository.save(new Logs(id)));
-        //logRepository.save(new Logs(id));
         return ResponseEntity.status(HttpStatus.OK).body(
                 articleService.getArticleById(id));
     }
@@ -125,7 +127,7 @@ public class ArticleController {
 
     @PutMapping(path = "/articles/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<ArticleDTO> updateArticle(@RequestBody ArticleSaveDTO newArticle,
+    public ResponseEntity<ArticleDTO> updateArticle(@RequestBody @Valid ArticleSaveDTO newArticle,
                                                     @PathVariable("id") String id) {
         log.info("Update article by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -200,7 +202,7 @@ public class ArticleController {
 
     @PostMapping(path = "/admin/articles")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<ArticleSaveDTO> postArticle(@RequestBody ArticleSaveDTO newArticle) {
+    public ResponseEntity<ArticleSaveDTO> postArticle(@RequestBody @Valid ArticleSaveDTO newArticle) {
         log.info("Post article");
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.postArticle(newArticle));

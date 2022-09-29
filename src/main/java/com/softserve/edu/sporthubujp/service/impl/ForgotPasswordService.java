@@ -3,12 +3,15 @@ package com.softserve.edu.sporthubujp.service.impl;
 import com.google.common.io.Files;
 import com.softserve.edu.sporthubujp.entity.User;
 import com.softserve.edu.sporthubujp.exception.InvalidEmailException;
-import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
 import com.softserve.edu.sporthubujp.service.EmailSenderService;
 import com.softserve.edu.sporthubujp.service.UserService;
+import com.softserve.edu.sporthubujp.validator.PasswordValidator;
+
 import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.internal.google.protobuf.ServiceException;
+
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.stereotype.Service;
 
@@ -30,14 +33,14 @@ public class ForgotPasswordService {
     private final static String USER_NOT_FOUND_MSG =
             "Incorrect user ID or password. Try again";
     private final PasswordConfig passwordConfig;
-    private final UserMapper userMapper;
+    private final PasswordValidator passwordValidator;
     private final UserRepository userRepository;
     private final UserService userService;
     private final EmailSenderService emailSender;
 
-    public ForgotPasswordService(PasswordConfig passwordConfig, UserMapper userMapper, UserRepository userRepository, UserService userService, EmailSenderService emailSender) {
+    public ForgotPasswordService(PasswordConfig passwordConfig, PasswordValidator passwordValidator, UserRepository userRepository, UserService userService, EmailSenderService emailSender) {
         this.passwordConfig = passwordConfig;
-        this.userMapper = userMapper;
+        this.passwordValidator = passwordValidator;
         this.userRepository = userRepository;
         this.userService = userService;
         this.emailSender = emailSender;
@@ -76,14 +79,18 @@ public class ForgotPasswordService {
         return email.toString();
     }
 
-    public Void setNewPassword(String password, String token){
+    public Void setNewPassword(String password, String token) throws ServiceException {
         log.info(String.format("Set new password"));
         User user = userRepository
                 .findByPasswordResetToken(token)
                 .orElseThrow(() -> new InternalAuthenticationServiceException(USER_NOT_FOUND_MSG));
         String encodedPassword = passwordConfig.passwordEncoder()
                 .encode(password);
-        user.setPassword(encodedPassword);
+        if (passwordValidator.test(encodedPassword)) {
+            user.setPassword(encodedPassword);
+        } else {
+            throw new ServiceException("Service: password must contain at least 8 characters (letters and numbers)");
+        }
         userRepository.save(user);
         return null;
     }
