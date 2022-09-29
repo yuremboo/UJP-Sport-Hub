@@ -8,7 +8,7 @@ public class TeamSaveDTO {
     private String name;
     private String location;
     private String alt;
-    private Byte logo;
+    private String logo;
     private String description;
     private String categoryId;
 }

@@ -10,7 +10,7 @@ public class TeamDTO {
     private String name;
     private String alt;
     private String location;
-    private Byte logo;
+    private String logo;
     private String description;
     private LocalDateTime createDateTime;
     private LocalDateTime updateDateTime;

@@ -55,7 +55,7 @@
             <column name="location" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="logo" type="SMALLINT">
+            <column name="logo" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
