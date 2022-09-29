@@ -155,7 +155,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
         String link = "https://ujp-sports-hub.herokuapp.com/api/v1/forgot/password";
-//        String link = "http://localhost:8080/api/v1/forgot/password";
         emailSender.sendCheckEmail(
             user.getEmail(),
             buildConfirmEmail(link));
