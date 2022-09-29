@@ -2,6 +2,8 @@ package com.softserve.edu.sporthubujp.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +60,7 @@ public class CommentController {
 
     @PutMapping("/comments/{id}")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody @Validated CommentSaveDTO newComment,
+    public ResponseEntity<CommentSaveDTO> updateComment(@RequestBody @Valid CommentSaveDTO newComment,
         @PathVariable("id") String id) {
         log.info("Update comment by id {}", id);
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -67,7 +69,7 @@ public class CommentController {
 
     @PostMapping("/comments")
     @PreAuthorize("hasAnyAuthority('USER','ADMIN')")
-    public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody @Validated CommentSaveDTO newComment) {
+    public ResponseEntity<CommentSaveDTO> addNewComment(@RequestBody @Valid CommentSaveDTO newComment) {
         log.info(String.format("Add new comment to article %s", newComment));
         return ResponseEntity.status(HttpStatus.OK).body(commentService.addNewComment(newComment));
     }

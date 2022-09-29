@@ -41,7 +41,7 @@ public class UserController {
     @PutMapping(path = "/profile")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
     public ResponseEntity<UserDTO> updateProfile(@NotNull Principal principal,
-        @RequestBody UserSaveProfileDTO newUser) {
+        @RequestBody @Valid UserSaveProfileDTO newUser) {
         User user = userService.findUserByEmail(principal.getName());
         log.info(String.format("Controller: updating user with id %s", user.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -50,8 +50,8 @@ public class UserController {
 
     @PutMapping(path = "/password")
     @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
-    public ResponseEntity<UserDTO> updatePassword(@NotNull @Valid Principal principal,
-        @RequestBody UserSavePasswordDTO newPassword) throws ServiceException {
+    public ResponseEntity<UserDTO> updatePassword(@NotNull Principal principal,
+        @RequestBody @Valid UserSavePasswordDTO newPassword) throws ServiceException {
         User user = userService.findUserByEmail(principal.getName());
         log.info(String.format("Controller: updating password with id %s", user.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(

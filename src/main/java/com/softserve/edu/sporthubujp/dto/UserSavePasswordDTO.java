@@ -17,5 +17,7 @@ public class UserSavePasswordDTO {
     @NotNull
     @PasswordConstraint
     private String password;
+    @NotNull
+    @PasswordConstraint
     private String oldPassword;
 }

@@ -134,8 +134,9 @@ public class UserServiceImpl implements UserService {
     }
     public UserDTO updatePassword(User oldPassword, UserSavePasswordDTO newPassword)
         throws ServiceException {
-        boolean checkPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
-        if (checkPasswords) {
+        boolean matchOldPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
+        boolean matchNewPasswords = passwordConfig.passwordEncoder().matches(newPassword.getPassword(), oldPassword.getPassword());
+        if (matchOldPasswords && matchNewPasswords) {
             if (passwordValidator.test(newPassword.getPassword())) {
                 newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
             } else {

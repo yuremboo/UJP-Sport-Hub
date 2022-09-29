@@ -4,11 +4,15 @@ import com.softserve.edu.sporthubujp.dto.ForgotPasswordDTO;
 import com.softserve.edu.sporthubujp.service.UserService;
 import com.softserve.edu.sporthubujp.service.impl.ForgotPasswordService;
 import lombok.extern.slf4j.Slf4j;
+import net.snowflake.client.jdbc.internal.google.protobuf.ServiceException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.SendFailedException;
+import javax.validation.Valid;
+
 import java.io.IOException;
 
 @Slf4j
@@ -25,8 +29,7 @@ public class ForgotPasswordController {
     }
 
     @PostMapping("/newpassword")
-    public ResponseEntity<Void> updatePassword(@RequestBody ForgotPasswordDTO request)
-    {
+    public ResponseEntity<Void> updatePassword(@RequestBody @Valid ForgotPasswordDTO request) throws ServiceException {
         log.info(String.format("Controller: set new user password with token %s", request.getToken()));
         return ResponseEntity.status(HttpStatus.OK).body(
                 forgotPasswordService.setNewPassword(request.getPassword(), request.getToken()));
