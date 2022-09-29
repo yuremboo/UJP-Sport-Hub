@@ -15,6 +15,7 @@ public class ArticleListDTO {
     private CategoryDTO category;
     private String caption;
     private LocalDateTime createDateTime;
+    private String picture;
 
     private String getFirstSentence(String articleText){
         char[] textArray = articleText.toCharArray();
@@ -40,5 +41,6 @@ public class ArticleListDTO {
         this.category = articleDTO.getCategory();
         this.caption = articleDTO.getCaption();
         this.createDateTime = articleDTO.getCreateDateTime();
+        this.picture = articleDTO.getPicture();
     }
 }

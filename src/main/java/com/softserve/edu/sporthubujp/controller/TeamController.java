@@ -3,6 +3,8 @@ package com.softserve.edu.sporthubujp.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.softserve.edu.sporthubujp.dto.SubscriptionSaveDTO;
 import com.softserve.edu.sporthubujp.dto.TeamSaveDTO;
 import com.softserve.edu.sporthubujp.entity.User;
@@ -48,7 +50,7 @@ public class TeamController {
     }
     @PostMapping()
     @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public ResponseEntity<TeamSaveDTO> postTeam(@RequestBody TeamSaveDTO newTeam) {
+    public ResponseEntity<TeamSaveDTO> postTeam(@RequestBody @Valid TeamSaveDTO newTeam) {
         log.info("Post team");
         return ResponseEntity.status(HttpStatus.OK).body(
             teamService.postTeam(newTeam));

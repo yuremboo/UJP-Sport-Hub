@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.controller;
 import java.io.IOException;
 
 import javax.mail.SendFailedException;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,10 +33,10 @@ public class SubscriptionEmailController {
 
     @PostMapping("/newEmail")
     public ResponseEntity<SubscriptionEmailSaveDTO> addNewEmailSubscription(
-            @RequestBody SubscriptionEmailSaveDTO newEmail)
+            @RequestBody @Valid SubscriptionEmailSaveDTO newEmail)
             throws SendFailedException, IOException {
         log.info(String.format("Add new email to subscription %s", newEmail));
-        subscriptionEmailService.sendUpdateHome();
+        subscriptionEmailService.sendUpdateHome(newEmail.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionEmailService.addNewEmail(newEmail));
     }
 }

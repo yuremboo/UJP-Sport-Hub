@@ -11,5 +11,5 @@ public interface SubscriptionEmailService {
 
     SubscriptionEmailSaveDTO addNewEmail(SubscriptionEmailSaveDTO newEmail);
 
-    void sendUpdateHome() throws IOException, SendFailedException;
+    void sendUpdateHome(String email) throws IOException, SendFailedException;
 }

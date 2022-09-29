@@ -43,10 +43,10 @@ public class SubscriptionEmailServiceImpl implements SubscriptionEmailService {
             subscriptionEmailRepository.save(subscriptionEmailMapper.dtoSaveToEntity(newEmail)));
     }
     @Override
-    public void sendUpdateHome() throws IOException, SendFailedException {
-        String link = "http://localhost:3000";
+    public void sendUpdateHome(String email) throws IOException, SendFailedException {
+        String link = "https://ujp-sports-hub-ui.herokuapp.com/";
         emailSender.sendUpdateHome(
-            EMAIL_SERVER,
+            email,
             buildEmail(link));
 
     }

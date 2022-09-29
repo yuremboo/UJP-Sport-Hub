@@ -134,8 +134,9 @@ public class UserServiceImpl implements UserService {
     }
     public UserDTO updatePassword(User oldPassword, UserSavePasswordDTO newPassword)
         throws ServiceException {
-        boolean checkPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
-        if (checkPasswords) {
+        boolean matchOldPasswords = passwordConfig.passwordEncoder().matches(newPassword.getOldPassword(), oldPassword.getPassword());
+        boolean matchNewPasswords = passwordConfig.passwordEncoder().matches(newPassword.getPassword(), oldPassword.getPassword());
+        if (matchOldPasswords && matchNewPasswords) {
             if (passwordValidator.test(newPassword.getPassword())) {
                 newPassword.setPassword(passwordConfig.passwordEncoder().encode(newPassword.getPassword()));
             } else {
@@ -154,7 +155,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO resetUserPassword(User user, String newPassword) throws IOException, SendFailedException {
-        String link = "http://localhost:8080/api/v1/forgot/password";
+        String link = "https://ujp-sports-hub.herokuapp.com/api/v1/forgot/password";
+//        String link = "http://localhost:8080/api/v1/forgot/password";
         emailSender.sendCheckEmail(
             user.getEmail(),
             buildConfirmEmail(link));
