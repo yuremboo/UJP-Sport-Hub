@@ -26,8 +26,8 @@ public class Team {
     private String alt;
     @Column(name = "location", length = 255, nullable = false, unique = false)
     private String location;
-    @Column(name = "logo", nullable = false)
-    private Byte logo;
+    @Column(name = "logo", length = 255, nullable = false, unique = false)
+    private String logo;
     @Column(name = "description", length = 255, nullable = false, unique = false)
     private String description;
     @CreatedDate
@@ -38,7 +38,7 @@ public class Team {
     private LocalDateTime updateDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), insertable=false, updatable=false)
+    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), updatable=false)
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)

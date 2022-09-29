@@ -3,16 +3,12 @@ package com.softserve.edu.sporthubujp.dto;
 import java.time.LocalDateTime;
 
 import lombok.Data;
-
 @Data
-public class TeamDTO {
-    private String id;
+public class TeamSaveDTO {
     private String name;
-    private String alt;
     private String location;
+    private String alt;
     private String logo;
     private String description;
-    private LocalDateTime createDateTime;
-    private LocalDateTime updateDateTime;
-    private CategoryDTO category;
+    private String categoryId;
 }

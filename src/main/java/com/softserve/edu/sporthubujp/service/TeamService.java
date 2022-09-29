@@ -3,6 +3,7 @@ package com.softserve.edu.sporthubujp.service;
 import java.util.List;
 
 import com.softserve.edu.sporthubujp.dto.TeamDTO;
+import com.softserve.edu.sporthubujp.dto.TeamSaveDTO;
 import com.softserve.edu.sporthubujp.dto.TeamSubscriptionDTO;
 
 public interface TeamService {
@@ -20,4 +21,5 @@ public interface TeamService {
      */
     List<TeamDTO> getAllTeamsByLocation(String location);
 
+    TeamSaveDTO postTeam(TeamSaveDTO newTeam);
 }
