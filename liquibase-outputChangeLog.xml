@@ -1,5 +1,5 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.13.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
-    <changeSet author="Ostap Klymko" id="1664460945376-1">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-1">
         <createTable tableName="users">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
@@ -28,7 +28,7 @@
             <column name="password_reset_token" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-2">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-2">
         <createTable tableName="subscriptions">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="subscriptions_pkey"/>
@@ -44,7 +44,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-3">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-3">
         <createTable tableName="subscription_email">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="subscription_email_pkey"/>
@@ -54,7 +54,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-4">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-4">
         <createTable tableName="teams">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="teams_pkey"/>
@@ -83,7 +83,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-5">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-5">
         <createTable tableName="images">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="images_pkey"/>
@@ -94,32 +94,32 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-6">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-6">
         <createIndex indexName="user_email_idx" tableName="users">
             <column name="email"/>
         </createIndex>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-7">
-        <addUniqueConstraint columnNames="email" constraintName="uk_email_user" tableName="users"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-7">
+        <addUniqueConstraint columnNames="email" constraintName="uk_6dotkott2kjsp8vw4d0m25fb7" tableName="users"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-8">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-8">
         <createIndex indexName="subscriptions_team_id_uindex" tableName="subscriptions" unique="true">
             <column name="team_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-9">
-        <addUniqueConstraint columnNames="email" constraintName="uk_email_sub_email" tableName="subscription_email"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-9">
+        <addUniqueConstraint columnNames="email" constraintName="uk_3fxged3fp6q3kfvgtj2i99vnr" tableName="subscription_email"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-10">
-        <addUniqueConstraint columnNames="name" constraintName="uk_name_teams" tableName="teams"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-10">
+        <addUniqueConstraint columnNames="name" constraintName="uk_a510no6sjwqcx153yd5sm4jrr" tableName="teams"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-11">
-        <addUniqueConstraint columnNames="name" constraintName="uk_name_images" tableName="images"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-11">
+        <addUniqueConstraint columnNames="name" constraintName="uk_s1hn0flcjavvrkvbn1pd8dts2" tableName="images"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-12">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-12">
         <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-13">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-13">
         <createTable tableName="articles">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="articles_pkey"/>
@@ -161,7 +161,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-14">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-14">
         <createTable tableName="categories">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="categories_pkey"/>
@@ -183,7 +183,7 @@
             <column name="parent_category_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-15">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-15">
         <createTable tableName="comments">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="comments_pkey"/>
@@ -208,7 +208,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-16">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-16">
         <createTable tableName="confirmation_token">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="confirmation_token_pkey"/>
@@ -228,7 +228,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-17">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-17">
         <createTable tableName="likedislikestatuses">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="likedislikestatuses_pkey"/>
@@ -244,7 +244,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-18">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-18">
         <createTable tableName="logs">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="logs_pkey"/>
@@ -257,7 +257,7 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-19">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-19">
         <createTable tableName="photo_of_the_day">
             <column name="id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="photo_of_the_day_pkey"/>
@@ -276,186 +276,40 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-20">
-        <addForeignKeyConstraint baseColumnNames="app_user_id" baseTableName="confirmation_token" constraintName="fk_user_token" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-20">
+        <addForeignKeyConstraint baseColumnNames="app_user_id" baseTableName="confirmation_token" constraintName="FK590ypy41kpo5mp9kryymfiqxu" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-21">
-        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories" constraintName="fk_category_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+    <changeSet author="HUAWEI (generated)" id="1664460945376-21">
+        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories" constraintName="FKb4wpldr8vct7v1t65n4521gwl" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-22">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-22">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="articles" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-23">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-23">
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="articles" constraintName="fk_article_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-24">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-24">
         <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="articles" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-25">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-25">
         <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-26">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-26">
         <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="likedislikestatuses" constraintName="fk_likes_comment" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="comments" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-27">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-27">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="likedislikestatuses" constraintName="fk_likes_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-28">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-28">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-29">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-29">
         <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-30">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-30">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
     </changeSet>
-    <changeSet author="Ostap Klymko" id="1664460945376-31">
+    <changeSet author="HUAWEI (generated)" id="1664460945376-31">
         <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419959-1">
-        <insert tableName="users">
-            <column name="id" value="40289fc882a61e440182a649d3480000"/>
-            <column name="create_date_time" valueDate="2022-08-16 13:53:52.306598"/>
-            <column name="email" value="johnsmith@gmail.com"/>
-            <column name="first_name" value="John"/>
-            <column name="is_active" value="true"/>
-            <column name="last_name" value="Smith"/>
-            <column name="password" value="$2a$10$QQNuv0HsjssA/mc/Udu8T.3OT4EFrgMOjHykXJvgC5EeODiGc1p5u"/>
-            <column name="role" value="ADMIN"/>
-            <column name="update_date_time"/>
-        </insert>
-    </changeSet>
-
-    <changeSet author="Ostap Klymko" id="1659358419960-1">
-        <insert tableName="categories">
-            <column name="id" value="9c03430f-e00c-4905-b329-d5c506b35d0a"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="NBA description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="NBA"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-2">
-        <insert tableName="categories">
-            <column name="id" value="ec31f8e1-cee3-4e59-9ba6-43e7b1dc8aaa"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="NFL description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="NFL"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-3">
-        <insert tableName="categories">
-            <column name="id" value="a3a6e486-2100-4bd6-a50f-9b935e6f00b2"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="MLB description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="MLB"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-4">
-        <insert tableName="categories">
-            <column name="id" value="ed39337a-7179-4e1b-8401-dc033cf0377d"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="NHL description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="NHL"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-5">
-        <insert tableName="categories">
-            <column name="id" value="ff0314c2-3022-4b76-a4a6-564cb0534100"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="CBB description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="CBB"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-6">
-        <insert tableName="categories">
-            <column name="id" value="8a1d609a-74e4-4301-9581-8c46d4925dd2"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="CFB description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="CFB"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-7">
-        <insert tableName="categories">
-            <column name="id" value="eef17c45-330a-464b-a200-06a4527b998d"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="NASCAR description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="NASCAR"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-8">
-        <insert tableName="categories">
-            <column name="id" value="c3add83f-29fc-4918-99b3-04da357ba764"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="GOLF description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="GOLF"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-9">
-        <insert tableName="categories">
-            <column name="id" value="5be753ec-74b9-4f3d-86d2-51e8ed16dd74"/>
-            <column name="type" value="CATEGORY"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="SOCCER description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="SOCCER"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-10">
-        <insert tableName="categories">
-            <column name="id" value="3fc73187-f693-4046-a069-62b77917cb05"/>
-            <column name="type" value="LIFESTYLE"/>
-            <column name="create_date_time" value="2022-09-16 13:53:52.306598"/>
-            <column name="description" value="LIFESTYLE description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="LIFESTYLE"/>
-            <column name="update_date_time" value="2022-09-17 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
-    </changeSet>
-    <changeSet author="Ostap Klymko" id="1659358419960-11">
-        <insert tableName="categories">
-            <column name="id" value="f456f718-9a81-4540-b45d-2cd74f69bcdc"/>
-            <column name="type" value="DEALBOOK"/>
-            <column name="create_date_time" value="2022-09-18 13:53:52.306598"/>
-            <column name="description" value="DEALBOOK description"/>
-            <column name="is_active" value="true"/>
-            <column name="name" value="DEALBOOK"/>
-            <column name="update_date_time" value="2022-09-19 13:53:52.306598"/>
-            <column name="parent_category_id" value="null"/>
-        </insert>
     </changeSet>
 </databaseChangeLog>

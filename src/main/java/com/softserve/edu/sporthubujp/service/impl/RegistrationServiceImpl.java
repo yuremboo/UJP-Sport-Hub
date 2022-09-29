@@ -37,7 +37,8 @@ public class RegistrationServiceImpl implements RegistrationService {
             "Service: password %s must contain at least 8 characters (letters and numbers)";
 
     private final static String LOGIN_ROUTE = "<meta http-equiv=\"refresh\" content=\"0;" +
-            " url=http://localhost:3000/login\" />";
+            " url=https://ujp-sports-hub-ui.herokuapp.com/login\" />";
+//            " url=http://localhost:3000/login\" />";
     private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
 
     private final UserService userService;
@@ -68,10 +69,11 @@ public class RegistrationServiceImpl implements RegistrationService {
                         Role.USER)
         );
 
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+        String link = "https://ujp-sports-hub.herokuapp.com/api/v1/registration/confirm?token=" + token;
+//        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
 
         emailSender.send(
-                EMAIL_SERVER,
+                request.getEmail(),
                 buildEmail(link));
 
         return token;

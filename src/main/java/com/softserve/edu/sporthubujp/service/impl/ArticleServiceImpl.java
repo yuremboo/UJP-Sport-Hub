@@ -106,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
         log.info("Delete article by id in service");
         if (!articleRepository.existsById(id)) {
             log.error(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
-            throw new ArticleServiceException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
+            throw new EntityNotExistsException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
         }
         articleRepository.deleteById(id);
     }
@@ -342,6 +342,49 @@ public class ArticleServiceImpl implements ArticleService {
                 .stream()
                 .map(article -> new ArticleListDTO(articleMapper.entityToDto(article)))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<ArticleListDTO> getAllArticlesByCategoryIdAndTeamId(String categoryId, String teamId, Pageable pageable) {
+        Page<Article> articles = articleRepository
+                .findAllByCategoryIdAndTeamId(categoryId, teamId, pageable);
+        log.info("Get all articles by category id {} and team id {}", categoryId, teamId);
+        Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
+            @Override
+            protected ArticleListDTO doForward(Article article) {
+                return new ArticleListDTO(articleMapper.entityToDto(article));
+            }
+
+            @Override
+            protected Article doBackward(ArticleListDTO articleListDTO) {
+                return articleListMapper.dtoToEntity(articleListDTO);
+            }
+        });
+
+        return articleDTOPage;
+    }
+
+    @Override
+    public Page<ArticleListDTO> getAllArticlesByCategoryIdAndTeamIdAndIsActive
+            (String categoryId, String teamId, boolean isActive, Pageable pageable) {
+        Page<Article> articles = articleRepository
+                .findAllByCategoryIdAndTeamIdAndIsActive(categoryId, teamId, isActive, pageable);
+        log.info("Get all articles by category id {}, team id {} and isActive {}", categoryId, teamId, isActive);
+        Page<ArticleListDTO> articleDTOPage = articles.map(new Converter<Article, ArticleListDTO>() {
+
+            @Override
+            protected ArticleListDTO doForward(Article article) {
+                return new ArticleListDTO(articleMapper.entityToDto(article));
+            }
+
+            @Override
+            protected Article doBackward(ArticleListDTO articleListDTO) {
+                return articleListMapper.dtoToEntity(articleListDTO);
+            }
+        });
+
+        return articleDTOPage;
     }
 
     public ArticleSaveDTO postArticle(ArticleSaveDTO newArticle){

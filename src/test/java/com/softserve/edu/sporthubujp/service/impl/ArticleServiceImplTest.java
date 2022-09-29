@@ -6,6 +6,7 @@ import com.softserve.edu.sporthubujp.dto.ArticleSaveDTO;
 import com.softserve.edu.sporthubujp.entity.Article;
 import com.softserve.edu.sporthubujp.entity.Category;
 import com.softserve.edu.sporthubujp.entity.Team;
+import com.softserve.edu.sporthubujp.entity.comment.Comment;
 import com.softserve.edu.sporthubujp.exception.CategoryNotFoundException;
 import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.exception.TeamNotFoundException;
@@ -17,6 +18,7 @@ import com.softserve.edu.sporthubujp.repository.TeamRepository;
 import com.softserve.edu.sporthubujp.service.CommentService;
 
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -255,5 +257,31 @@ class ArticleServiceImplTest {
             .isInstanceOf(TeamNotFoundException.class)
             .hasMessage("Unable to find team.");
         verify(articleMapper, never()).entityToDto(any(Article.class));
+    }
+
+    @Test
+    void cannotDeleteNotExistingArticle() {
+        String id = anyString();
+        when(articleRepository.existsById(id))
+            .thenReturn(false);
+        AssertionsForClassTypes.assertThatThrownBy(() -> underTest.deleteArticleById(id))
+            .isInstanceOf(EntityNotExistsException.class)
+            .hasMessageContaining(String.format(ARTICLE_NOT_DELETE_BY_ID,
+                id));
+        verify(articleRepository, never()).delete(any(Article.class));
+    }
+    @Test
+    void getAllArticlesBySubscription() {
+        List<ArticleDTO> articleDTOS = spy(new ArrayList<>());
+        List<Article> articleList = spy(new ArrayList<>());
+
+        when(articleRepository.getAllArticlesBySubscription(anyString()))
+            .thenReturn(articleList);
+
+        List<ArticleDTO> underTestArticles =
+            underTest.getAllArticlesBySubscription(anyString());
+
+
+        assertThat(underTestArticles).isEqualTo(articleDTOS);
     }
 }

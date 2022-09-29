@@ -62,9 +62,10 @@ public interface ArticleRepository extends PagingAndSortingRepository<Article, S
     Optional<List<Article>> findNewestArticlesByCategoryId(String categoryId, Pageable pageable);
 
     Optional<List<Article>> getAllArticlesByTeamId(String teamId);
+    Page<Article> findAllByCategoryIdAndTeamId(String categoryId, String teamId, Pageable pageable);
+    Page<Article> findAllByCategoryIdAndTeamIdAndIsActive(String categoryId, String teamId, boolean isActive, Pageable pageable);
 
     Article getArticleById(String id);
 
     List<Article> findAllBySelectedByAdminIsTrue();
-
 }

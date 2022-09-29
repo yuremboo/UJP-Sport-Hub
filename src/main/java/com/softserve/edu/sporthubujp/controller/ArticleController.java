@@ -205,4 +205,23 @@ public class ArticleController {
         return ResponseEntity.status(HttpStatus.OK).body(
             articleService.postArticle(newArticle));
     }
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/articles/category/{categoryId}/team/{teamId}")
+    public ResponseEntity<Page<ArticleListDTO>>
+    getAllArticlesCategoryIaAndTeamId(@PathVariable("categoryId") String categoryId,
+                                      @PathVariable("teamId") String teamId, Pageable pageable) {
+        log.info("Controller: getting all articles by team id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesByCategoryIdAndTeamId(categoryId, teamId, pageable));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @GetMapping("/admin/articles/category/{categoryId}/team/{teamId}/is_active/{isActive}")
+    public ResponseEntity<Page<ArticleListDTO>>
+    getAllArticlesCategoryIaAndTeamIdAndIsActive(@PathVariable("categoryId") String categoryId,
+        @PathVariable("teamId") String teamId, @PathVariable("isActive") boolean isActive, Pageable pageable) {
+        log.info("Controller: getting all articles by team id");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                articleService.getAllArticlesByCategoryIdAndTeamIdAndIsActive(categoryId, teamId, isActive, pageable));
+    }
 }

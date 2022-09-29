@@ -22,6 +22,7 @@ public class GeolocationService {
     private final DatabaseReader databaseReader;
     private static final String CHECK_IP = "https://checkip.amazonaws.com";
     private static final String GEO_DATABASE = "src/main/resources/geo.database/GeoLite2-City.mmdb";
+    private static final String BASIC_LOCATION = "Lviv";
 
     @Autowired
     public GeolocationService() throws IOException {
@@ -41,6 +42,9 @@ public class GeolocationService {
         InetAddress ipAddress = InetAddress.getByName(actualIp);
         CityResponse response = databaseReader.city(ipAddress);
         String cityName = response.getCity().getName();
+        if(cityName == null) {
+            cityName = BASIC_LOCATION;
+        }
         String latitude = response.getLocation().getLatitude().toString();
         String longitude = response.getLocation().getLongitude().toString();
 

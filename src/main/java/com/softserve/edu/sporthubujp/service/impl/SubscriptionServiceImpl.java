@@ -39,7 +39,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         log.info("Delete subscription by id: {}", id);
         if (!subscriptionRepository.existsById(id)) {
             log.error(String.format(SUBSCRIPTION_NOT_DELETE_BY_ID, id));
-            //throw new ArticleServiceException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
+            throw new EntityNotExistsException(String.format(SUBSCRIPTION_NOT_DELETE_BY_ID, id));
         }
         subscriptionRepository.deleteById(id);
     }

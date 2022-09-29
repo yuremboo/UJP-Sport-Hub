@@ -25,7 +25,8 @@ import java.util.UUID;
 @Slf4j
 public class ForgotPasswordService {
     private final static String RESET_PASSWORD_ROUTE = "<meta http-equiv=\"refresh\" content=\"0;" +
-            " url=http://localhost:3000/reset/password\" />";
+            " url=https://ujp-sports-hub-ui.herokuapp.com/reset/password\" />";
+//            " url=http://localhost:3000/reset/password\" />";
     private final static String EMAIL_SERVER = "sportshubsmtp@gmail.com";
     private final static String USER_NOT_FOUND_MSG =
             "Incorrect user ID or password. Try again";
@@ -52,10 +53,10 @@ public class ForgotPasswordService {
         user.setPasswordResetToken(newToken);
         userRepository.save(user);
 
-//        String link = "http://localhost:3000/reset/password";
-        String link = "http://localhost:3000/reset/password/"+newToken;
+        String link = "https://ujp-sports-hub-ui.herokuapp.com/reset/password/"+newToken;
+//        String link = "http://localhost:3000/reset/password/"+newToken;
         emailSender.send(
-                EMAIL_SERVER,
+                user.getEmail(),
                 buildEmail(link));
         return null;
 

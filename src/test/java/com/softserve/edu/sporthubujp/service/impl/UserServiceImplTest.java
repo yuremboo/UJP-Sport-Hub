@@ -124,12 +124,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    @Disabled
-    void canFindUserByEmail() {
-
-    }
-
-    @Test
     @MockitoSettings(strictness = Strictness.LENIENT)
     void canUpdateUser() {
         UserDTO userDTO = spy(new UserDTO());

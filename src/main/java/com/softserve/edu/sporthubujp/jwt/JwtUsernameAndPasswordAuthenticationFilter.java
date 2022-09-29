@@ -87,7 +87,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 user.getLastName(),
                 user.getEmail(),
                 user.getRole(),
-            jwtConfig.getTokenPrefix()+token
+            jwtConfig.getTokenPrefix()+token,
+                user.getPhoto()
         );
 
         String json = new Gson().toJson(authenticationResponseDTO);

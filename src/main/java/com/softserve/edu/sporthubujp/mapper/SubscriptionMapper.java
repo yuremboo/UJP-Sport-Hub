@@ -16,9 +16,9 @@ public interface SubscriptionMapper {
     SubscriptionDTO entityToDto(Subscription subscription);
     @Mapping(target = "user.id", source = "userId")
     @Mapping(target = "team.id", source = "teamId")
-    Subscription saveDtoToEntity(SubscriptionSaveDTO articleDTO);
+    Subscription saveDtoToEntity(SubscriptionSaveDTO subscriptionDTO);
 
     @Mapping(target = "userId", source = "user.id")
     @Mapping(target = "teamId", source = "team.id")
-    SubscriptionSaveDTO entityToDtoSave(Subscription article);
+    SubscriptionSaveDTO entityToDtoSave(Subscription subscription);
 }

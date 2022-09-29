@@ -35,7 +35,7 @@ public class SubscriptionEmailController {
             @RequestBody SubscriptionEmailSaveDTO newEmail)
             throws SendFailedException, IOException {
         log.info(String.format("Add new email to subscription %s", newEmail));
-        subscriptionEmailService.sendUpdateHome();
+        subscriptionEmailService.sendUpdateHome(newEmail.getEmail());
         return ResponseEntity.status(HttpStatus.OK).body(subscriptionEmailService.addNewEmail(newEmail));
     }
 }
