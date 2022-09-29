@@ -106,7 +106,7 @@ public class ArticleServiceImpl implements ArticleService {
         log.info("Delete article by id in service");
         if (!articleRepository.existsById(id)) {
             log.error(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
-            throw new ArticleServiceException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
+            throw new EntityNotExistsException(String.format(ARTICLE_NOT_DELETE_BY_ID, id));
         }
         articleRepository.deleteById(id);
     }

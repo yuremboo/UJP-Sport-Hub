@@ -38,7 +38,7 @@ public class Team {
     private LocalDateTime updateDateTime;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), insertable=false, updatable=false)
+    @JoinColumn(name = "category_id", nullable = false,foreignKey = @ForeignKey(name="fk_team_category"), updatable=false)
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "team",cascade = CascadeType.REMOVE)
