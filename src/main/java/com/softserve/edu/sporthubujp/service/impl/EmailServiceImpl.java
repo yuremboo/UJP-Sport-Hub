@@ -75,7 +75,7 @@ public class EmailServiceImpl implements EmailSenderService {
 
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setFrom("sportshubsmtp@gmail.com", "Sports Hub");
+            helper.setFrom("sportshub@gmail.com", "Sports Hub");
             helper.setSubject("Welcome to Sports Hub");
 
             mailSender.send(mimeMessage);

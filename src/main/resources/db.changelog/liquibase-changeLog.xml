@@ -1,4 +1,7 @@
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.13.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.13.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
     <changeSet author="Ostap Klymko" id="1664460945376-1">
         <createTable tableName="users">
             <column name="id" type="VARCHAR(255)">
@@ -117,7 +120,8 @@
         <addUniqueConstraint columnNames="name" constraintName="uk_name_images" tableName="images"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-12">
-        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807" minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
+        <createSequence cacheSize="1" cycle="false" dataType="bigint" incrementBy="1" maxValue="9223372036854775807"
+                        minValue="1" sequenceName="hibernate_sequence" startValue="1"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-13">
         <createTable tableName="articles">
@@ -277,40 +281,74 @@
         </createTable>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-20">
-        <addForeignKeyConstraint baseColumnNames="app_user_id" baseTableName="confirmation_token" constraintName="fk_user_token" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="app_user_id" baseTableName="confirmation_token"
+                                 constraintName="fk_user_token" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-21">
-        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories" constraintName="fk_category_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="parent_category_id" baseTableName="categories"
+                                 constraintName="fk_category_category" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="categories" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-22">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="articles" constraintName="fk_article_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="articles"
+                                 constraintName="fk_article_category" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="categories" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-23">
-        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="articles" constraintName="fk_article_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="articles" constraintName="fk_article_team"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="teams" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-24">
-        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments" constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="articles" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="article_id" baseTableName="comments"
+                                 constraintName="fk_comments_article" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="articles" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-25">
-        <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments" constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="commenter_id" baseTableName="comments"
+                                 constraintName="fk_comments_user" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-26">
-        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="likedislikestatuses" constraintName="fk_likes_comment" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="comments" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="comment_id" baseTableName="likedislikestatuses"
+                                 constraintName="fk_likes_comment" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="comments" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-27">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="likedislikestatuses" constraintName="fk_likes_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="likedislikestatuses"
+                                 constraintName="fk_likes_user" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-28">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions" constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="subscriptions"
+                                 constraintName="fk_subscriptions_category" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="categories" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-29">
-        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions" constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="teams" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="team_id" baseTableName="subscriptions"
+                                 constraintName="fk_subscriptions_team" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="teams" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-30">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions" constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="subscriptions"
+                                 constraintName="fk_subscriptions_user" deferrable="false" initiallyDeferred="false"
+                                 onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id"
+                                 referencedTableName="users" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1664460945376-31">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="categories" validate="true"/>
+        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="teams" constraintName="fk_team_category"
+                                 deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="categories" validate="true"/>
     </changeSet>
     <changeSet author="Ostap Klymko" id="1659358419959-1">
         <insert tableName="users">
@@ -321,6 +359,19 @@
             <column name="is_active" value="true"/>
             <column name="last_name" value="Smith"/>
             <column name="password" value="$2a$10$QQNuv0HsjssA/mc/Udu8T.3OT4EFrgMOjHykXJvgC5EeODiGc1p5u"/>
+            <column name="role" value="ADMIN"/>
+            <column name="update_date_time"/>
+        </insert>
+    </changeSet>
+    <changeSet author="Ostap Klymko" id="1659358419959-2">
+        <insert tableName="users">
+            <column name="id" value="ce633966-7fa1-4367-88ed-44e7e33bf738"/>
+            <column name="create_date_time" valueDate="2022-08-16 13:53:52.306598"/>
+            <column name="email" value="maxstone@gmail.com"/>
+            <column name="first_name" value="Max"/>
+            <column name="is_active" value="true"/>
+            <column name="last_name" value="Stone"/>
+            <column name="password" value="$2a$10$EjB1xRZhP8un91aAGJgBZ.2ntXPxGtoQgO1K9jhGux1zD9R/vPKBC"/>
             <column name="role" value="ADMIN"/>
             <column name="update_date_time"/>
         </insert>

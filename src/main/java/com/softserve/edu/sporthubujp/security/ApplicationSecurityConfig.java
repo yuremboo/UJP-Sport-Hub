@@ -64,7 +64,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v*/categories", "/api/v*/location", "/api/v*/teams/*", "/api/v*/articles/team/*",
                         "/api/v*/comments/**", "/api/v*/articles/categories/**",
                         "/api/v*/forgot/password", "/api/v*/forgot/password/newpassword", "/api/v*/image/*",
-                        "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*",
+                        "/api/v*/articles/most_commented", "/api/v*/photoOfTheDay", "/api/v*/articles/newest/*", // "/api/v*/articles/newest/*"
                         "/api/v*/articles/*", "/api/v*/*/comments/*/*",
                         "/api/v*/*/comments/popular/*", "/api/v*/articles/*/comments-num", "/api/v*/newEmail",
                         "/api/v*/users/*","/api/v*/selected-articles", "/api/v*/articles/*/categories/*","/api/v*/articles/category_id/*/is_active/*")
