@@ -32,7 +32,7 @@ public class ForgotPasswordController {
     public ResponseEntity<Void> updatePassword(@RequestBody @Valid ForgotPasswordDTO request) throws ServiceException {
         log.info(String.format("Controller: set new user password with token %s", request.getToken()));
         return ResponseEntity.status(HttpStatus.OK).body(
-                forgotPasswordService.setNewPassword(request.getPassword(), request.getToken()));
+                forgotPasswordService.setNewPassword(request.getPassword().trim(), request.getToken()));
     }
 
     @PostMapping()
