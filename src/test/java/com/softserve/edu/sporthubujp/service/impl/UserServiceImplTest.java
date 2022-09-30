@@ -1,5 +1,3 @@
-package com.softserve.edu.sporthubujp.service.impl;
-
 import com.softserve.edu.sporthubujp.dto.UserDTO;
 import com.softserve.edu.sporthubujp.dto.UserSavePasswordDTO;
 import com.softserve.edu.sporthubujp.dto.UserSaveProfileDTO;
@@ -11,6 +9,7 @@ import com.softserve.edu.sporthubujp.exception.EntityNotExistsException;
 import com.softserve.edu.sporthubujp.mapper.UserMapper;
 import com.softserve.edu.sporthubujp.repository.UserRepository;
 import com.softserve.edu.sporthubujp.security.PasswordConfig;
+import com.softserve.edu.sporthubujp.service.impl.UserServiceImpl;
 import com.softserve.edu.sporthubujp.validator.PasswordValidator;
 
 import org.assertj.core.api.Assertions;
@@ -131,13 +130,13 @@ class UserServiceImplTest {
         UserSaveProfileDTO userSaveProfileDTO = spy(new UserSaveProfileDTO());
 
         given(userRepository.findByEmail(userSaveProfileDTO.getEmail()))
-            .willReturn(Optional.of(user));
+                .willReturn(Optional.of(user));
 
         when(userMapper.updateUser(user, userSaveProfileDTO))
-            .thenReturn(user);
+                .thenReturn(user);
 
         when(userMapper.entityToDto(any()))
-            .thenReturn(userDTO);
+                .thenReturn(userDTO);
 
         UserDTO userDTOUnderTest = underTest.updateUser(user, userSaveProfileDTO);
         verify(user).setUpdateDateTime(any(LocalDateTime.class));
@@ -157,25 +156,25 @@ class UserServiceImplTest {
 
         userSavePasswordDTO.setOldPassword("Password123");
         when(passwordConfig.passwordEncoder()
-            .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
-            .thenReturn(true);
+                .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
+                .thenReturn(true);
 
-        userSavePasswordDTO.setPassword("Password123");
+        userSavePasswordDTO.setPassword("Password1234");
         when(passwordValidator.test(userSavePasswordDTO.getPassword()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(passwordConfig.passwordEncoder()
-            .encode(userSavePasswordDTO.getPassword()))
-            .thenReturn("Password123");
+                .encode(userSavePasswordDTO.getPassword()))
+                .thenReturn("Password123");
 
         given(userRepository.findById(user.getId()))
-            .willReturn(Optional.of(user));
+                .willReturn(Optional.of(user));
 
         when(userMapper.updatePassword(user, userSavePasswordDTO))
-            .thenReturn(user);
+                .thenReturn(user);
 
         when(userMapper.entityToDto(any()))
-            .thenReturn(userDTO);
+                .thenReturn(userDTO);
 
         UserDTO userDTOUnderTest = underTest.updatePassword(user, userSavePasswordDTO);
         verify(userRepository).save(user);
@@ -191,13 +190,14 @@ class UserServiceImplTest {
         when(passwordConfig.passwordEncoder()).thenReturn(bCryptPasswordEncoder);
 
         userSavePasswordDTO.setOldPassword("Password123");
+        userSavePasswordDTO.setPassword("Password1234");
         when(passwordConfig.passwordEncoder()
-            .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
-            .thenReturn(false);
+                .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
+                .thenReturn(false);
 
         assertThatThrownBy(() -> underTest.updatePassword(user, userSavePasswordDTO))
-            .isInstanceOf(ServiceException.class)
-            .hasMessage("Service: old password not matches with entered password ");
+                .isInstanceOf(ServiceException.class)
+                .hasMessage("Service: old password not matches with entered password ");
         verify(userMapper, never()).entityToDto(any(User.class));
     }
 
@@ -211,16 +211,16 @@ class UserServiceImplTest {
 
         userSavePasswordDTO.setOldPassword("Password123");
         when(passwordConfig.passwordEncoder()
-            .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
-            .thenReturn(true);
+                .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
+                .thenReturn(true);
 
-        userSavePasswordDTO.setPassword("Password123");
+        userSavePasswordDTO.setPassword("Password1234");
         when(passwordValidator.test(userSavePasswordDTO.getPassword()))
-            .thenReturn(false);
+                .thenReturn(false);
 
         assertThatThrownBy(() -> underTest.updatePassword(user, userSavePasswordDTO))
-            .isInstanceOf(ServiceException.class)
-            .hasMessage("Service: password must contain at least 8 characters (letters and numbers)");
+                .isInstanceOf(ServiceException.class)
+                .hasMessage("Service: password must contain at least 8 characters (letters and numbers)");
         verify(userMapper, never()).entityToDto(any(User.class));
     }
 
@@ -234,23 +234,23 @@ class UserServiceImplTest {
 
         userSavePasswordDTO.setOldPassword("Password123");
         when(passwordConfig.passwordEncoder()
-            .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
-            .thenReturn(true);
+                .matches(userSavePasswordDTO.getOldPassword(), user.getPassword()))
+                .thenReturn(true);
 
-        userSavePasswordDTO.setPassword("Password123");
+        userSavePasswordDTO.setPassword("Password1234");
         when(passwordValidator.test(userSavePasswordDTO.getPassword()))
-            .thenReturn(true);
+                .thenReturn(true);
 
         when(passwordConfig.passwordEncoder()
-            .encode(userSavePasswordDTO.getPassword()))
-            .thenReturn("Password123");
+                .encode(userSavePasswordDTO.getPassword()))
+                .thenReturn("Password123");
 
         given(userRepository.findById(user.getId()))
-            .willReturn(Optional.empty());
+                .willReturn(Optional.empty());
 
         assertThatThrownBy(() -> underTest.updatePassword(user, userSavePasswordDTO))
-            .isInstanceOf(EntityNotExistsException.class)
-            .hasMessage("Unable to find entity.");
+                .isInstanceOf(EntityNotExistsException.class)
+                .hasMessage("Unable to find entity.");
         verify(userMapper, never()).entityToDto(any(User.class));
     }
 
@@ -260,10 +260,10 @@ class UserServiceImplTest {
         UserDTO userDTO = spy(new UserDTO());
 
         given(userRepository.getReferenceById(user.getId()))
-            .willReturn(user);
+                .willReturn(user);
 
         when(userMapper.entityToDto(any(User.class)))
-            .thenReturn(userDTO);
+                .thenReturn(userDTO);
 
         UserDTO userDTOUnderTest = underTest.getUser(user);
         verify(userMapper, times(1)).entityToDto(any(User.class));
